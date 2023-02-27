@@ -18,7 +18,7 @@ import Header from "~/components/editor/Header.vue"
 import Footer from "~/components/editor/Footer.vue"
 import Main from "~/components/editor/Main.vue"
 import AsideLeft from "~/components/editor/AsideLeft.vue"
-import AsideRight from "~/components/editor/AsideRight.vue"</script>
+import AsideRight from "~/components/editor/ConfigNodePanel.vue"</script>
 
 <style scoped>
 
