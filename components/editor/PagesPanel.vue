@@ -1,6 +1,6 @@
 <template>
   <aside class="w-80 | border-r | p-3">
-    <button>
+    <button class="text-slate-500">
       <i class="icon icon-add"></i>
     </button>
     <hr class="my-1"/>

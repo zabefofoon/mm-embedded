@@ -50,34 +50,57 @@
                class="w-20 | text-xs">gap</label>
         <input id="gap"
                class="px-1 | w-full | border border-white hover:border-orange-500"
-               type="number"
-               min="0"
-               placeholder="px"
+               placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].gap"
                @change="pageStore.setNodesLayoutGap($event.target.value)"/>
       </li>
-<!--      <li class="flex items-center gap-2 | px-3 py-1">
-        <label for="gap"
-               class="w-20 | text-xs">crossAxis</label>
-        <input id="gap"
+      <hr class="my-2"/>
+      <li class="flex items-center gap-2 | px-3 py-1">
+        <label for="width"
+               class="w-20 | text-xs">width</label>
+        <input id="width"
                class="px-1 | w-full | border border-white hover:border-orange-500"
-               type="number"
-               min="0"
-               placeholder="px"
-               :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].gap"
-               @change="pageStore.setNodesLayoutGap($event.target.value)"/>
+               placeholder="px, %, vw"
+               :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].width"
+               @change="pageStore.setNodesLayoutWidth($event.target.value)"/>
       </li>
       <li class="flex items-center gap-2 | px-3 py-1">
-        <label for="gap"
-               class="w-20 | text-xs">subAxis</label>
-        <input id="gap"
+        <label for="height"
+               class="w-20 | text-xs">height</label>
+        <input id="height"
                class="px-1 | w-full | border border-white hover:border-orange-500"
-               type="number"
-               min="0"
-               placeholder="px"
-               :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].gap"
-               @change="pageStore.setNodesLayoutGap($event.target.value)"/>
-      </li>-->
+               placeholder="px, %, vw"
+               :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].height"
+               @change="pageStore.setNodesLayoutHeight($event.target.value)"/>
+      </li>
+      <hr class="my-2"/>
+      <li class="flex items-center gap-2 | px-3 py-1">
+        <label for="mainAxis"
+               class="w-20 | text-xs">mainAxis</label>
+        <select id="mainAxis"
+                class="w-full border border-white hover:border-orange-500"
+                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].mainAxis"
+                @change="pageStore.setNodesLayoutMainAxis($event.target.value)">
+          <option>start</option>
+          <option>center</option>
+          <option>end</option>
+          <option>between</option>
+          <option v-show="false" :value="undefined" label="start"></option>
+        </select>
+      </li>
+      <li class="flex items-center gap-2 | px-3 py-1">
+        <label for="crossAxis"
+               class="w-20 | text-xs">crossAxis</label>
+        <select id="crossAxis"
+                class="w-full border border-white hover:border-orange-500"
+                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].crossAxis"
+                @change="pageStore.setNodesLayoutCrossAxis($event.target.value)">
+          <option>start</option>
+          <option>center</option>
+          <option>end</option>
+          <option v-show="false" :value="undefined" label="start"></option>
+        </select>
+      </li>
     </ul>
   </div>
 </template>

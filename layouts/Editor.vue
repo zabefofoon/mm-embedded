@@ -2,11 +2,11 @@
   <div class="flex flex-col | w-full h-screen">
     <Header/>
     <div class="flex | w-full h-full">
-      <AsideLeft/>
+      <PagesPanel/>
       <Main>
         <slot/>
       </Main>
-      <AsideRight/>
+      <ConfigNodePanel/>
     </div>
     <Footer/>
   </div>
@@ -17,8 +17,8 @@
 import Header from "~/components/editor/Header.vue"
 import Footer from "~/components/editor/Footer.vue"
 import Main from "~/components/editor/Main.vue"
-import AsideLeft from "~/components/editor/AsideLeft.vue"
-import AsideRight from "~/components/editor/ConfigNodePanel.vue"</script>
+import PagesPanel from "~/components/editor/PagesPanel.vue"
+import ConfigNodePanel from "~/components/editor/ConfigNodePanel.vue"</script>
 
 <style scoped>
 

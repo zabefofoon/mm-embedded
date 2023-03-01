@@ -2,7 +2,7 @@
   <div class="node | w-full min-h-8 | relative | p-2 | border border-dashed border-2 | text-center text-slate-500"
        :class="[selectedClass, layoutClass]"
        @click.stop="pageStore.selectNodeOne(node.id)">
-    <div v-if="node.nodes.length === 0">space</div>
+    <template v-if="node.nodes.length === 0">space</template>
     <Node v-for="child in node.nodes"
           :key="child.id"
           :node="child"/>
@@ -37,6 +37,14 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
         result = result + `${current}:columns-${props.node.layout[current].columns} `
       if (props.node.layout[current].gap)
         result = result + `${current}:gap-${props.node.layout[current].gap} `
+      if (props.node.layout[current].width)
+        result = result + `${current}:width-${props.node.layout[current].width} `
+      if (props.node.layout[current].height)
+        result = result + `${current}:height-${props.node.layout[current].height} `
+      if (props.node.layout[current].mainAxis)
+        result = result + `${current}:mainAxis-${props.node.layout[current].mainAxis} `
+      if (props.node.layout[current].crossAxis)
+        result = result + `${current}:crossAxis-${props.node.layout[current].crossAxis} `
       return acc + result
     }, ''))
 

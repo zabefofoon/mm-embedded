@@ -6,11 +6,18 @@ export type NodeDirection = 'horizontal' | 'vertical'
 
 export type NodeLayoutType = 'stack' | 'grid'
 
+export type MainAxis = 'start' | 'center' | 'end' | 'between'
+export type CrossAxis = 'start' | 'center' | 'end'
+
 export type NodeLayout = {
   type?: NodeLayoutType
   direction?: NodeDirection
   columns?: number
-  gap?: number
+  gap?: string
+  width?: string
+  height?: string
+  mainAxis?: MainAxis
+  crossAxis?: CrossAxis
 }
 
 export type ResponsiveNodeLayout = {
@@ -60,8 +67,24 @@ export class Node {
     this.layout[this.selectedResponsiveMode].columns = columns
   }
 
-  setLayoutGap(gap: number) {
+  setLayoutGap(gap: string) {
     this.layout[this.selectedResponsiveMode].gap = gap
+  }
+
+  setWidth(width: string) {
+    this.layout[this.selectedResponsiveMode].width = width
+  }
+
+  setHeight(height: string) {
+    this.layout[this.selectedResponsiveMode].height = height
+  }
+
+  setMainAxis(mainAxis: MainAxis) {
+    this.layout[this.selectedResponsiveMode].mainAxis = mainAxis
+  }
+
+  setCrossAxis(crossAxis: CrossAxis) {
+    this.layout[this.selectedResponsiveMode].crossAxis = crossAxis
   }
 
   static makeNode(node: Node) {
@@ -244,9 +267,35 @@ export const usePagesStore = defineStore('pages', () => {
         pageData.value.key++
       }
 
-      const setNodesLayoutGap = (gap: number) => {
+      const setNodesLayoutGap = (gap: string) => {
         selectedNodes.value
             .forEach((node) => node?.setLayoutGap(gap))
+
+        pageData.value.key++
+      }
+
+      const setNodesLayoutWidth = (width: string) => {
+        selectedNodes.value
+            .forEach((node) => node?.setWidth(width))
+        pageData.value.key++
+      }
+
+      const setNodesLayoutHeight = (height: string) => {
+        selectedNodes.value
+            .forEach((node) => node?.setHeight(height))
+
+        pageData.value.key++
+      }
+
+      const setNodesLayoutMainAxis = (mainAxis: MainAxis) => {
+        selectedNodes.value
+            .forEach((node) => node?.setMainAxis(mainAxis))
+        pageData.value.key++
+      }
+
+      const setNodesLayoutCrossAxis = (crossAxis: CrossAxis) => {
+        selectedNodes.value
+            .forEach((node) => node?.setCrossAxis(crossAxis))
 
         pageData.value.key++
       }
@@ -267,6 +316,10 @@ export const usePagesStore = defineStore('pages', () => {
         setNodesLayoutGap,
         selectResponsiveMode,
         selectNodeOne,
+        setNodesLayoutWidth,
+        setNodesLayoutHeight,
+        setNodesLayoutMainAxis,
+        setNodesLayoutCrossAxis,
 
         findNode
       }
