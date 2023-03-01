@@ -15,16 +15,23 @@ import {deepClone} from "~/util/util"
 import UiStyle from "~/components/atom/UiStyle.vue"
 import Node from "~/components/editor/Node.vue"
 import {generateCss} from "~/util/generateCss"
+import {Group, useWidgetStore} from "~/store/widget.store"
+import {storeToRefs} from "pinia"
 
 onBeforeMount(() => window.addEventListener('message', listenMessage))
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
 
 const listenMessage = ($event: MessageEvent) => {
-  if ($event.data.type !== 'pageMutation') return
+  if ($event.data.type === 'pageMutation') {
+    const pageData = <PageData>$event.data.data
+    if (pageData.key !== pageStore.pageData.key)
+      pageStore.setPageData(pageData)
+  }
 
-  const pageData = <PageData>$event.data.data
-  if (pageData.key !== pageStore.pageData.key)
-    pageStore.setPageData(pageData)
+  if ($event.data.type === 'widgetGroupsMutation') {
+    const groups = <Group[]>$event.data.data
+    widgetStore.setWidgetGroups(groups)
+  }
 }
 
 const pageStore = usePagesStore()
@@ -34,11 +41,15 @@ const postPageData = (pageData: PageData) => {
     data: deepClone(pageData)
   })
 }
+
 watch(() => pageStore.pageData,
     postPageData,
     {deep: true})
 
-const generatedCss = computed(() => generateCss(pageStore.pageData.nodes))
+const widgetStore = useWidgetStore()
+const {widgetGroups} = storeToRefs(widgetStore)
+
+const generatedCss = computed(() => generateCss(pageStore.pageData.nodes, widgetGroups.value))
 </script>
 
 <style scoped lang="scss">

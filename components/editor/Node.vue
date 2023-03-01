@@ -2,10 +2,14 @@
   <div class="node | w-full min-h-8 | relative | p-2 | border border-dashed border-2 | text-center text-slate-500"
        :class="[selectedClass, layoutClass]"
        @click.stop="pageStore.selectNodeOne(node.id)">
-    <template v-if="node.nodes.length === 0">space</template>
-    <Node v-for="child in node.nodes"
-          :key="child.id"
-          :node="child"/>
+    <div v-if="node.widget"
+         v-html="node.widget.html"></div>
+    <template v-else>
+      <template v-if="node.nodes.length === 0">space</template>
+      <Node v-for="child in node.nodes"
+            :key="child.id"
+            :node="child"/>
+    </template>
   </div>
 </template>
 

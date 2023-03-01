@@ -1,6 +1,7 @@
 import {defineStore} from "pinia"
 import {computed, ref} from "#imports"
 import {generateUniqueId} from "~/util/util"
+import {Item, useWidgetStore} from "~/store/widget.store"
 
 export type NodeDirection = 'horizontal' | 'vertical'
 
@@ -44,7 +45,17 @@ export class Node {
     }
   }
 
+  widget?: Item
+
   constructor(public parentId?: string) {
+  }
+
+  setWidget(widget: Item) {
+    this.widget = widget
+  }
+
+  removeWidget() {
+    this.widget = undefined
   }
 
   selectResponsiveMode(responsiveMode: ResponsiveMode) {
@@ -110,6 +121,8 @@ export type PageData = {
 }
 
 export const usePagesStore = defineStore('pages', () => {
+      const widgetStore = useWidgetStore()
+
       const pageData = ref<PageData>({
         key: 0,
         nodes: [],
@@ -300,6 +313,35 @@ export const usePagesStore = defineStore('pages', () => {
         pageData.value.key++
       }
 
+      const setWidget = (widget: Item) => {
+        selectedNodes.value
+            .forEach((node) => node?.setWidget(widget))
+
+        pageData.value.key++
+      }
+
+      const removeWidget = () => {
+        selectedNodes.value
+            .forEach((node) => node?.removeWidget())
+
+        pageData.value.key++
+      }
+
+      const updateNodesWidget = () => {
+        const recursive = (nodes: Node[]) => {
+          nodes.forEach((node) => {
+            if (node.widget) node.widget = widgetStore
+                .widgetGroups
+                .flatMap((group) => group.items)
+                .find((item) => item.id === node.widget?.id)
+
+            recursive(node.nodes)
+          })
+        }
+
+        recursive(pageData.value.nodes)
+      }
+
       return {
         pageData,
         setPageData,
@@ -320,6 +362,10 @@ export const usePagesStore = defineStore('pages', () => {
         setNodesLayoutHeight,
         setNodesLayoutMainAxis,
         setNodesLayoutCrossAxis,
+        setWidget,
+        removeWidget,
+
+        updateNodesWidget,
 
         findNode
       }

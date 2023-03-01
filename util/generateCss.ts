@@ -1,6 +1,15 @@
 import {Node, ResponsiveMode} from "~/store/page.store"
+import {Group} from "~/store/widget.store"
 
 const getScreenSize = (responsiveMode: ResponsiveMode) => responsiveMode === 'small' ? '0px' : '768px'
+
+export const generateCss = (nodes: Node[],
+                            groups: Group[]): string =>
+    generateCoreCss()
+    + `\n`
+    + generateLayoutCss(nodes)
+    + `\n`
+    + generateWidgetCss(groups)
 
 const generateCoreCss = () => {
   return `
@@ -102,6 +111,27 @@ const generateCoreCss = () => {
   }
 }
 `
+}
+
+const generateLayoutCss = (nodes: Node[]) => {
+  return generateGap(nodes, 'small')
+      + generateGap(nodes, 'large')
+      + generateColumns(nodes, 'small')
+      + generateColumns(nodes, 'large')
+      + generateWidth(nodes, 'small')
+      + generateWidth(nodes, 'large')
+      + generateHeight(nodes, 'small')
+      + generateHeight(nodes, 'large')
+}
+
+const generateWidgetCss = (groups: Group[]) => {
+  return groups
+      .map((group) => group.items)
+      .flat()
+      .reduce((acc, current) => {
+        const newline = acc ? '\n\n' : ''
+        return acc + newline + current.css
+      }, '')
 }
 
 const generateGap = (nodes: Node[],
@@ -206,17 +236,3 @@ const generateHeight = (nodes: Node[],
 `
   }, '')
 }
-
-
-const generateLayoutCss = (nodes: Node[]) => {
-  return generateGap(nodes, 'small')
-      + generateGap(nodes, 'large')
-      + generateColumns(nodes, 'small')
-      + generateColumns(nodes, 'large')
-      + generateWidth(nodes, 'small')
-      + generateWidth(nodes, 'large')
-      + generateHeight(nodes, 'small')
-      + generateHeight(nodes, 'large')
-}
-
-export const generateCss = (nodes: Node[]): string => generateCoreCss() + `\n` + generateLayoutCss(nodes)

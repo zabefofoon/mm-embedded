@@ -1,5 +1,5 @@
 <template>
-  <header class="border-b | flex align-center gap-2 | px-4 py-2">
+  <header class="border-b | flex items-center gap-2 | pl-4 py-2">
     <IconButton icon="icon-screen-size"
                 :active="true"/>
     <IconDivider/>

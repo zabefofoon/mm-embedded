@@ -1,14 +1,14 @@
 <template>
   <div v-if="pageStore.pageData.selectedIds.length === 1"
-       class="flex flex-col | text-sm">
-    <h3 class="bg-slate-400 text-white | px-3 py-1">layout</h3>
+       class="flex flex-col">
+    <h3 class="bg-slate-400 text-white | px-3 py-1 | text-sm">layout</h3>
     <ResponsiveButton :model-value="pageStore.selectedNodes[0].selectedResponsiveMode"
                       @change="pageStore.selectResponsiveMode($event)"/>
     <ul>
       <li class="flex items-center gap-2 | px-3 py-1">
         <label for="type" class="w-20 | text-xs">type</label>
         <select id="type"
-                class="w-full border border-white hover:border-orange-500"
+                class="w-full | text-sm border border-white hover:border-orange-500"
                 :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].type"
                 @change="pageStore.setNodesLayoutType($event.target.value)">
           <option>stack</option>
@@ -20,7 +20,7 @@
         <label for="direction"
                class="w-20 | text-xs">direction</label>
         <select id="direction"
-                class="w-full border border-white hover:border-orange-500"
+                class="w-full | text-sm border border-white hover:border-orange-500"
                 :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].direction"
                 @change="pageStore.setNodesLayoutStackDirection($event.target.value)">
           <option value="horizontal"
@@ -39,7 +39,7 @@
         <input id="columns"
                min="1"
                max="12"
-               class="px-1 | w-full | border border-white hover:border-orange-500"
+               class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                type="number"
                placeholder="length"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].columns"
@@ -49,7 +49,7 @@
         <label for="gap"
                class="w-20 | text-xs">gap</label>
         <input id="gap"
-               class="px-1 | w-full | border border-white hover:border-orange-500"
+               class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].gap"
                @change="pageStore.setNodesLayoutGap($event.target.value)"/>
@@ -59,7 +59,7 @@
         <label for="width"
                class="w-20 | text-xs">width</label>
         <input id="width"
-               class="px-1 | w-full | border border-white hover:border-orange-500"
+               class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].width"
                @change="pageStore.setNodesLayoutWidth($event.target.value)"/>
@@ -68,7 +68,7 @@
         <label for="height"
                class="w-20 | text-xs">height</label>
         <input id="height"
-               class="px-1 | w-full | border border-white hover:border-orange-500"
+               class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].height"
                @change="pageStore.setNodesLayoutHeight($event.target.value)"/>
@@ -78,7 +78,7 @@
         <label for="mainAxis"
                class="w-20 | text-xs">mainAxis</label>
         <select id="mainAxis"
-                class="w-full border border-white hover:border-orange-500"
+                class="w-full | text-sm border border-white hover:border-orange-500"
                 :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].mainAxis"
                 @change="pageStore.setNodesLayoutMainAxis($event.target.value)">
           <option>start</option>
@@ -92,7 +92,7 @@
         <label for="crossAxis"
                class="w-20 | text-xs">crossAxis</label>
         <select id="crossAxis"
-                class="w-full border border-white hover:border-orange-500"
+                class="w-full | text-sm border border-white hover:border-orange-500"
                 :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].crossAxis"
                 @change="pageStore.setNodesLayoutCrossAxis($event.target.value)">
           <option>start</option>

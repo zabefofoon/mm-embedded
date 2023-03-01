@@ -16,6 +16,9 @@ import {PageData, usePagesStore} from "~/store/page.store"
 import {onBeforeMount, onBeforeUnmount, ref, watch} from "#imports"
 import {deepClone} from "~/util/util"
 import {ClientOnly} from "#components"
+import {useWidgetStore} from "~/store/widget.store"
+
+const widgetStore = useWidgetStore()
 
 const pageStore = usePagesStore()
 const canvas = ref<HTMLIFrameElement>()
@@ -31,7 +34,10 @@ const listenMessage = ($event: MessageEvent) => {
     pageStore.setPageData($event.data.data)
 }
 
-const initIframe = () => setTimeout(() => postPageData(pageStore.pageData), 250)
+const initIframe = () => setTimeout(() => {
+  widgetStore.setCanvas(canvas.value)
+  postPageData(pageStore.pageData)
+}, 250)
 
 const postPageData = (pageData: PageData) => {
   canvas.value?.contentWindow?.postMessage({
