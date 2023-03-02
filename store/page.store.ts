@@ -178,14 +178,53 @@ export const usePagesStore = defineStore('pages', () => {
               createdNodeIds.push(createdNode.id)
               pageData.value.nodes.push(createdNode)
             })
-            : pageData.value.selectedIds.forEach((selectedId) => {
-              const found = findNode(selectedId)
-              if (found) {
-                const createdNode = new Node(found.id)
-                createdNodeIds.push(createdNode.id)
-                found.nodes.push(createdNode)
-              }
+            : pageData.value.selectedIds
+                .forEach((selectedId) => {
+                  const found = findNode(selectedId)
+                  if (found) {
+                    const createdNode = new Node(found.id)
+                    createdNodeIds.push(createdNode.id)
+                    found.nodes.push(createdNode)
+                  }
+                })
+
+        pageData.value.selectedIds = createdNodeIds
+        pageData.value.key++
+      }
+
+      const addParentNode = () => {
+        let createdNodeIds: string[] = []
+
+        pageData.value.selectedIds.length === 0
+            ? [true].forEach(() => {
+              const createdNode = new Node()
+              createdNodeIds.push(createdNode.id)
+              pageData.value.nodes.push(createdNode)
             })
+            : pageData.value.selectedIds
+                .forEach((selectedId) => {
+                  const found = findNode(selectedId)
+                  if (found) {
+                    const createdNode = new Node(found.id)
+                    createdNodeIds.push(found.id)
+
+                    createdNode.widget = found.widget
+                    found.widget = undefined
+                    createdNode.nodes = found.nodes
+                    found.nodes = [createdNode]
+                    createdNode.layout = found.layout
+                    found.layout = {
+                      small: {
+                        type: 'stack',
+                        direction: 'vertical'
+                      },
+                      large: {
+                        type: undefined,
+                        direction: undefined
+                      }
+                    }
+                  }
+                })
 
         pageData.value.selectedIds = createdNodeIds
         pageData.value.key++
@@ -350,6 +389,8 @@ export const usePagesStore = defineStore('pages', () => {
 
         addSiblingNode,
         addChildNode,
+        addParentNode,
+
         removeNode,
 
         setNodesLayoutType,

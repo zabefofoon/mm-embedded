@@ -12,6 +12,12 @@
                 @click="pageStore.addChildNode()">add child
         </button>
       </li>
+      <li class="px-3 py-1 | border border-white hover:border-orange-500">
+        <button class="w-full | text-sm text-left"
+                @click="pageStore.addParentNode()">add parent
+        </button>
+      </li>
+      <hr class="my-2"/>
       <li class="px-3 py-1 | border border-white hover:border-orange-500"
           :class="{'text-slate-300': pageStore.pageData.selectedIds.length === 0}">
         <button class="w-full | text-sm text-left"
