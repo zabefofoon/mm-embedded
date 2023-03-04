@@ -101,6 +101,15 @@
           <option v-show="false" :value="undefined" label="start"></option>
         </select>
       </li>
+      <li class="flex items-center gap-2 | px-3 py-1">
+        <label for="crossAxis"
+               class="w-20 | text-xs">hidden</label>
+        <button class="w-full | px-1 | text-sm border  hover:border-orange-500"
+                :class="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].hidden ? 'text-slate-500 border-slate-500' : 'text-slate-200 border-slate-200'"
+                @click="pageStore.setNodesLayoutHidden(!pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].hidden)">
+          hidden
+        </button>
+      </li>
     </ul>
   </div>
 </template>

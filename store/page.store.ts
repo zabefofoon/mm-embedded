@@ -19,6 +19,7 @@ export type NodeLayout = {
   height?: string
   mainAxis?: MainAxis
   crossAxis?: CrossAxis
+  hidden: boolean
 }
 
 export type ResponsiveNodeLayout = {
@@ -37,12 +38,14 @@ export class Node {
   layout: ResponsiveNodeLayout = {
     small: {
       type: 'stack',
-      direction: 'vertical'
+      direction: 'vertical',
+      hidden: false
     },
     large: {
       type: undefined,
-      direction: undefined
-    }
+      direction: undefined,
+      hidden: false
+    },
   }
 
   widget?: Item
@@ -64,6 +67,9 @@ export class Node {
 
   setLayoutType(type: NodeLayoutType) {
     this.layout[this.selectedResponsiveMode].type = type
+
+    if (type === 'grid')
+      this.layout[this.selectedResponsiveMode].columns = 1
 
     type === 'grid'
         ? this.layout[this.selectedResponsiveMode].direction = undefined
@@ -96,6 +102,10 @@ export class Node {
 
   setCrossAxis(crossAxis: CrossAxis) {
     this.layout[this.selectedResponsiveMode].crossAxis = crossAxis
+  }
+
+  setHidden(hidden: boolean) {
+    this.layout[this.selectedResponsiveMode].hidden = hidden
   }
 
   static makeNode(node: Node) {
@@ -216,11 +226,13 @@ export const usePagesStore = defineStore('pages', () => {
                     found.layout = {
                       small: {
                         type: 'stack',
-                        direction: 'vertical'
+                        direction: 'vertical',
+                        hidden: false
                       },
                       large: {
                         type: undefined,
-                        direction: undefined
+                        direction: undefined,
+                        hidden: false
                       }
                     }
                   }
@@ -293,6 +305,11 @@ export const usePagesStore = defineStore('pages', () => {
         pageData.value.key++
       }
 
+      const selectNodeMany = (id: string) => {
+        pageData.value.selectedIds.push(id)
+        pageData.value.key++
+      }
+
       const setNodesLayoutType = (type: NodeLayoutType) => {
         selectedNodes.value
             .forEach((node) => {
@@ -352,6 +369,13 @@ export const usePagesStore = defineStore('pages', () => {
         pageData.value.key++
       }
 
+      const setNodesLayoutHidden = (hidden: boolean) => {
+        selectedNodes.value
+            .forEach((node) => node?.setHidden(hidden))
+
+        pageData.value.key++
+      }
+
       const setWidget = (widget: Item) => {
         selectedNodes.value
             .forEach((node) => node?.setWidget(widget))
@@ -393,16 +417,20 @@ export const usePagesStore = defineStore('pages', () => {
 
         removeNode,
 
+        selectNodeOne,
+        selectNodeMany,
+
         setNodesLayoutType,
         setNodesLayoutStackDirection,
         setNodesLayoutGridColumns,
         setNodesLayoutGap,
         selectResponsiveMode,
-        selectNodeOne,
         setNodesLayoutWidth,
         setNodesLayoutHeight,
         setNodesLayoutMainAxis,
         setNodesLayoutCrossAxis,
+        setNodesLayoutHidden,
+
         setWidget,
         removeWidget,
 

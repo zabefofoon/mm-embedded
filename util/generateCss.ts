@@ -4,21 +4,22 @@ import {Group} from "~/store/widget.store"
 const getScreenSize = (responsiveMode: ResponsiveMode) => responsiveMode === 'small' ? '0px' : '768px'
 
 export const generateCss = (nodes: Node[],
-                            groups: Group[]): string =>
-    generateCoreCss()
+                            groups: Group[],
+                            isShowHidden = false): string =>
+    generateCoreCss(isShowHidden)
     + `\n`
     + generateLayoutCss(nodes)
     + `\n`
     + generateWidgetCss(groups)
 
-const generateCoreCss = () => {
+const generateCoreCss = (isShowHidden: boolean) => {
   return `
 .node {
   width: 100%;
   border-collapse: collapse;
 }
 
-@media (min-width: 0) {
+@media (min-width: 0px) {
   .small\\:type-stack {
       display: flex;
   }
@@ -61,6 +62,16 @@ const generateCoreCss = () => {
   
   .small\\:crossAxis-end {
       align-items: end;
+  }
+}
+
+@media (min-width:0) and (max-width:767px) {
+  .small\\:hidden-true {
+      ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
+  }
+    
+  .small\\:hidden-false {
+      ${isShowHidden ? 'opacity: 1;' : ''}
   }
 }
 
@@ -108,6 +119,14 @@ const generateCoreCss = () => {
   
   .large\\:crossAxis-end {
       align-items: end;
+  }
+  
+  .large\\:hidden-true {
+      ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
+  }
+  
+  .large\\:hidden-false {
+      ${isShowHidden ? 'opacity: 1;' : ''}
   }
 }
 `

@@ -1,13 +1,13 @@
 <template>
-  <div class="h-full">
+  <div class="flex justify-center | h-full">
     <ClientOnly>
       <iframe ref="canvas"
+              :style="{width: screenStore.screenSize.width, height: screenStore.screenSize.height}"
               class="w-full h-full"
               src="./canvas"
               @load="initIframe">
       </iframe>
     </ClientOnly>
-
   </div>
 </template>
 
@@ -17,6 +17,9 @@ import {onBeforeMount, onBeforeUnmount, ref, watch} from "#imports"
 import {deepClone} from "~/util/util"
 import {ClientOnly} from "#components"
 import {useWidgetStore} from "~/store/widget.store"
+import {useScreenStore} from "~/store/screen.store"
+
+const screenStore = useScreenStore()
 
 const widgetStore = useWidgetStore()
 
@@ -46,10 +49,27 @@ const postPageData = (pageData: PageData) => {
   })
 }
 
+const postScreenData = (isShowSpacing: boolean,
+                        isShowOutline: boolean,
+                        isShowHidden: boolean) => {
+  canvas.value?.contentWindow?.postMessage({
+    type: 'screenMutation',
+    data: deepClone({isShowSpacing, isShowOutline, isShowHidden})
+  })
+}
+
 watch(() => pageStore.pageData,
     postPageData,
     {deep: true})
 
+watch(() => [
+      screenStore.isShowSpacing,
+      screenStore.isShowOutline,
+      screenStore.isShowHidden
+    ],
+    () => postScreenData(screenStore.isShowSpacing,
+        screenStore.isShowOutline,
+        screenStore.isShowHidden))
 
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <button class="px-1 | border border-slate-500 | flex items-center"
+  <button class="flex items-center | px-1 | text-slate-500 border border-slate-500 hover:bg-slate-200"
           :class="[{'bg-slate-500': active}, {'text-white': active}]">
     <i class="icon text-2xl"
        :class="icon"></i>

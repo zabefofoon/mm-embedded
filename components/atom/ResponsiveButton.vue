@@ -15,6 +15,9 @@
 </template>
 
 <script setup lang="ts">
+import {useScreenStore} from "~/store/screen.store"
+import {ResponsiveMode} from "~/store/page.store"
+
 defineProps({
   modelValue: {
     type: String,
@@ -22,9 +25,12 @@ defineProps({
   }
 })
 
+const screenStore = useScreenStore()
+
 const emit = defineEmits(['change'])
 
-const changeCurrentValue = (value: string) => {
+const changeCurrentValue = (value: ResponsiveMode) => {
+  screenStore.setScreenSize('width', value === 'small' ? '33.33%' : '100%')
   emit('change', value)
 }
 </script>

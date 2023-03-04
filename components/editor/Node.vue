@@ -1,9 +1,10 @@
 <template>
-  <div class="node | w-full min-h-8 | relative | p-2 | border border-dashed border-2"
-       :class="[selectedClass, layoutClass]"
-       @click.stop="pageStore.selectNodeOne(node.id)">
+  <div class="node | w-full min-h-8 | relative | border border-dashed"
+       :class="[selectedClass, layoutClass, spacingClass, outlineClass]"
+       @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id, $event) :  pageStore.selectNodeOne(node.id)">
     <div v-if="node.widget"
-         v-html="node.widget.html"></div>
+         v-html="node.widget.html"
+         class="w-full"></div>
     <template v-else>
       <p v-if="node.nodes.length === 0"
          class="text-center text-slate-500">space</p>
@@ -17,6 +18,7 @@
 <script setup lang="ts">
 import {Node as NodeType, ResponsiveMode, usePagesStore} from "~/store/page.store"
 import {computed} from "#imports"
+import {useScreenStore} from "~/store/screen.store"
 
 const props = defineProps({
   node: {
@@ -25,7 +27,13 @@ const props = defineProps({
   }
 })
 
+const screenStore = useScreenStore()
+
 const pageStore = usePagesStore()
+
+const spacingClass = computed(() => screenStore.isShowSpacing ? 'p-2' : '')
+
+const outlineClass = computed(() => screenStore.isShowOutline ? 'border-2' : 'border-0')
 
 const selectedClass = computed(() => pageStore.pageData.selectedIds.includes(props.node.id)
     ? 'border-orange-500'
@@ -46,10 +54,19 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
         result = result + `${current}:width-${props.node.layout[current].width} `
       if (props.node.layout[current].height)
         result = result + `${current}:height-${props.node.layout[current].height} `
-      if (props.node.layout[current].mainAxis)
+
+      if (props.node.layout[current].mainAxis !== undefined)
         result = result + `${current}:mainAxis-${props.node.layout[current].mainAxis} `
-      if (props.node.layout[current].crossAxis)
+      else
+        result = result + `${current}:mainAxis-start `
+
+      if (props.node.layout[current].crossAxis !== undefined)
         result = result + `${current}:crossAxis-${props.node.layout[current].crossAxis} `
+      else
+        result = result + `${current}:crossAxis-start `
+
+      if (props.node.layout[current].hidden !== undefined)
+        result = result + `${current}:hidden-${props.node.layout[current].hidden || false} `
       return acc + result
     }, ''))
 
