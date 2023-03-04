@@ -278,6 +278,24 @@ export const usePagesStore = defineStore('pages', () => {
         pageData.value.key++
       }
 
+      const removeParentNode = () => {
+        const selectedNode = <Node>getSelectedNodeOne()
+        const parentNode = findNode(getSelectedNodeOne()?.parentId)
+        const grandParentNode = findNode(parentNode?.parentId)
+
+        if (grandParentNode) {
+          const foundIndex = grandParentNode.nodes.findIndex((node) => node.id === parentNode?.id)
+          grandParentNode.nodes.splice(foundIndex, 1, selectedNode)
+          selectedNode.parentId = grandParentNode.id
+        } else {
+          const foundIndex = pageData.value.nodes.findIndex((node) => node.id === parentNode?.id)
+          pageData.value.nodes.splice(foundIndex, 1, selectedNode)
+          selectedNode.parentId = undefined
+        }
+
+        pageData.value.key++
+      }
+
       const findNode = (id?: string): Node | undefined => {
         let found
 
@@ -405,6 +423,8 @@ export const usePagesStore = defineStore('pages', () => {
         recursive(pageData.value.nodes)
       }
 
+      const getSelectedNodeOne = () => findNode(pageData.value.selectedIds[0])
+
       return {
         pageData,
         setPageData,
@@ -416,6 +436,7 @@ export const usePagesStore = defineStore('pages', () => {
         addParentNode,
 
         removeNode,
+        removeParentNode,
 
         selectNodeOne,
         selectNodeMany,
@@ -436,7 +457,9 @@ export const usePagesStore = defineStore('pages', () => {
 
         updateNodesWidget,
 
-        findNode
+        findNode,
+
+        getSelectedNodeOne
       }
     }
 )

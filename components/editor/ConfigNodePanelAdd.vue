@@ -8,7 +8,7 @@
                 @click="pageStore.addSiblingNode()">add sibling
         </button>
       </li>
-      <li v-if="pageStore.pageData.selectedIds.length < 2"
+      <li v-if="pageStore.pageData.selectedIds.length < 2 && !pageStore.getSelectedNodeOne()?.widget"
           class="px-3 py-1 | border border-white hover:border-orange-500">
         <button class="w-full | text-sm text-left"
                 @click="pageStore.addChildNode()">add child
@@ -25,7 +25,13 @@
       <li v-if="pageStore.pageData.selectedIds.length > 0"
           class="px-3 py-1 | border border-white hover:border-orange-500">
         <button class="w-full | text-sm text-left"
-                @click="pageStore.removeNode()">remove node
+                @click="pageStore.removeNode()">remove
+        </button>
+      </li>
+      <li v-if="pageStore.pageData.selectedIds.length === 1 && pageStore.findNode(pageStore.getSelectedNodeOne()?.parentId)?.nodes.length < 2"
+          class="px-3 py-1 | border border-white hover:border-orange-500">
+        <button class="w-full | text-sm text-left"
+                @click="pageStore.removeParentNode()">remove parent
         </button>
       </li>
     </ul>

@@ -7,7 +7,7 @@
          class="w-full"></div>
     <template v-else>
       <p v-if="node.nodes.length === 0"
-         class="text-center text-slate-500">space</p>
+         class="w-full text-center text-slate-500">space</p>
       <Node v-for="child in node.nodes"
             :key="child.id"
             :node="child"/>
