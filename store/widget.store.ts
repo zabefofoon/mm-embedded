@@ -2,6 +2,7 @@ import {defineStore} from "pinia"
 import {ref} from "#imports"
 import {deepClone} from "~/util/util"
 import {usePagesStore} from "~/store/page.store"
+import essentialGroups from "~/assets/json/essential_group.json"
 
 export type Group = {
   name: string
@@ -29,34 +30,7 @@ export const useWidgetStore = defineStore('widgets', () => {
     isLayerShow.value = value !== undefined ? value : !isLayerShow.value
   }
 
-  const widgetGroups = ref<Group[]>([
-    {
-      name: "Group",
-      items: [
-        {
-          "html": "<span class='html'>html</span>",
-          "css": ".html {color: red;\n" +
-              "    border: 1px solid red;\n" +
-              "    width: 300px;\n" +
-              "    height: 300px;\n" +
-              "    display: block;}",
-          "name": "html",
-          "description": "description"
-        }
-      ]
-    },
-    {
-      name: "Group2",
-      items: [
-        {
-          "html": "<span class='html2'>html2</span>",
-          "css": ".html2 {color: blue;}",
-          "name": "html",
-          "description": "description"
-        }
-      ]
-    },
-  ])
+  const widgetGroups = ref<Group[]>(essentialGroups)
 
   const setWidgetGroups = (groups: Group[]) => {
     widgetGroups.value = groups

@@ -141,6 +141,8 @@ const generateLayoutCss = (nodes: Node[]) => {
       + generateWidth(nodes, 'large')
       + generateHeight(nodes, 'small')
       + generateHeight(nodes, 'large')
+      + generateMaxWidth(nodes, 'small')
+      + generateMaxWidth(nodes, 'large')
 }
 
 const generateWidgetCss = (groups: Group[]) => {
@@ -250,6 +252,34 @@ const generateHeight = (nodes: Node[],
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:height-${convertedCurrent} {
     height: ${current};
+  }
+}
+`
+  }, '')
+}
+
+const generateMaxWidth = (nodes: Node[],
+                          responsiveMode: ResponsiveMode) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes.forEach((node) => {
+      const value = <string | undefined>node.layout[responsiveMode].maxWidth
+      if (value && !result.includes(value))
+        result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    const convertedCurrent = current.replace('%', '\\%')
+
+    return acc + `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:maxWidth-${convertedCurrent} {
+    max-width: ${current};
   }
 }
 `

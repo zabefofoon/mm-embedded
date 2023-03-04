@@ -73,6 +73,15 @@
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].height"
                @change="pageStore.setNodesLayoutHeight($event.target.value)"/>
       </li>
+      <li class="flex items-center gap-2 | px-3 py-1">
+        <label for="max-width"
+               class="w-20 | text-xs">maxWidth</label>
+        <input id="max-width"
+               class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
+               placeholder="px, %, vw"
+               :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].maxWidth"
+               @change="pageStore.setNodesLayoutMaxWidth($event.target.value)"/>
+      </li>
       <hr class="my-2"/>
       <li class="flex items-center gap-2 | px-3 py-1">
         <label for="mainAxis"

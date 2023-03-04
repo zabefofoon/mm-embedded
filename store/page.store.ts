@@ -17,6 +17,7 @@ export type NodeLayout = {
   gap?: string
   width?: string
   height?: string
+  maxWidth?: string
   mainAxis?: MainAxis
   crossAxis?: CrossAxis
   hidden: boolean
@@ -94,6 +95,10 @@ export class Node {
 
   setHeight(height: string) {
     this.layout[this.selectedResponsiveMode].height = height
+  }
+
+  setMaxWidth(maxWidth: string) {
+    this.layout[this.selectedResponsiveMode].maxWidth = maxWidth
   }
 
   setMainAxis(mainAxis: MainAxis) {
@@ -397,6 +402,12 @@ export const usePagesStore = defineStore('pages', () => {
         pageData.value.key++
       }
 
+      const setNodesLayoutMaxWidth = (maxWidth: string) => {
+        selectedNodes.value
+            .forEach((node) => node?.setMaxWidth(maxWidth))
+        pageData.value.key++
+      }
+
       const setNodesLayoutHeight = (height: string) => {
         selectedNodes.value
             .forEach((node) => node?.setHeight(height))
@@ -517,6 +528,7 @@ export const usePagesStore = defineStore('pages', () => {
         setNodesLayoutGap,
         selectResponsiveMode,
         setNodesLayoutWidth,
+        setNodesLayoutMaxWidth,
         setNodesLayoutHeight,
         setNodesLayoutMainAxis,
         setNodesLayoutCrossAxis,

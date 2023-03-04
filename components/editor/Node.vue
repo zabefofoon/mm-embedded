@@ -54,6 +54,8 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
         result = result + `${current}:width-${props.node.layout[current].width} `
       if (props.node.layout[current].height)
         result = result + `${current}:height-${props.node.layout[current].height} `
+      if (props.node.layout[current].maxWidth)
+        result = result + `${current}:maxWidth-${props.node.layout[current].maxWidth} `
 
       if (props.node.layout[current].mainAxis !== undefined)
         result = result + `${current}:mainAxis-${props.node.layout[current].mainAxis} `
