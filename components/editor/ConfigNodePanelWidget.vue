@@ -9,7 +9,8 @@
           add
         </button>
       </li>
-      <li class="px-3 py-1 | border border-white hover:border-orange-500">
+      <li v-if="pageStore.getSelectedNodeOne()?.widget"
+          class="px-3 py-1 | border border-white hover:border-orange-500">
         <button class="w-full | text-sm text-left"
                 @click="pageStore.removeWidget()">
           remove

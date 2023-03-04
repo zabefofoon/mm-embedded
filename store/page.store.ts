@@ -1,6 +1,6 @@
 import {defineStore} from "pinia"
 import {computed, ref} from "#imports"
-import {generateUniqueId} from "~/util/util"
+import {deepClone, generateUniqueId} from "~/util/util"
 import {Item, useWidgetStore} from "~/store/widget.store"
 
 export type NodeDirection = 'horizontal' | 'vertical'
@@ -150,7 +150,36 @@ export const usePagesStore = defineStore('pages', () => {
         pageData.value.selectedIds = <string[]>data.selectedIds
       }
 
-      const addSiblingNode = () => {
+      const addSiblingNodeUp = () => {
+        let createdNodeIds: string[] = []
+
+        pageData.value.selectedIds.length === 0
+            ? [true].forEach(() => {
+              const createdNode = new Node()
+              createdNodeIds.push(createdNode.id)
+              pageData.value.nodes.push(createdNode)
+            })
+            : pageData.value.selectedIds.forEach((selectedId) => {
+
+              const found = findNode(selectedId)
+              const parent = findNode(found?.parentId)
+              const index = parent
+                  ? parent.nodes.findIndex((item) => item.id === found?.id)
+                  : pageData.value.nodes.findIndex((item) => item.id === found?.id)
+
+              const createdNode = parent ? new Node(parent.id) : new Node()
+              createdNodeIds.push(createdNode.id)
+
+              parent
+                  ? parent.nodes.splice(index, 0, createdNode)
+                  : pageData.value.nodes.splice(index, 0, createdNode)
+            })
+
+        pageData.value.selectedIds = createdNodeIds
+        pageData.value.key++
+      }
+
+      const addSiblingNodeDown = () => {
         let createdNodeIds: string[] = []
 
         pageData.value.selectedIds.length === 0
@@ -245,6 +274,7 @@ export const usePagesStore = defineStore('pages', () => {
       const removeNode = () => {
         const deletedNodes: Node[] = []
         let deletedIndex = 0
+
         pageData.value.selectedIds.forEach((selectedId) => {
           const found = findNode(selectedId)
           const parent = findNode(found?.parentId)
@@ -425,13 +455,53 @@ export const usePagesStore = defineStore('pages', () => {
 
       const getSelectedNodeOne = () => findNode(pageData.value.selectedIds[0])
 
+      const copiedNode = ref<Node>()
+
+      const copyNode = () => {
+        copiedNode.value = getSelectedNodeOne()
+
+        pageData.value.key++
+      }
+
+      const cutNode = () => {
+        copiedNode.value = getSelectedNodeOne()
+
+        removeNode()
+      }
+
+      const pasteNode = () => {
+        const selectedNode = getSelectedNodeOne()
+
+        const cloned = <Node>deepClone(copiedNode.value)
+        const recursive = (node: Node) => {
+          node.id = generateUniqueId()
+          node.nodes.forEach((child) => {
+            child.parentId = node.id
+            child.id = generateUniqueId()
+            recursive(child)
+          })
+        }
+        recursive(cloned)
+
+        if (selectedNode) {
+          cloned.parentId = selectedNode.id
+          selectedNode.nodes.push(Node.makeNode(cloned))
+        } else {
+          cloned.parentId = undefined
+          pageData.value.nodes.push(Node.makeNode(cloned))
+        }
+        selectNodeOne(cloned.id)
+        pageData.value.key++
+      }
+
       return {
         pageData,
         setPageData,
 
         selectedNodes,
 
-        addSiblingNode,
+        addSiblingNodeUp,
+        addSiblingNodeDown,
         addChildNode,
         addParentNode,
 
@@ -459,7 +529,12 @@ export const usePagesStore = defineStore('pages', () => {
 
         findNode,
 
-        getSelectedNodeOne
+        getSelectedNodeOne,
+
+        copiedNode,
+        copyNode,
+        cutNode,
+        pasteNode
       }
     }
 )
