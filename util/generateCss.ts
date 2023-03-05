@@ -160,7 +160,7 @@ const generateGap = (nodes: Node[],
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes.forEach((node) => {
+    nodes?.forEach((node) => {
       const value = <string | undefined>node.layout[responsiveMode].gap
       if (value && !result.includes(value))
         result.push(value)
@@ -184,7 +184,7 @@ const generateColumns = (nodes: Node[],
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes.forEach((node) => {
+    nodes?.forEach((node) => {
       const value = <string | undefined>node.layout[responsiveMode].columns
       if (value && !result.includes(value))
         result.push(value)
@@ -208,7 +208,7 @@ const generateWidth = (nodes: Node[],
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes.forEach((node) => {
+    nodes?.forEach((node) => {
       const value = <string | undefined>node.layout[responsiveMode].width
       if (value && !result.includes(value))
         result.push(value)
@@ -235,7 +235,7 @@ const generateHeight = (nodes: Node[],
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes.forEach((node) => {
+    nodes?.forEach((node) => {
       const value = <string | undefined>node.layout[responsiveMode].height
       if (value && !result.includes(value))
         result.push(value)
@@ -263,7 +263,7 @@ const generateMaxWidth = (nodes: Node[],
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes.forEach((node) => {
+    nodes?.forEach((node) => {
       const value = <string | undefined>node.layout[responsiveMode].maxWidth
       if (value && !result.includes(value))
         result.push(value)

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pageStore.pageData.selectedIds.length > 0"
+  <div v-if="pageStore.currentPage?.selectedIds.length > 0"
        class="flex flex-col">
     <h3 class="bg-slate-400 text-white text-sm | px-3 py-1">widget</h3>
     <ul>
@@ -24,7 +24,7 @@
 import {usePagesStore} from "~/store/page.store"
 import {$vfm} from "vue-final-modal"
 import ModalWidgets from "~/components/editor/ModalWidgets.vue"
-import {Item} from "~/store/widget.store"
+import {Item} from "~/model/Widget"
 
 const pageStore = usePagesStore()
 

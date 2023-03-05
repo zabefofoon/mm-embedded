@@ -35,7 +35,7 @@ const pageStore = usePagesStore()
 const widgetStore = useWidgetStore()
 
 const {widgetGroups} = storeToRefs(widgetStore)
-const generatedCss = computed(() => generateCss(pageStore.pageData.nodes, widgetGroups.value))
+const generatedCss = computed(() => generateCss(pageStore.currentPage?.nodes || [], widgetGroups.value))
 </script>
 
 <style scoped>

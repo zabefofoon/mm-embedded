@@ -16,9 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import {Node as NodeType, ResponsiveMode, usePagesStore} from "~/store/page.store"
+import {usePagesStore} from "~/store/page.store"
 import {computed} from "#imports"
 import {useScreenStore} from "~/store/screen.store"
+import {Node as NodeType, ResponsiveMode} from "~/model/Node"
 
 const props = defineProps({
   node: {
@@ -35,7 +36,7 @@ const spacingClass = computed(() => screenStore.isShowSpacing ? 'p-2' : '')
 
 const outlineClass = computed(() => screenStore.isShowOutline ? 'border-2' : 'border-0')
 
-const selectedClass = computed(() => pageStore.pageData.selectedIds.includes(props.node.id)
+const selectedClass = computed(() => pageStore.currentPage?.selectedIds.includes(props.node.id)
     ? 'border-orange-500'
     : 'border-slate-500')
 

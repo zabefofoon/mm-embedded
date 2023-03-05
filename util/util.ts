@@ -1,6 +1,6 @@
 import ShortUniqueId from "short-unique-id"
 
-export const deepClone = <T>(value: T): T => JSON.parse(JSON.stringify(value))
+export const deepClone = <T>(value: T): T => value ? JSON.parse(JSON.stringify(value)) : value
 
 export const generateUniqueId = (): string => new ShortUniqueId({
   length: 10,

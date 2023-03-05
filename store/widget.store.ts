@@ -3,19 +3,8 @@ import {ref} from "#imports"
 import {deepClone} from "~/util/util"
 import {usePagesStore} from "~/store/page.store"
 import essentialGroups from "~/assets/json/essential_group.json"
+import {Group} from "~/model/Widget"
 
-export type Group = {
-  name: string
-  items: Item[]
-}
-
-export type Item = {
-  id?: string
-  html: string
-  css: string
-  name: string
-  description: string
-}
 
 export const useWidgetStore = defineStore('widgets', () => {
   const pageStore = usePagesStore()

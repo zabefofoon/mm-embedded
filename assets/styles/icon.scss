@@ -27,8 +27,20 @@
   mask-image: url($src);
 }
 
+.icon-copy {
+  $src: 'https://api.iconify.design/material-symbols/content-copy-outline.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
 .icon-add {
   $src: 'https://api.iconify.design/material-symbols/add.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-minus {
+  $src: 'https://api.iconify.design/ic/baseline-minus.svg';
   -webkit-mask-image: url($src);
   mask-image: url($src);
 }

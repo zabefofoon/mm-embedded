@@ -1,20 +1,32 @@
 <template>
   <aside class="w-80 | border-r | p-3">
-    <button class="text-slate-500">
-      <i class="icon icon-add"></i>
-    </button>
+    <div class="flex gap-1">
+      <button class="flex items-center | text-slate-500"
+              @click="pageStore.addPage()">
+        <i class="icon icon-add"></i>
+      </button>
+      <button v-if="pageStore.currentPageId"
+              class="flex items-center | text-slate-500"
+              @click="pageStore.removePage()">
+        <i class="icon icon-minus"></i>
+      </button>
+      <button v-if="pageStore.currentPageId"
+              class="flex items-center | text-slate-500"
+              @click="pageStore.copyPage()">
+        <i class="icon icon-copy"></i>
+      </button>
+    </div>
     <hr class="my-1"/>
     <ul class="flex flex-col gap-2">
-      <li v-for="(page, index) in pages"
-          :key="page.name + index"
+      <li v-for="(page) in pageStore.pages"
+          :key="page.id"
           class="page-list | flex items-center">
         <button class="w-full | flex items-center gap-1 | text-sm text-left text-gray-400"
-                :class="[{'text-slate-500': page.name === 'page-1'}, {'font-bold': page.name === 'page-1'}]">
+                :class="[{'text-slate-500': page.id === pageStore.currentPageId}, {'font-bold': page.id === pageStore.currentPageId}]"
+                @click="pageStore.selectPage(page.id)">
           <i class="icon icon-page"></i>
-          {{ page.name }}
-        </button>
-        <button class="delete-button | text-sm text-slate-500">
-          <i class="icon icon-delete"></i>
+          <input class="px-1 | w-full"
+                 v-model="page.name"/>
         </button>
       </li>
     </ul>
@@ -22,17 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "#imports"
+import {usePagesStore} from "~/store/page.store"
 
-const pages = ref([{name: 'page-1'}, {name: 'page-2'}, {name: 'page-3'}])
+const pageStore = usePagesStore()
 </script>
 
 <style scoped lang="scss">
-.delete-button {
-  display: none;
-}
 
-.page-list:hover .delete-button {
-  display: inline-block;
-}
 </style>
