@@ -17,21 +17,24 @@ const createPage = (): PageData => ({
   id: generateUniqueId(),
   name: 'Page',
   key: 0,
-  nodes: [],
+  nodes: [new Node()],
   selectedIds: [],
 })
 
 export const usePagesStore = defineStore('pages', () => {
       const widgetStore = useWidgetStore()
 
-      const syncKey = ref(0)
-      const updateSyncKey = () => {
-        syncKey.value++
-      }
-
       const initialPage = createPage()
 
       const pages = ref<PageData[]>([initialPage])
+
+      const currentPageId = ref<string | undefined>(initialPage.id)
+
+      const currentPage = computed(() => <PageData>pages.value.find((page) => page.id === currentPageId.value))
+
+      const selectPage = (pageId?: string) => {
+        currentPageId.value = pageId
+      }
 
       const loadPages = (_pages: PageData[]) => {
         pages.value = _pages
@@ -40,16 +43,18 @@ export const usePagesStore = defineStore('pages', () => {
       }
 
       const addPage = () => {
+        const index = pages.value.findIndex((page) => page.id === currentPageId.value)
         const created = createPage()
-        pages.value.push(created)
+        pages.value.splice(index + 1, 0, created)
         selectPage(created.id)
       }
 
       const copyPage = () => {
+        const index = pages.value.findIndex((page) => page.id === currentPageId.value)
         const created = createPage()
         created.nodes = Node.makeNodes(deepClone(currentPage.value?.nodes || []))
         created.name = `[Copy]${currentPage.value?.name}`
-        pages.value.push(created)
+        pages.value.splice(index + 1, 0, created)
         selectPage(created.id)
       }
 
@@ -60,12 +65,17 @@ export const usePagesStore = defineStore('pages', () => {
         selectPage(pages.value.at(index - 1)?.id)
       }
 
-      const currentPageId = ref<string | undefined>(initialPage.id)
-      const selectPage = (pageId?: string) => {
-        currentPageId.value = pageId
+      const moveUpPage = () => {
+        const index = pages.value.findIndex((page) => page.id === currentPageId.value)
+        const page = pages.value.splice(index, 1)[0]
+        pages.value.splice(index - 1, 0, page)
       }
 
-      const currentPage = computed(() => <PageData>pages.value.find((page) => page.id === currentPageId.value))
+      const moveDownPage = () => {
+        const index = pages.value.findIndex((page) => page.id === currentPageId.value)
+        const page = pages.value.splice(index, 1)[0]
+        pages.value.splice(index + 1, 0, page)
+      }
 
       const selectedNodes = computed(() => currentPage.value.selectedIds.map((id) => findNode(id)))
 
@@ -438,6 +448,9 @@ export const usePagesStore = defineStore('pages', () => {
         copyPage,
         removePage,
 
+        moveUpPage,
+        moveDownPage,
+
         currentPageId,
         currentPage,
         selectPage,
@@ -481,9 +494,6 @@ export const usePagesStore = defineStore('pages', () => {
         copyNode,
         cutNode,
         pasteNode,
-
-        syncKey,
-        updateSyncKey
       }
     }
 )

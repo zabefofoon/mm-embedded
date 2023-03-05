@@ -1,6 +1,6 @@
 <template>
   <aside class="w-80 | border-r | p-3">
-    <div class="flex gap-1">
+    <div class="flex items-center gap-1">
       <button class="flex items-center | text-slate-500"
               @click="pageStore.addPage()">
         <i class="icon icon-add"></i>
@@ -10,10 +10,22 @@
               @click="pageStore.removePage()">
         <i class="icon icon-minus"></i>
       </button>
+      <div class="h-4 | mx-1 | border-r border-slate-300"></div>
       <button v-if="pageStore.currentPageId"
               class="flex items-center | text-slate-500"
               @click="pageStore.copyPage()">
         <i class="icon icon-copy"></i>
+      </button>
+      <div class="h-4 | mx-1 | border-r border-slate-300"></div>
+      <button v-if="pageStore.currentPageId"
+              class="flex items-center | text-slate-500"
+              @click="pageStore.moveUpPage()">
+        <i class="icon icon-arrow-top"></i>
+      </button>
+      <button v-if="pageStore.currentPageId"
+              class="flex items-center | text-slate-500"
+              @click="pageStore.moveDownPage()">
+        <i class="icon icon-arrow-bottom"></i>
       </button>
     </div>
     <hr class="my-1"/>

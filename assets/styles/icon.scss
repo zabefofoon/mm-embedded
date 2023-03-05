@@ -117,12 +117,6 @@
   mask-image: url($src);
 }
 
-.icon-arrow-top {
-  $src: 'https://api.iconify.design/ic/baseline-keyboard-arrow-up.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
-}
-
 .icon-arrow-bottom {
   $src: 'https://api.iconify.design/ic/baseline-keyboard-arrow-down.svg';
   -webkit-mask-image: url($src);
