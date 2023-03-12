@@ -1,5 +1,6 @@
-import {Node, ResponsiveMode} from "~/store/page.store"
-import {Group} from "~/store/widget.store"
+import {Group} from "~/model/Widget"
+import {ResponsiveMode} from "~/model/Node"
+import {Node} from "~/model/Node"
 
 const getScreenSize = (responsiveMode: ResponsiveMode) => responsiveMode === 'small' ? '0px' : '768px'
 

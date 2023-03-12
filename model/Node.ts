@@ -5,7 +5,7 @@ export class Node {
   id = generateUniqueId()
   nodes: Node[] = []
 
-  selectedResponsiveMode: ResponsiveMode = 'small'
+  selectedResponsiveMode: ResponsiveMode = 'large'
 
   layout: ResponsiveNodeLayout = {
     small: {
@@ -14,8 +14,8 @@ export class Node {
       hidden: false
     },
     large: {
-      type: undefined,
-      direction: undefined,
+      type: 'stack',
+      direction: 'vertical',
       hidden: false
     },
   }
@@ -44,8 +44,8 @@ export class Node {
       this.layout[this.selectedResponsiveMode].columns = 1
 
     type === 'grid'
-        ? this.layout[this.selectedResponsiveMode].direction = undefined
-        : this.layout[this.selectedResponsiveMode].columns = undefined
+        ? this.layout[this.selectedResponsiveMode].direction = 'vertical'
+        : this.layout[this.selectedResponsiveMode].columns = 1
   }
 
   setLayoutStackDirection(direction: NodeDirection) {

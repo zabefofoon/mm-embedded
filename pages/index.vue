@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import {definePageMeta, onBeforeMount, onBeforeUnmount, ref, watch} from "#imports"
+import {definePageMeta, onBeforeMount, onBeforeUnmount, onMounted, ref, watch} from "#imports"
 import {useScreenStore} from "~/store/screen.store"
 import {useWidgetStore} from "~/store/widget.store"
 import {PageData, usePagesStore} from "~/store/page.store"
@@ -36,11 +36,29 @@ onBeforeMount(() => window.addEventListener('message', listenMessage))
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
 
 const listenMessage = ($event: MessageEvent) => {
-  if ($event.data.type !== 'pageMutation') return
+  if ($event.data.type === 'pageMutation') {
+    const pageData = <PageData>$event.data.data
+    if (pageData?.key !== pageStore.currentPage?.key)
+      pageStore.setPageData(pageData)
+  } else if ($event.data.type === 'command') {
+    if ($event.data.data === 'removeNode')
+      pageStore.removeNode()
+    else if ($event.data.data === 'addChildNode')
+      pageStore.addChildNode()
+    else if ($event.data.data === 'addSiblingNodeDown')
+      pageStore.addSiblingNodeDown()
+    else if ($event.data.data === 'copyNode')
+      pageStore.copyNode()
+    else if ($event.data.data === 'cutNode')
+      pageStore.cutNode()
+    else if ($event.data.data === 'pasteNode')
+      pageStore.pasteNode()
+    else if ($event.data.data === 'undo')
+      pageStore.actionManager.executeUndo()
+    else if ($event.data.data === 'redo')
+      pageStore.actionManager.executeRedo()
 
-  const pageData = <PageData>$event.data.data
-  if (pageData?.key !== pageStore.currentPage?.key)
-    pageStore.setPageData(pageData)
+  }
 }
 
 const initIframe = () => setTimeout(() => {
@@ -80,6 +98,20 @@ watch(() => [
         screenStore.isShowOutline,
         screenStore.isShowHidden))
 
+const listenKeydown = ($event: KeyboardEvent) => {
+  const isCtrl = $event.ctrlKey || $event.metaKey
+  if ($event.code === 'KeyZ' && isCtrl && $event.shiftKey)
+    pageStore.actionManager.executeRedo()
+  else if ($event.code === 'KeyZ' && isCtrl)
+    pageStore.actionManager.executeUndo()
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', listenKeydown)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', listenKeydown)
+})
 </script>
 
 <style scoped>

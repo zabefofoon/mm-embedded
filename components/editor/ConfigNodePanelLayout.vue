@@ -43,6 +43,7 @@
                type="number"
                placeholder="length"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].columns"
+               @keydown.stop
                @change="pageStore.setNodesLayoutGridColumns($event.target.value)"/>
       </li>
       <li class="flex items-center gap-2 | px-3 py-1">
@@ -52,6 +53,7 @@
                class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].gap"
+               @keydown.stop
                @change="pageStore.setNodesLayoutGap($event.target.value)"/>
       </li>
       <hr class="my-2"/>
@@ -62,6 +64,7 @@
                class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].width"
+               @keydown.stop
                @change="pageStore.setNodesLayoutWidth($event.target.value)"/>
       </li>
       <li class="flex items-center gap-2 | px-3 py-1">
@@ -71,6 +74,7 @@
                class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].height"
+               @keydown.stop
                @change="pageStore.setNodesLayoutHeight($event.target.value)"/>
       </li>
       <li class="flex items-center gap-2 | px-3 py-1">
@@ -80,6 +84,7 @@
                class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
                placeholder="px, %, vw"
                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].maxWidth"
+               @keydown.stop
                @change="pageStore.setNodesLayoutMaxWidth($event.target.value)"/>
       </li>
       <hr class="my-2"/>

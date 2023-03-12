@@ -20,8 +20,34 @@ import {storeToRefs} from "pinia"
 import {useScreenStore} from "~/store/screen.store"
 import {Group} from "~/model/Widget"
 
-onBeforeMount(() => window.addEventListener('message', listenMessage))
-onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
+onBeforeMount(() => {
+  window.addEventListener('message', listenMessage)
+  window.addEventListener('keydown', listenKeydown)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('message', listenMessage)
+  window.removeEventListener('keydown', listenKeydown)
+})
+
+const listenKeydown = ($event: KeyboardEvent) => {
+  const isCtrl = $event.ctrlKey || $event.metaKey
+  if ($event.code === 'Delete' || $event.code === 'Backspace')
+    postCommand('removeNode')
+  else if ($event.code === 'Enter' && isCtrl)
+    postCommand('addChildNode')
+  else if ($event.code === 'Enter')
+    postCommand('addSiblingNodeDown')
+  else if ($event.code === 'KeyC')
+    postCommand('copyNode')
+  else if ($event.code === 'KeyX')
+    postCommand('cutNode')
+  else if ($event.code === 'KeyV')
+    postCommand('pasteNode')
+  else if ($event.code === 'KeyZ' && isCtrl && $event.shiftKey)
+    postCommand('redo')
+  else if ($event.code === 'KeyZ' && isCtrl)
+    postCommand('undo')
+}
 
 const listenMessage = ($event: MessageEvent) => {
   if ($event.data.type === 'pagesMutation') {
@@ -38,6 +64,12 @@ const listenMessage = ($event: MessageEvent) => {
     screenStore.toggleShowHidden(isShowHidden)
   }
 }
+
+const postCommand = (command: string) => window.parent
+    ?.postMessage({
+      type: 'command',
+      data: command
+    })
 
 const screenStore = useScreenStore()
 const {isShowHidden} = storeToRefs(screenStore)
