@@ -2,7 +2,8 @@
   <UiStyle>{{ generatedCss }}</UiStyle>
   <div class="flex flex-col | relative | w-full h-screen | overflow-hidden">
     <Header/>
-    <div class="flex | w-full h-full">
+    <div class="flex | w-full h-full"
+         style="max-height: calc(100vh - 80px);">
       <PagesPanel/>
       <main class="w-full h-full | bg-slate-100">
         <slot/>
