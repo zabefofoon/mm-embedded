@@ -2,7 +2,7 @@ import {defineStore} from "pinia"
 import {computed, reactive, ref} from "#imports"
 import {deepClone, generateUniqueId} from "~/util/util"
 import {useWidgetStore} from "~/store/widget.store"
-import {CrossAxis, MainAxis, Node, NodeDirection, NodeLayoutType, ResponsiveMode} from "~/model/Node"
+import {CrossAxis, Direction, MainAxis, Node, NodeDirection, NodeLayoutType, ResponsiveMode} from "~/model/Node"
 import {Item} from "~/model/Widget"
 import {ActionManager} from "~/model/ActionManager"
 import {
@@ -23,7 +23,7 @@ import {
   SetNodesLayoutHeight,
   SetNodesLayoutHidden,
   SetNodesLayoutMainAxis,
-  SetNodesLayoutMaxWidth,
+  SetNodesLayoutMaxWidth, SetNodesLayoutPadding,
   SetNodesLayoutStackDirection,
   SetNodesLayoutType,
   SetNodesLayoutWidth,
@@ -153,6 +153,8 @@ export const usePagesStore = defineStore('pages', () => {
 
       const setNodesLayoutHidden = (hidden: boolean) => actionManager.execute(SetNodesLayoutHidden.of(hidden))
 
+      const setNodesLayoutPadding = (direction: Direction, value: string) => actionManager.execute(SetNodesLayoutPadding.of(direction, value))
+
       const setWidget = (widget: Item) => actionManager.execute(SetWidget.of(widget))
 
       const removeWidget = () => actionManager.execute(RemoveWidget.of())
@@ -265,6 +267,7 @@ export const usePagesStore = defineStore('pages', () => {
         setNodesLayoutMainAxis,
         setNodesLayoutCrossAxis,
         setNodesLayoutHidden,
+        setNodesLayoutPadding,
 
         setWidget,
         removeWidget,

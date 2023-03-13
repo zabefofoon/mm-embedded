@@ -124,6 +124,50 @@
           hidden
         </button>
       </li>
+      <hr class="my-2"/>
+      <li class="flex items-start gap-2 | px-3 py-1">
+        <label for="crossAxis"
+               class="w-20 | text-xs">padding</label>
+        <div class="w-full">
+          <div class="flex gap-1">
+            <div class="flex gap-2 | w-1/2">
+              <label for="padding-left"><i class="icon icon-padding-left"></i></label>
+              <input id="padding-left"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].paddingLeft"
+                     @change="pageStore.setNodesLayoutPadding('left', $event.target.value)"/>
+            </div>
+            <div class="flex gap-2 | w-1/2">
+              <label for="padding-right"><i class="icon icon-padding-right"></i></label>
+              <input id="padding-right"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].paddingRight"
+                     @change="pageStore.setNodesLayoutPadding('right', $event.target.value)"/>
+            </div>
+          </div>
+          <div class="flex gap-1">
+            <div class="flex gap-2 | w-1/2">
+              <label for="padding-top"><i class="icon icon-padding-top"></i></label>
+              <input id="padding-top"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].paddingTop"
+                     @change="pageStore.setNodesLayoutPadding('top', $event.target.value)"/>
+            </div>
+            <div class="flex gap-2 | w-1/2">
+              <label for="padding-bottom"><i class="icon icon-padding-bottom"></i></label>
+              <input id="padding-bottom"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].paddingBottom"
+                     @change="pageStore.setNodesLayoutPadding('bottom', $event.target.value)"/>
+            </div>
+          </div>
+        </div>
+
+      </li>
     </ul>
   </div>
 </template>

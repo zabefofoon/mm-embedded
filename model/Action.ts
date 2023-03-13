@@ -1,5 +1,15 @@
 import {usePagesStore} from "~/store/page.store"
-import {CrossAxis, MainAxis, Marker, Node, NodeDirection, NodeLayoutType, ResponsiveMode} from "~/model/Node"
+import {
+  CrossAxis,
+  Direction,
+  MainAxis,
+  Marker,
+  Node,
+  NodeDirection,
+  NodeLayout,
+  NodeLayoutType,
+  ResponsiveMode
+} from "~/model/Node"
 import {deepClone, generateUniqueId} from "~/util/util"
 import {useScreenStore} from "~/store/screen.store"
 import {Item} from "~/model/Widget"
@@ -887,6 +897,58 @@ export class SetNodesLayoutHidden extends AbstractAction {
 
   static of(hidden: boolean): SetNodesLayoutHidden {
     return new SetNodesLayoutHidden(hidden)
+  }
+}
+
+export class SetNodesLayoutPadding extends AbstractAction {
+  actionName = 'SetNodesLayoutHidden'
+  selectedNodeId?: string
+  savedResponsiveMode?: ResponsiveMode
+  savedValue?: string
+
+  constructor(private direction: Direction,
+              private value: string) {
+    super()
+  }
+
+  do(isRedo?: boolean): void {
+    const node = isRedo
+        ? <Node>this.pageStore.findNode(this.selectedNodeId)
+        : <Node>this.pageStore.selectedNodes[0]
+
+    this.selectedNodeId = node.id
+    this.savedResponsiveMode = node.selectedResponsiveMode
+    this.savedValue = node.layout[node.selectedResponsiveMode][this.directionToField(this.direction)]
+
+    node.setPadding(this.direction, this.value)
+
+    this.pageStore.currentPage.key++
+  }
+
+  undo(): void {
+    const found = <Node>this.pageStore.findNode(this.selectedNodeId)
+    found.selectResponsiveMode(<ResponsiveMode>this.savedResponsiveMode)
+    found.setPadding(this.direction, this.savedValue)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  redo(): void {
+    this.do(true)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  private directionToField(direction: Direction): 'paddingLeft' | 'paddingRight' | 'paddingTop' | 'paddingBottom'{
+    return direction === 'left'
+        ? 'paddingLeft'
+        : direction === 'right'
+            ? 'paddingRight'
+            : direction === 'top'
+                ? 'paddingTop'
+                : 'paddingBottom'
+  }
+
+  static of(direction: Direction, value: string): SetNodesLayoutPadding {
+    return new SetNodesLayoutPadding(direction, value)
   }
 }
 

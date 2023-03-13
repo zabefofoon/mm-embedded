@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-96 | border-l | flex flex-col gap-3">
+  <aside class="w-96 h-full | pb-20 | border-l overflow-scroll | flex flex-col gap-3">
     <ConfigNodePanelAdd/>
     <ConfigNodePanelLayout/>
     <ConfigNodePanelWidget/>

@@ -98,6 +98,17 @@ export class Node {
     this.layout[this.selectedResponsiveMode].hidden = hidden
   }
 
+  setPadding(direction: Direction, value?: string) {
+    if (direction === 'left')
+      this.layout[this.selectedResponsiveMode].paddingLeft = value
+    else if (direction === 'top')
+      this.layout[this.selectedResponsiveMode].paddingTop = value
+    else if (direction === 'right')
+      this.layout[this.selectedResponsiveMode].paddingRight = value
+    else if (direction === 'bottom')
+      this.layout[this.selectedResponsiveMode].paddingBottom = value
+  }
+
   static makeNode(node: Node) {
     return Object.assign(new Node(), node)
   }
@@ -133,6 +144,10 @@ export type NodeLayout = {
   mainAxis?: MainAxis
   crossAxis?: CrossAxis
   hidden: boolean
+  paddingLeft?: string
+  paddingTop?: string
+  paddingRight?: string
+  paddingBottom?: string
 }
 
 export type ResponsiveNodeLayout = {
@@ -142,3 +157,4 @@ export type ResponsiveNodeLayout = {
 
 export type ResponsiveMode = 'small' | 'large'
 
+export type Direction = 'left' | 'top' | 'right' | 'bottom'

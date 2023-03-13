@@ -4,8 +4,7 @@
        @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id, $event) :  pageStore.selectNodeOne(node.id)">
     <div v-if="screenStore.isShowMarker && node.marker"
          class="marker | absolute top-0 right-0 | w-3 h-3 | bg-orange-500">
-      <article
-          class="w-80 h-60 | absolute top-1 right-1 | bg-white border shadow-md">
+      <article class="w-80 h-60 | absolute top-1 z-10 | bg-white border shadow-md">
         <textarea v-model="node.marker.text"
                   class="w-full h-full | p-2 | resize-none text-slate-500 text-sm"
                   placeholder="text"
@@ -27,7 +26,7 @@
 
 <script setup lang="ts">
 import {usePagesStore} from "~/store/page.store"
-import {computed} from "#imports"
+import {computed, watch} from "#imports"
 import {useScreenStore} from "~/store/screen.store"
 import {Node as NodeType, ResponsiveMode} from "~/model/Node"
 
@@ -80,8 +79,30 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
 
       if (props.node.layout[current].hidden !== undefined)
         result = result + `${current}:hidden-${props.node.layout[current].hidden || false} `
+
+      if (props.node.layout[current].paddingLeft !== undefined)
+        result = result + `${current}:padding-left-${props.node.layout[current].paddingLeft} `
+      if (props.node.layout[current].paddingTop !== undefined)
+        result = result + `${current}:padding-top-${props.node.layout[current].paddingTop} `
+      if (props.node.layout[current].paddingRight !== undefined)
+        result = result + `${current}:padding-right-${props.node.layout[current].paddingRight} `
+      if (props.node.layout[current].paddingBottom !== undefined)
+        result = result + `${current}:padding-bottom-${props.node.layout[current].paddingBottom} `
       return acc + result
     }, ''))
+
+const adjustMarkerBody = () => setTimeout(() => {
+  [...document.body.getElementsByClassName('marker')]
+      .forEach((element) => {
+        element.getBoundingClientRect().left > document.body.clientWidth / 2
+            ? element.getElementsByTagName('article')[0].classList.add('right-1')
+            : element.getElementsByTagName('article')[0].classList.add('left-1')
+      })
+})
+
+watch(() => pageStore.currentPage.nodes,
+    () => adjustMarkerBody(),
+    {immediate: true, deep: true})
 
 </script>
 

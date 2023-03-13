@@ -1,6 +1,5 @@
 import {Group} from "~/model/Widget"
-import {ResponsiveMode} from "~/model/Node"
-import {Node} from "~/model/Node"
+import {Direction, Node, ResponsiveMode} from "~/model/Node"
 
 const getScreenSize = (responsiveMode: ResponsiveMode) => responsiveMode === 'small' ? '0px' : '768px'
 
@@ -144,6 +143,14 @@ const generateLayoutCss = (nodes: Node[]) => {
       + generateHeight(nodes, 'large')
       + generateMaxWidth(nodes, 'small')
       + generateMaxWidth(nodes, 'large')
+      + generatePadding(nodes, 'small', 'left')
+      + generatePadding(nodes, 'small', 'top')
+      + generatePadding(nodes, 'small', 'right')
+      + generatePadding(nodes, 'small', 'bottom')
+      + generatePadding(nodes, 'large', 'left')
+      + generatePadding(nodes, 'large', 'top')
+      + generatePadding(nodes, 'large', 'right')
+      + generatePadding(nodes, 'large', 'bottom')
 }
 
 const generateWidgetCss = (groups: Group[]) => {
@@ -286,3 +293,42 @@ const generateMaxWidth = (nodes: Node[],
 `
   }, '')
 }
+
+const generatePadding = (nodes: Node[],
+                         responsiveMode: ResponsiveMode,
+                         direction: Direction) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach((node) => {
+      const value = <string | undefined>node.layout[responsiveMode][directionToField(direction)]
+      if (value && !result.includes(value))
+        result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    const convertedCurrent = current.replace('%', '\\%')
+
+    return acc + `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:${flatCapital(directionToField(direction))}-${convertedCurrent} {
+    ${flatCapital(directionToField(direction))}: ${current};
+  }
+}
+`
+  }, '')
+}
+
+const directionToField = (direction: Direction) => direction === 'left'
+    ? 'paddingLeft'
+    : direction === 'right'
+        ? 'paddingRight'
+        : direction === 'top'
+            ? 'paddingTop'
+            : 'paddingBottom'
+
+const flatCapital = (str: string) => str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
