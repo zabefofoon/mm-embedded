@@ -4,7 +4,7 @@
        @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id, $event) :  pageStore.selectNodeOne(node.id)">
     <div v-if="screenStore.isShowMarker && node.marker"
          class="marker | absolute top-0 right-0 | w-3 h-3 | bg-orange-500">
-      <article class="w-80 h-60 | absolute top-1 z-10 | bg-white border shadow-md">
+      <article class="w-80 h-60 | absolute z-10 | bg-white border shadow-md">
         <textarea v-model="node.marker.text"
                   class="w-full h-full | p-2 | resize-none text-slate-500 text-sm"
                   placeholder="text"
@@ -97,6 +97,10 @@ const adjustMarkerBody = () => setTimeout(() => {
         element.getBoundingClientRect().left > document.body.clientWidth / 2
             ? element.getElementsByTagName('article')[0].classList.add('right-1')
             : element.getElementsByTagName('article')[0].classList.add('left-1')
+
+        element.getBoundingClientRect().top > document.body.clientHeight / 2
+            ? element.getElementsByTagName('article')[0].classList.add('bottom-1')
+            : element.getElementsByTagName('article')[0].classList.add('top-1')
       })
 })
 
