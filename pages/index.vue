@@ -78,10 +78,11 @@ const postPages = () => canvas.value
 
 const postScreenData = (isShowSpacing: boolean,
                         isShowOutline: boolean,
-                        isShowHidden: boolean) => {
+                        isShowHidden: boolean,
+                        isShowMarker: boolean) => {
   canvas.value?.contentWindow?.postMessage({
     type: 'screenMutation',
-    data: deepClone({isShowSpacing, isShowOutline, isShowHidden})
+    data: deepClone({isShowSpacing, isShowOutline, isShowHidden, isShowMarker})
   })
 }
 
@@ -92,11 +93,13 @@ watch(() => pageStore.currentPage,
 watch(() => [
       screenStore.isShowSpacing,
       screenStore.isShowOutline,
-      screenStore.isShowHidden
+      screenStore.isShowHidden,
+      screenStore.isShowMarker
     ],
     () => postScreenData(screenStore.isShowSpacing,
         screenStore.isShowOutline,
-        screenStore.isShowHidden))
+        screenStore.isShowHidden,
+        screenStore.isShowMarker))
 
 const listenKeydown = ($event: KeyboardEvent) => {
   const isCtrl = $event.ctrlKey || $event.metaKey

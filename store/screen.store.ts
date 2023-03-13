@@ -29,6 +29,10 @@ export const useScreenStore = defineStore('screen', () => {
     isShowHidden.value = value !== undefined ? value : !isShowHidden.value
   }
 
+  const isShowMarker = ref(true)
+  const toggleMarker = (value?: boolean) => {
+    isShowMarker.value = value !== undefined ? value : !isShowMarker.value
+  }
   const screenSize = ref<ScreenSize>({
     width: '100%',
     height: '100%'
@@ -47,6 +51,9 @@ export const useScreenStore = defineStore('screen', () => {
 
     isShowHidden,
     toggleShowHidden,
+
+    isShowMarker,
+    toggleMarker,
 
     screenMode,
     setScreenMode,

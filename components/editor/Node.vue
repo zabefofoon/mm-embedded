@@ -2,6 +2,16 @@
   <div class="node | w-full min-h-8 | relative | border border-dashed"
        :class="[selectedClass, layoutClass, spacingClass, outlineClass]"
        @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id, $event) :  pageStore.selectNodeOne(node.id)">
+    <div v-if="screenStore.isShowMarker && node.marker"
+         class="marker | absolute top-0 right-0 | w-3 h-3 | bg-orange-500">
+      <article
+          class="w-80 h-60 | absolute top-1 right-1 | bg-white border shadow-md">
+        <textarea v-model="node.marker.text"
+                  class="w-full h-full | p-2 | resize-none text-slate-500 text-sm"
+                  placeholder="text"
+                  @keydown.stop></textarea>
+      </article>
+    </div>
     <div v-if="node.widget"
          v-html="node.widget.html"
          class="w-full"></div>
@@ -76,5 +86,13 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
 </script>
 
 <style scoped lang="scss">
+.marker {
+  &:hover article {
+    display: block;
+  }
 
+  article {
+    display: none;
+  }
+}
 </style>

@@ -7,12 +7,15 @@ import {Item} from "~/model/Widget"
 import {ActionManager} from "~/model/ActionManager"
 import {
   AddChildNode,
+  AddMarker,
   AddParentNode,
   AddSiblingNodeDown,
   AddSiblingNodeUp,
   PasteNode,
+  RemoveMarker,
   RemoveNode,
-  RemoveParentNode, RemoveWidget,
+  RemoveParentNode,
+  RemoveWidget,
   SelectResponsiveMode,
   SetNodesLayoutCrossAxis,
   SetNodesLayoutGap,
@@ -196,6 +199,10 @@ export const usePagesStore = defineStore('pages', () => {
         }
       }
 
+      const addNodeMarker = () => actionManager.execute(AddMarker.of())
+
+      const removeNodeMarker = () => actionManager.execute((RemoveMarker.of()))
+
       const selectNodeMany = (id: string) => {
         currentPage.value.selectedIds.push(id)
         currentPage.value.key++
@@ -273,6 +280,9 @@ export const usePagesStore = defineStore('pages', () => {
         copyNode,
         cutNode,
         pasteNode,
+
+        addNodeMarker,
+        removeNodeMarker,
       }
     }
 )

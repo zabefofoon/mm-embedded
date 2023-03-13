@@ -1,6 +1,11 @@
 import {generateUniqueId} from "~/util/util"
 import {Item} from "~/model/Widget"
 
+export type Marker = {
+  text: string
+  date: Date
+}
+
 export class Node {
   id = generateUniqueId()
   nodes: Node[] = []
@@ -21,8 +26,17 @@ export class Node {
   }
 
   widget?: Item
+  marker?: Marker
 
   constructor(public parentId?: string) {
+  }
+
+  addMarker(marker?: Marker) {
+    this.marker = marker ? marker : {text: '', date: new Date()}
+  }
+
+  removeMarker() {
+    this.marker = undefined
   }
 
   setWidget(widget: Item) {

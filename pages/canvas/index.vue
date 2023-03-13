@@ -58,10 +58,11 @@ const listenMessage = ($event: MessageEvent) => {
     const groups = <Group[]>$event.data.data
     widgetStore.setWidgetGroups(groups)
   } else if ($event.data.type === 'screenMutation') {
-    const {isShowSpacing, isShowOutline, isShowHidden} = <{ [key in string]: boolean }>$event.data.data
+    const {isShowSpacing, isShowOutline, isShowHidden, isShowMarker} = <{ [key in string]: boolean }>$event.data.data
     screenStore.toggleShowSpacing(isShowSpacing)
     screenStore.toggleShowOutline(isShowOutline)
     screenStore.toggleShowHidden(isShowHidden)
+    screenStore.toggleMarker(isShowMarker)
   }
 }
 

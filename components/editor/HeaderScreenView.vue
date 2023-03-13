@@ -9,6 +9,9 @@
     <IconButton icon="icon-hidden"
                 :active="screenStore.isShowHidden"
                 @click="screenStore.toggleShowHidden()"/>
+    <IconButton icon="icon-marker"
+                :active="screenStore.isShowMarker"
+                @click="screenStore.toggleMarker()"/>
   </div>
 </template>
 

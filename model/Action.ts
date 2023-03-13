@@ -1,5 +1,5 @@
 import {usePagesStore} from "~/store/page.store"
-import {CrossAxis, MainAxis, Node, NodeDirection, NodeLayoutType, ResponsiveMode} from "~/model/Node"
+import {CrossAxis, MainAxis, Marker, Node, NodeDirection, NodeLayoutType, ResponsiveMode} from "~/model/Node"
 import {deepClone, generateUniqueId} from "~/util/util"
 import {useScreenStore} from "~/store/screen.store"
 import {Item} from "~/model/Widget"
@@ -39,10 +39,11 @@ export class AddSiblingNodeUp extends AbstractAction {
     super()
   }
 
-  do(): void {
+  do(isRedo?: boolean): void {
     this.selectedIds = this.pageStore.currentPage.selectedIds
     if (this.pageStore.currentPage.selectedIds.length === 0) {
       const createdNode = new Node()
+      createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
       this.pageStore.currentPage.nodes.push(createdNode)
     } else {
@@ -54,6 +55,7 @@ export class AddSiblingNodeUp extends AbstractAction {
           : this.pageStore.currentPage.nodes.findIndex((item) => item.id === found?.id)
 
       const createdNode = parent ? new Node(parent.id) : new Node()
+      createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
 
       parent
@@ -73,8 +75,11 @@ export class AddSiblingNodeUp extends AbstractAction {
           ? parent.nodes = parent.nodes.filter((node) => node.id !== id)
           : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== id)
     })
-    this.createdNodeIds = []
     this.pageStore.selectNodeOne(this.selectedIds[0])
+  }
+
+  redo(): void {
+    this.do(true)
   }
 
   static of(): AddSiblingNodeUp {
@@ -91,10 +96,11 @@ export class AddSiblingNodeDown extends AbstractAction {
     super()
   }
 
-  do(): void {
+  do(isRedo?: boolean): void {
     this.selectedIds = this.pageStore.currentPage.selectedIds
     if (this.pageStore.currentPage.selectedIds.length === 0) {
       const createdNode = new Node()
+      createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
       this.pageStore.currentPage.nodes.push(createdNode)
     } else {
@@ -106,6 +112,7 @@ export class AddSiblingNodeDown extends AbstractAction {
           : this.pageStore.currentPage.nodes.findIndex((item) => item.id === found?.id)
 
       const createdNode = parent ? new Node(parent.id) : new Node()
+      createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
 
       parent
@@ -125,8 +132,11 @@ export class AddSiblingNodeDown extends AbstractAction {
           ? parent.nodes = parent.nodes.filter((node) => node.id !== id)
           : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== id)
     })
-    this.createdNodeIds = []
     this.pageStore.selectNodeOne(this.selectedIds[0])
+  }
+
+  redo(): void {
+    this.do(true)
   }
 
   static of(): AddSiblingNodeDown {
@@ -143,11 +153,12 @@ export class AddChildNode extends AbstractAction {
     super()
   }
 
-  do(): void {
+  do(isRedo?: boolean): void {
     this.selectedIds = this.pageStore.currentPage.selectedIds
     this.pageStore.currentPage.selectedIds.length === 0
         ? [true].forEach(() => {
           const createdNode = new Node()
+          createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
           this.createdNodeIds.push(createdNode.id)
           this.pageStore.currentPage.nodes.push(createdNode)
         })
@@ -156,6 +167,7 @@ export class AddChildNode extends AbstractAction {
               const found = this.pageStore.findNode(selectedId)
               if (found) {
                 const createdNode = new Node(found.id)
+                createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
                 this.createdNodeIds.push(createdNode.id)
                 found.nodes.push(createdNode)
               }
@@ -173,8 +185,11 @@ export class AddChildNode extends AbstractAction {
           ? parent.nodes = parent.nodes.filter((node) => node.id !== id)
           : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== id)
     })
-    this.createdNodeIds = []
     this.pageStore.selectNodeOne(this.selectedIds[0])
+  }
+
+  redo(): void {
+    this.do(true)
   }
 
   static of(): AddChildNode {
@@ -968,5 +983,65 @@ export class RemoveWidget extends AbstractAction {
 
   static of(): RemoveWidget {
     return new RemoveWidget()
+  }
+}
+
+export class AddMarker extends AbstractAction {
+  actionName = 'AddMarker'
+  selectedNodeId?: string
+  savedMarker?: Marker
+
+  constructor() {
+    super()
+  }
+
+  do(isRedo?: boolean): void {
+    this.selectedNodeId = this.pageStore.getSelectedNodeOne()?.id
+    this.pageStore.getSelectedNodeOne()?.addMarker()
+  }
+
+  undo(): void {
+    this.savedMarker = this.pageStore.findNode(this.selectedNodeId)?.marker
+    this.pageStore.findNode(this.selectedNodeId)?.removeMarker()
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  redo(): void {
+    this.pageStore.findNode(this.selectedNodeId)?.addMarker(this.savedMarker)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  static of(): AddMarker {
+    return new AddMarker()
+  }
+}
+
+export class RemoveMarker extends AbstractAction {
+  actionName = 'AddMarker'
+  selectedNodeId?: string
+  savedMarker?: Marker
+
+  constructor() {
+    super()
+  }
+
+  do(isRedo?: boolean): void {
+    this.selectedNodeId = this.pageStore.getSelectedNodeOne()?.id
+    this.savedMarker = this.pageStore.getSelectedNodeOne()?.marker
+    this.pageStore.getSelectedNodeOne()?.removeMarker()
+  }
+
+  undo(): void {
+    this.pageStore.findNode(this.selectedNodeId)?.addMarker(this.savedMarker)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  redo(): void {
+    this.pageStore.findNode(this.selectedNodeId)?.removeMarker()
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  static of(): RemoveMarker {
+    return new RemoveMarker()
   }
 }
