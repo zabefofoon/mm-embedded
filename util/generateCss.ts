@@ -63,6 +63,25 @@ const generateCoreCss = (isShowHidden: boolean) => {
   .small\\:crossAxis-end {
       align-items: end;
   }
+  
+  .small\\:position-relative {
+      position: relative;
+  }
+  
+  .small\\:position-absolute {
+      position: absolute;
+      z-index: 1;
+  }
+  
+  .small\\:position-sticky {
+      position: sticky;
+      z-index: 1;
+  }
+  
+  .small\\:position-fixed {
+      position: fixed;
+      z-index: 1;
+  }
 }
 
 @media (min-width:0) and (max-width:767px) {
@@ -128,6 +147,22 @@ const generateCoreCss = (isShowHidden: boolean) => {
   .large\\:hidden-false {
       ${isShowHidden ? 'opacity: 1;' : ''}
   }
+  
+  .large\\:position-relative {
+      position: relative;
+  }
+  
+  .large\\:position-absolute {
+      position: absolute;
+  }
+  
+  .large\\:position-sticky {
+      position: sticky;
+  }
+  
+  .large\\:position-fixed {
+      position: fixed;
+  }
 }
 `
 }
@@ -151,6 +186,14 @@ const generateLayoutCss = (nodes: Node[]) => {
       + generatePadding(nodes, 'large', 'top')
       + generatePadding(nodes, 'large', 'right')
       + generatePadding(nodes, 'large', 'bottom')
+      + generateInset(nodes, 'small', 'left')
+      + generateInset(nodes, 'small', 'top')
+      + generateInset(nodes, 'small', 'right')
+      + generateInset(nodes, 'small', 'bottom')
+      + generateInset(nodes, 'large', 'left')
+      + generateInset(nodes, 'large', 'top')
+      + generateInset(nodes, 'large', 'right')
+      + generateInset(nodes, 'large', 'bottom')
 }
 
 const generateWidgetCss = (groups: Group[]) => {
@@ -301,7 +344,7 @@ const generatePadding = (nodes: Node[],
 
   const recursive = (nodes: Node[]) => {
     nodes?.forEach((node) => {
-      const value = <string | undefined>node.layout[responsiveMode][directionToField(direction)]
+      const value = <string | undefined>node.layout[responsiveMode][directionToPaddingField(direction)]
       if (value && !result.includes(value))
         result.push(value)
       recursive(node.nodes)
@@ -315,15 +358,45 @@ const generatePadding = (nodes: Node[],
 
     return acc + `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
-  .${responsiveMode}\\:${flatCapital(directionToField(direction))}-${convertedCurrent} {
-    ${flatCapital(directionToField(direction))}: ${current};
+  .${responsiveMode}\\:${flatCapital(directionToPaddingField(direction))}-${convertedCurrent} {
+    ${flatCapital(directionToPaddingField(direction))}: ${current};
   }
 }
 `
   }, '')
 }
 
-const directionToField = (direction: Direction) => direction === 'left'
+const generateInset = (nodes: Node[],
+                       responsiveMode: ResponsiveMode,
+                       direction: Direction) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach((node) => {
+      const value = <string | undefined>node.layout[responsiveMode][direction]
+      if (value && !result.includes(value))
+        result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    const convertedCurrent = current.replace('%', '\\%')
+
+    return acc + `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:${direction}-${convertedCurrent} {
+    ${direction}: ${current};
+  }
+}
+`
+  }, '')
+}
+
+
+const directionToPaddingField = (direction: Direction) => direction === 'left'
     ? 'paddingLeft'
     : direction === 'right'
         ? 'paddingRight'

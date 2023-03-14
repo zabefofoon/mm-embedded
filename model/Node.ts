@@ -94,6 +94,10 @@ export class Node {
     this.layout[this.selectedResponsiveMode].crossAxis = crossAxis
   }
 
+  setPosition(position: Position) {
+    this.layout[this.selectedResponsiveMode].position = position
+  }
+
   setHidden(hidden: boolean) {
     this.layout[this.selectedResponsiveMode].hidden = hidden
   }
@@ -107,6 +111,17 @@ export class Node {
       this.layout[this.selectedResponsiveMode].paddingRight = value
     else if (direction === 'bottom')
       this.layout[this.selectedResponsiveMode].paddingBottom = value
+  }
+
+  setInset(direction: Direction, value?: string) {
+    if (direction === 'left')
+      this.layout[this.selectedResponsiveMode].left = value
+    else if (direction === 'top')
+      this.layout[this.selectedResponsiveMode].top = value
+    else if (direction === 'right')
+      this.layout[this.selectedResponsiveMode].right = value
+    else if (direction === 'bottom')
+      this.layout[this.selectedResponsiveMode].bottom = value
   }
 
   static makeNode(node: Node) {
@@ -148,7 +163,14 @@ export type NodeLayout = {
   paddingTop?: string
   paddingRight?: string
   paddingBottom?: string
+  position?: Position
+  top?: string
+  left?: string
+  right?: string
+  bottom?: string
 }
+
+export type Position = 'relative' | 'absolute' | 'sticky' | 'fixed'
 
 export type ResponsiveNodeLayout = {
   small: NodeLayout

@@ -125,8 +125,65 @@
         </button>
       </li>
       <hr class="my-2"/>
+      <li class="flex items-center gap-2 | px-3 py-1">
+        <label for="position"
+               class="w-20 | text-xs">position</label>
+        <select id="position"
+                class="w-full | text-sm border border-white hover:border-orange-500"
+                :value="pageStore.selectedNodes[0].layout[pageStore.selectedNodes[0].selectedResponsiveMode].position"
+                @change="pageStore.setNodesLayoutPosition($event.target.value)">
+          <option>relative</option>
+          <option>absolute</option>
+          <option>sticky</option>
+          <option>fixed</option>
+          <option v-show="false" :value="undefined" label="relative"></option>
+        </select>
+      </li>
       <li class="flex items-start gap-2 | px-3 py-1">
-        <label for="crossAxis"
+        <label for="inset"
+               class="w-20 | text-xs">inset</label>
+        <div class="w-full">
+          <div class="flex gap-1">
+            <div class="flex gap-2 | w-1/2">
+              <label for="left"><i class="icon icon-padding-left"></i></label>
+              <input id="left"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].left"
+                     @change="pageStore.setNodesLayoutInset('left', $event.target.value)"/>
+            </div>
+            <div class="flex gap-2 | w-1/2">
+              <label for="right"><i class="icon icon-padding-right"></i></label>
+              <input id="right"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].right"
+                     @change="pageStore.setNodesLayoutInset('right', $event.target.value)"/>
+            </div>
+          </div>
+          <div class="flex gap-1">
+            <div class="flex gap-2 | w-1/2">
+              <label for="top"><i class="icon icon-padding-top"></i></label>
+              <input id="top"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].top"
+                     @change="pageStore.setNodesLayoutInset('top', $event.target.value)"/>
+            </div>
+            <div class="flex gap-2 | w-1/2">
+              <label for="bottom"><i class="icon icon-padding-bottom"></i></label>
+              <input id="bottom"
+                     class="w-full | text-sm border border-white hover:border-orange-500"
+                     placeholder="px"
+                     :value="pageStore.getSelectedNodeOne()?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].bottom"
+                     @change="pageStore.setNodesLayoutInset('bottom', $event.target.value)"/>
+            </div>
+          </div>
+        </div>
+      </li>
+      <hr class="my-2"/>
+      <li class="flex items-start gap-2 | px-3 py-1">
+        <label for="padding-left"
                class="w-20 | text-xs">padding</label>
         <div class="w-full">
           <div class="flex gap-1">
@@ -166,7 +223,6 @@
             </div>
           </div>
         </div>
-
       </li>
     </ul>
   </div>

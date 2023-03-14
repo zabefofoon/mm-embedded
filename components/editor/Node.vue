@@ -1,5 +1,5 @@
 <template>
-  <div class="node | w-full min-h-8 | relative | border border-dashed"
+  <div class="node | w-full min-h-8 | border border-dashed"
        :class="[selectedClass, layoutClass, spacingClass, outlineClass]"
        @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id, $event) :  pageStore.selectNodeOne(node.id)">
     <div v-if="screenStore.isShowMarker && node.marker"
@@ -77,6 +77,12 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
       else
         result = result + `${current}:crossAxis-start `
 
+      if (props.node.layout[current].position !== undefined)
+        result = result + `${current}:position-${props.node.layout[current].position} `
+      else
+        result = result + `${current}:position-relative `
+
+
       if (props.node.layout[current].hidden !== undefined)
         result = result + `${current}:hidden-${props.node.layout[current].hidden || false} `
 
@@ -88,6 +94,16 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
         result = result + `${current}:padding-right-${props.node.layout[current].paddingRight} `
       if (props.node.layout[current].paddingBottom !== undefined)
         result = result + `${current}:padding-bottom-${props.node.layout[current].paddingBottom} `
+
+      if (props.node.layout[current].left !== undefined)
+        result = result + `${current}:left-${props.node.layout[current].left} `
+      if (props.node.layout[current].top !== undefined)
+        result = result + `${current}:top-${props.node.layout[current].top} `
+      if (props.node.layout[current].right !== undefined)
+        result = result + `${current}:right-${props.node.layout[current].right} `
+      if (props.node.layout[current].bottom !== undefined)
+        result = result + `${current}:bottom-${props.node.layout[current].bottom} `
+
       return acc + result
     }, ''))
 

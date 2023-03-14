@@ -7,7 +7,7 @@ import {
   Node,
   NodeDirection,
   NodeLayout,
-  NodeLayoutType,
+  NodeLayoutType, Position,
   ResponsiveMode
 } from "~/model/Node"
 import {deepClone, generateUniqueId} from "~/util/util"
@@ -859,6 +859,47 @@ export class SetNodesLayoutCrossAxis extends AbstractAction {
   }
 }
 
+export class SetNodesLayoutPosition extends AbstractAction {
+  actionName = 'SetNodesLayoutPosition'
+  selectedNodeId?: string
+  savedResponsiveMode?: ResponsiveMode
+  savedPosition?: CrossAxis
+
+  constructor(private position: Position) {
+    super()
+  }
+
+  do(isRedo?: boolean): void {
+    const node = isRedo
+        ? <Node>this.pageStore.findNode(this.selectedNodeId)
+        : <Node>this.pageStore.selectedNodes[0]
+
+    this.selectedNodeId = node.id
+    this.savedResponsiveMode = node.selectedResponsiveMode
+    this.savedPosition = node.layout[node.selectedResponsiveMode].crossAxis
+
+    node.setPosition(this.position)
+
+    this.pageStore.currentPage.key++
+  }
+
+  undo(): void {
+    const found = <Node>this.pageStore.findNode(this.selectedNodeId)
+    found.selectResponsiveMode(<ResponsiveMode>this.savedResponsiveMode)
+    found.setPosition(<Position>this.savedPosition)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  redo(): void {
+    this.do(true)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  static of(position: Position): SetNodesLayoutPosition {
+    return new SetNodesLayoutPosition(position)
+  }
+}
+
 export class SetNodesLayoutHidden extends AbstractAction {
   actionName = 'SetNodesLayoutHidden'
   selectedNodeId?: string
@@ -949,6 +990,58 @@ export class SetNodesLayoutPadding extends AbstractAction {
 
   static of(direction: Direction, value: string): SetNodesLayoutPadding {
     return new SetNodesLayoutPadding(direction, value)
+  }
+}
+
+export class SetNodesLayoutInset extends AbstractAction {
+  actionName = 'SetNodesLayoutInset'
+  selectedNodeId?: string
+  savedResponsiveMode?: ResponsiveMode
+  savedValue?: string
+
+  constructor(private direction: Direction,
+              private value: string) {
+    super()
+  }
+
+  do(isRedo?: boolean): void {
+    const node = isRedo
+        ? <Node>this.pageStore.findNode(this.selectedNodeId)
+        : <Node>this.pageStore.selectedNodes[0]
+
+    this.selectedNodeId = node.id
+    this.savedResponsiveMode = node.selectedResponsiveMode
+    this.savedValue = node.layout[node.selectedResponsiveMode][this.directionToField(this.direction)]
+
+    node.setInset(this.direction, this.value)
+
+    this.pageStore.currentPage.key++
+  }
+
+  undo(): void {
+    const found = <Node>this.pageStore.findNode(this.selectedNodeId)
+    found.selectResponsiveMode(<ResponsiveMode>this.savedResponsiveMode)
+    found.setInset(this.direction, this.savedValue)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  redo(): void {
+    this.do(true)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  private directionToField(direction: Direction): 'paddingLeft' | 'paddingRight' | 'paddingTop' | 'paddingBottom'{
+    return direction === 'left'
+        ? 'paddingLeft'
+        : direction === 'right'
+            ? 'paddingRight'
+            : direction === 'top'
+                ? 'paddingTop'
+                : 'paddingBottom'
+  }
+
+  static of(direction: Direction, value: string): SetNodesLayoutInset {
+    return new SetNodesLayoutInset(direction, value)
   }
 }
 
