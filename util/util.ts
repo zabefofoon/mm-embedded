@@ -8,6 +8,6 @@ export const generateUniqueId = (): string => new ShortUniqueId({
   dictionary: "alpha"
 })()
 
-const removeSpacing = (str: string) => str
+export const removeSpacing = (str: string) => str
     .replace(/\n|\r|\t|\s\s+/gi, '')
     .replace(/>\s+</gi, '><')

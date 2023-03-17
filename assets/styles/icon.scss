@@ -220,3 +220,21 @@
   -webkit-mask-image: url($src);
   mask-image: url($src);
 }
+
+.icon-download {
+  $src: 'https://api.iconify.design/ic/baseline-save-alt.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-html {
+  $src: 'https://api.iconify.design/material-symbols/html.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-css {
+  $src: 'https://api.iconify.design/material-symbols/css.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
