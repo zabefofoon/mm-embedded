@@ -48,7 +48,7 @@
                 @click="pageStore.removeNode()">remove
         </button>
       </li>
-      <li v-if="pageStore.currentPage?.selectedIds.length === 1 && pageStore.findNode(pageStore.getSelectedNodeOne()?.parentId)?.nodes.length < 2"
+      <li v-if="isShowRemoveParent"
           class="border border-white hover:border-orange-500">
         <button class="w-full | px-3 py-1 | text-sm text-left"
                 @click="pageStore.removeParentNode()">remove parent
@@ -80,8 +80,12 @@
 
 <script setup lang="ts">
 import {usePagesStore} from "../store/page.store"
+import {computed} from "vue"
 
 const pageStore = usePagesStore()
+
+const isShowRemoveParent = computed(() => pageStore.currentPage?.selectedIds.length === 1
+    && (pageStore.findNode(pageStore.getSelectedNodeOne()?.parentId)?.nodes || []).length < 2)
 </script>
 
 <style scoped lang="scss">

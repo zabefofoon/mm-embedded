@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import {ModalsContainer} from 'vue-final-modal'
 import "@/assets/style/basic.scss"
 import Header from "../components/Header.vue"
 import PagesPanel from "../components/PagesPanel.vue"
@@ -32,10 +31,10 @@ import ConfigNodePanel from "../components/ConfigNodePanel.vue"
 import UiStyle from "../components/atom/Style.vue"
 import ConfigWidgetLayer from "../components/ConfigWidgetLayer.vue"
 import {useScreenStore} from "../store/screen.store"
-import {onBeforeMount, onBeforeUnmount, onMounted, ref, watch, computed} from "vue"
+import {computed, onBeforeMount, onBeforeUnmount, onMounted, ref, watch} from "vue"
 import type {PageData} from "../store/page.store"
-import {deepClone} from "../util/util"
 import {usePagesStore} from "../store/page.store"
+import {deepClone} from "../util/util"
 import {useWidgetStore} from "../store/widget.store"
 import {generateCss} from "../util/generateCss"
 import {storeToRefs} from "pinia"
@@ -102,9 +101,7 @@ const postScreenData = (isShowSpacing: boolean,
   })
 }
 
-watch(() => pageStore.currentPage,
-    postPages,
-    {deep: true})
+watch(() => pageStore.currentPage, postPages, {deep: true})
 
 watch(() => [
       screenStore.isShowSpacing,
@@ -127,12 +124,10 @@ const listenKeydown = ($event: KeyboardEvent) => {
 
 const generatedCss = computed(() => generateCss(pageStore.currentPage?.nodes || [], widgetGroups.value))
 
-onMounted(() => {
-  window.addEventListener('keydown', listenKeydown)
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', listenKeydown)
-})
+onMounted(() => window.addEventListener('keydown', listenKeydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', listenKeydown))
+
+
 </script>
 
 <style scoped>

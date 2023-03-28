@@ -1,7 +1,7 @@
 <template>
   <div class="node | w-full min-h-8 | border border-dashed"
        :class="[selectedClass, layoutClass, spacingClass, outlineClass]"
-       @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id, $event) :  pageStore.selectNodeOne(node.id)">
+       @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id) :  pageStore.selectNodeOne(node.id)">
     <div v-if="screenStore.isShowMarker && node.marker"
          class="marker | absolute top-0 right-0 | w-3 h-3 | bg-orange-500">
       <article class="w-80 h-60 | absolute z-10 | bg-white border shadow-md">
@@ -28,7 +28,8 @@
 import {usePagesStore} from "../store/page.store"
 import {computed, watch} from "vue"
 import {useScreenStore} from "../store/screen.store"
-import {Node as NodeType, ResponsiveMode} from "../model/Node"
+import type {ResponsiveMode} from "../model/Node"
+import {Node as NodeType} from "../model/Node"
 
 const props = defineProps({
   node: {

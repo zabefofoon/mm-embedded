@@ -9,8 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import {PageData, usePagesStore} from "../store/page.store"
-import {computed, onBeforeMount, onBeforeUnmount, onMounted, watch} from "vue"
+import type {PageData} from "../store/page.store"
+import {usePagesStore} from "../store/page.store"
+import {computed, onBeforeUnmount, onMounted, watch} from "vue"
 import {deepClone} from "../util/util"
 import UiStyle from "../components/atom/Style.vue"
 import Node from "../components/Node.vue"
@@ -18,7 +19,7 @@ import {generateCss} from "../util/generateCss"
 import {useWidgetStore} from "../store/widget.store"
 import {storeToRefs} from "pinia"
 import {useScreenStore} from "../store/screen.store"
-import {Group} from "../model/Widget"
+import type {Group} from "../model/Widget"
 
 onMounted(() => {
   window.addEventListener('message', listenMessage)

@@ -36,11 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import {VueFinalModal} from 'vue-final-modal'
 import {useWidgetStore} from "../store/widget.store"
 import {storeToRefs} from "pinia"
 import {ref} from "vue"
-import {Item} from "../model/Widget"
+import type {Item} from "../model/Widget"
 
 const emit = defineEmits(['select'])
 
