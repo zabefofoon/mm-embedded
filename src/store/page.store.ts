@@ -245,6 +245,19 @@ export const usePagesStore = defineStore('pages', () => {
         return found
       }
 
+      const nodeForEach = (cb: (node: Node) => void) => {
+        const recursive = (nodes: Node[]) => {
+          nodes.forEach((node) => {
+            cb(node)
+            recursive(node.nodes)
+          })
+        }
+
+        pages.value
+            .map((page) => page.nodes)
+            .forEach((nodes) => recursive(nodes))
+      }
+
       return {
         actionManager,
 
@@ -308,6 +321,8 @@ export const usePagesStore = defineStore('pages', () => {
 
         addNodeMarker,
         removeNodeMarker,
+
+        nodeForEach
       }
     }
 )

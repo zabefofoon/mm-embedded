@@ -1,16 +1,16 @@
 <template>
   <div class="flex justify-center gap-2">
     <IconButton icon="icon-screen-xl"
-                @click="screenStore.setScreenSize('width', '100%')"
+                @click="selectSize('100%')"
                 :active="screenStore.screenSize.width === '100%'"/>
     <IconButton icon="icon-screen-l"
-                @click="screenStore.setScreenSize('width', '75%')"
+                @click="selectSize('75%')"
                 :active="screenStore.screenSize.width === '75%'"/>
     <IconButton icon="icon-screen-m"
-                @click="screenStore.setScreenSize('width', '50%')"
+                @click="selectSize('50%')"
                 :active="screenStore.screenSize.width === '50%'"/>
     <IconButton icon="icon-screen-s"
-                @click="screenStore.setScreenSize('width', '33.33%')"
+                @click="selectSize('33.33%')"
                 :active="screenStore.screenSize.width === '33.33%'"/>
     <IconDivider/>
     <div class="flex items-center gap-3">
@@ -30,8 +30,24 @@
 import IconButton from "./atom/IconButton.vue"
 import IconDivider from "./atom/IconDivider.vue"
 import {useScreenStore} from "../store/screen.store"
+import {usePagesStore} from "../store/page.store"
+import type {ResponsiveMode} from "../model/Node"
 
 const screenStore = useScreenStore()
+const pageStore = usePagesStore()
+
+const selectSize = (size: string) => {
+  screenStore.setScreenSize('width', size)
+  pageStore.nodeForEach((node) => node.selectResponsiveMode(sizeMap[size]))
+}
+
+const sizeMap: {[key in string]: ResponsiveMode} = {
+  '100%': 'large',
+  '75%': 'large',
+  '50%': 'small',
+  '33.33%': 'small'
+}
+
 </script>
 
 <style scoped lang="scss">
