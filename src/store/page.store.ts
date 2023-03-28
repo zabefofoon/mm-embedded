@@ -220,6 +220,13 @@ export const usePagesStore = defineStore('pages', () => {
         }
       }
 
+      const selectParentNode = () => {
+        currentPage.value.selectedIds = selectedNodes.value[0]?.parentId
+            ? [selectedNodes.value[0]?.parentId]
+            : []
+        currentPage.value.key++
+      }
+
       const addNodeMarker = () => actionManager.execute(AddMarker.of())
 
       const removeNodeMarker = () => actionManager.execute((RemoveMarker.of()))
@@ -287,6 +294,7 @@ export const usePagesStore = defineStore('pages', () => {
 
         selectNodeOne,
         selectNodeMany,
+        selectParentNode,
 
         setNodesLayoutType,
         setNodesLayoutStackDirection,

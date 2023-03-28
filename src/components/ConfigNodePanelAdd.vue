@@ -2,6 +2,14 @@
   <div class="flex flex-col">
     <h3 class="bg-slate-400 text-white text-sm | px-3 py-1">node</h3>
     <ul>
+      <li v-if="pageStore.currentPage?.selectedIds.length === 1"
+          class="border border-white hover:border-orange-500">
+        <button class="w-full | px-3 py-1 | text-sm text-left"
+                @click="pageStore.selectParentNode()">select parent
+        </button>
+      </li>
+      <hr v-if="pageStore.currentPage?.selectedIds.length === 1"
+          class="my-2"/>
       <li v-if="pageStore.currentPage?.selectedIds.length === 0"
           class="border border-white hover:border-orange-500">
         <button class="w-full | px-3 py-1 | text-sm text-left"

@@ -10,7 +10,7 @@
           <iframe ref="canvas"
                   :style="{width: screenStore.screenSize.width, height: screenStore.screenSize.height}"
                   class="w-full h-full"
-                  src="./canvas"
+                  src="/#/canvas"
                   @load="initIframe">
           </iframe>
         </div>
