@@ -3,7 +3,7 @@
   <div class="flex flex-col | relative | w-full h-screen | overflow-hidden">
     <Header/>
     <div class="flex | w-full h-full"
-         style="max-height: calc(100vh - 80px);">
+         style="max-height: calc(100vh - 40px);">
       <PagesPanel/>
       <main class="w-full h-full | p-3 | bg-slate-100">
         <div class="flex justify-center | h-full">
@@ -17,7 +17,6 @@
       </main>
       <ConfigNodePanel/>
     </div>
-    <Footer/>
     <ConfigWidgetLayer/>
   </div>
   <ModalsContainer/>
@@ -28,7 +27,6 @@
 import {ModalsContainer} from 'vue-final-modal'
 import "@/assets/style/basic.scss"
 import Header from "../components/Header.vue"
-import Footer from "../components/Footer.vue"
 import PagesPanel from "../components/PagesPanel.vue"
 import ConfigNodePanel from "../components/ConfigNodePanel.vue"
 import UiStyle from "../components/atom/Style.vue"
