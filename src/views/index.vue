@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import "@/assets/style/basic.scss"
+import "../assets/style/basic.scss"
 import Header from "../components/Header.vue"
 import PagesPanel from "../components/PagesPanel.vue"
 import ConfigNodePanel from "../components/ConfigNodePanel.vue"
