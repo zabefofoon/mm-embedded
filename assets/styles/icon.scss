@@ -1,0 +1,240 @@
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  background-color: currentColor;
+}
+
+.icon-grid {
+  $src: 'https://api.iconify.design/material-symbols/grid-view.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-explore {
+  $src: 'https://api.iconify.design/ic/outline-explore.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-file {
+  $src: 'https://api.iconify.design/arcticons/atomic-science.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-copy {
+  $src: 'https://api.iconify.design/material-symbols/content-copy-outline.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-add {
+  $src: 'https://api.iconify.design/material-symbols/add.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-minus {
+  $src: 'https://api.iconify.design/ic/baseline-minus.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-delete {
+  $src: 'https://api.iconify.design/material-symbols/delete-outline.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-overflow {
+  $src: 'https://api.iconify.design/carbon/overflow-menu-vertical.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-arrow-left {
+  $src: 'https://api.iconify.design/ic/baseline-arrow-back-ios-new.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-github {
+  $src: 'https://api.iconify.design/mdi/github.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-instargram {
+  $src: 'https://api.iconify.design/ri/instagram-fill.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-avatar-secured {
+  $src: 'https://api.iconify.design/ooui/user-avatar.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-avatar-unsecured {
+  $src: 'https://api.iconify.design/ooui/user-avatar-outline.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-lock {
+  $src: 'https://api.iconify.design/material-symbols/lock-outline.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-search {
+  $src: 'https://api.iconify.design/material-symbols/search.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-close {
+  $src: 'https://api.iconify.design/material-symbols/close.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-mouse-scroll {
+  $src: 'https://api.iconify.design/iconoir/mouse-scroll-wheel.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-arrow-top {
+  $src: 'https://api.iconify.design/ic/baseline-keyboard-arrow-up.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-arrow-bottom {
+  $src: 'https://api.iconify.design/ic/baseline-keyboard-arrow-down.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+
+.icon-bars {
+  $src: 'https://api.iconify.design/heroicons/bars-3-20-solid.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+
+.icon-screen-xl {
+  $src: 'https://api.iconify.design/mdi/size-xl.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-screen-l {
+  $src: 'https://api.iconify.design/mdi/size-l.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-screen-m {
+  $src: 'https://api.iconify.design/mdi/size-m.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-screen-s {
+  $src: 'https://api.iconify.design/mdi/size-s.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-screen-size {
+  $src: 'https://api.iconify.design/fluent/slide-size-20-regular.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-page {
+  $src: 'https://api.iconify.design/iconoir/empty-page.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-eye {
+  $src: 'https://api.iconify.design/ic/outline-remove-red-eye.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-spacing {
+  $src: 'https://api.iconify.design/mdi/format-paragraph-spacing.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-outline {
+  $src: 'https://api.iconify.design/mdi/border-none-variant.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-hidden {
+  $src: 'https://api.iconify.design/mdi/file-hidden.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-marker {
+  $src: 'https://api.iconify.design/mdi/map-marker.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-padding-left {
+  $src: 'https://api.iconify.design/fluent-mdl2/padding-left.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-padding-top {
+  $src: 'https://api.iconify.design/fluent-mdl2/padding-top.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-padding-right {
+  $src: 'https://api.iconify.design/fluent-mdl2/padding-right.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-padding-bottom {
+  $src: 'https://api.iconify.design/fluent-mdl2/padding-bottom.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-download {
+  $src: 'https://api.iconify.design/ic/baseline-save-alt.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-html {
+  $src: 'https://api.iconify.design/material-symbols/html.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
+.icon-css {
+  $src: 'https://api.iconify.design/material-symbols/css.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
