@@ -179,7 +179,7 @@ export const usePagesStore = defineStore('pages', () => {
       const removeWidget = () => actionManager.execute(RemoveWidget.of())
 
       const updateNodesWidget = () => {
-        const recursive = (nodes: Node[]) => {
+        const recursive = (nodes: Node[] = []) => {
           nodes?.forEach((node) => {
             if (node.widget) node.widget = widgetStore
                 .widgetGroups
@@ -190,7 +190,7 @@ export const usePagesStore = defineStore('pages', () => {
           })
         }
 
-        recursive(currentPage.value.nodes)
+        recursive(currentPage.value?.nodes)
       }
 
       const getSelectedNodeOne = () => findNode(currentPage.value.selectedIds[0])

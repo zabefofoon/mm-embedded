@@ -14,18 +14,16 @@
 <script setup lang="ts">
 import {useWidgetStore} from "../store/widget.store"
 import HeaderGoWidgetsButton from "../components/HeaderGoWidgetsButton.vue"
-import {onBeforeUnmount, onMounted, ref} from "vue"
+import {onBeforeUnmount, onMounted, ref, watch} from "vue"
 import {storeToRefs} from "pinia"
 import {deepClone} from "../util/util"
+import {usePagesStore} from "../store/page.store"
 
+const pageStore = usePagesStore()
 const widgetStore = useWidgetStore()
 const {widgetGroups} = storeToRefs(widgetStore)
 
-onMounted(() => {
-  window.addEventListener('message', updateProjectDetail)
-  postGroups()
-})
-
+onMounted(() =>window.addEventListener('message', updateProjectDetail))
 onBeforeUnmount(() => window.removeEventListener('message', updateProjectDetail))
 
 const iframe = ref<HTMLIFrameElement>()
@@ -40,9 +38,19 @@ const postGroups = () => setTimeout(() => iframe.value
 const updateProjectDetail = (event: MessageEvent) => {
   if (event.data.type === 'saveGroups') {
     widgetStore.setWidgetGroups(JSON.parse(event.data.groups))
+    window.parent
+        ?.postMessage({
+          type: 'saveProject',
+          data: {
+            pages: deepClone(pageStore.pages),
+            widgetGroups: deepClone(widgetStore.widgetGroups),
+          }
+        }, '*')
     alert('save the project')
   }
 }
+
+watch(widgetGroups, postGroups, {immediate: true})
 </script>
 
 <style scoped>

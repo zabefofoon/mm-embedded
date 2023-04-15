@@ -72,7 +72,9 @@ const listenMessage = ($event: MessageEvent) => {
       pageStore.actionManager.executeUndo()
     else if ($event.data.data === 'redo')
       pageStore.actionManager.executeRedo()
-
+  } else if ($event.data.type === 'loadData') {
+    pageStore.loadPages($event.data.data?.pages || [])
+    widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
   }
 }
 
