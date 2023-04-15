@@ -75,6 +75,7 @@ const listenMessage = ($event: MessageEvent) => {
   } else if ($event.data.type === 'loadData') {
     pageStore.loadPages($event.data.data?.pages || [])
     widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
+    pageStore.selectPage(pageStore.pages?.[0].id)
   }
 }
 
