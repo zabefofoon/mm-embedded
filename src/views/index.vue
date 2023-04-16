@@ -76,6 +76,11 @@ const listenMessage = ($event: MessageEvent) => {
     pageStore.loadPages($event.data.data?.pages || [])
     widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
     pageStore.selectPage(pageStore.pages?.[0].id)
+    setTimeout(() => {
+      postPages()
+      widgetStore.postWidgetStoreToCanvas()
+    }, 100)
+
   }
 }
 
