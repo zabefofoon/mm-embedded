@@ -87,6 +87,7 @@ const listenMessage = ($event: MessageEvent) => {
 const initIframe = () => setTimeout(() => {
   widgetStore.setCanvas(canvas.value)
   postPages()
+  widgetStore.postWidgetStoreToCanvas()
 }, 250)
 
 const postPages = () => canvas.value
