@@ -87,10 +87,12 @@ const listenMessage = ($event: MessageEvent) => {
   } else if ($event.data.type === 'connectedUser') {
     peerStore.setConnectedUsers($event.data.data)
   } else if ($event.data.type === 'realTimeEdit') {
-    pageStore.loadPages($event.data.data?.pages || [])
-    widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
-    postPages()
-    widgetStore.postWidgetStoreToCanvas()
+    if (pageStore.circuitBreaker.status === 'off') {
+      pageStore.loadPages($event.data.data?.pages || [])
+      widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
+      postPages()
+      widgetStore.postWidgetStoreToCanvas()
+    }
   } else if ($event.data.type === 'realTimeWidgetGroups') {
     widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
     widgetStore.postWidgetGroupsToEditor()
