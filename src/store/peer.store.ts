@@ -17,14 +17,14 @@ export const usePeerStore = defineStore('peer', () => {
 
   watch(() => pageStore.actionManager,
       () => {
-        window.parent
-            ?.postMessage({
-              type: 'realtimeEditProject',
-              data: {
-                pages: deepClone(pageStore.pages),
-                widgetGroups: deepClone(widgetStore.widgetGroups),
-              }
-            }, '*')
+        if (pageStore.circuitBreaker.status === 'off')
+          window.parent
+              ?.postMessage({
+                type: 'realtimeEditProject',
+                data: {
+                  pages: deepClone(pageStore.pages),
+                }
+              }, '*')
       }, {deep: true})
 
   return {

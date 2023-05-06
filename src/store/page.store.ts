@@ -42,6 +42,7 @@ import {
   SetNodesTransparent,
   SetWidget
 } from "../model/Action"
+import {CircuitBreaker} from "../model/CircuitBreaker"
 
 export type PageData = {
   id: string
@@ -265,6 +266,8 @@ export const usePagesStore = defineStore('pages', () => {
             .forEach((nodes) => recursive(nodes))
       }
 
+      const circuitBreaker = new CircuitBreaker()
+
       return {
         actionManager,
 
@@ -330,7 +333,9 @@ export const usePagesStore = defineStore('pages', () => {
         addNodeMarker,
         removeNodeMarker,
 
-        nodeForEach
+        nodeForEach,
+
+        circuitBreaker
       }
     }
 )

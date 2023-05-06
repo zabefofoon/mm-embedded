@@ -77,14 +77,21 @@ const screenStore = useScreenStore()
 const {isShowHidden} = storeToRefs(screenStore)
 
 const pageStore = usePagesStore()
-const postPageData = (pageData: PageData) => window.parent
-    ?.postMessage({
-      type: 'pageMutation',
-      data: deepClone(pageData)
-    })
+const postPageData = (pageData: PageData) => {
+  if (pageStore.circuitBreaker.status === 'off')
+    window.parent
+        ?.postMessage({
+          type: 'pageMutation',
+          data: deepClone(pageData)
+        })
+}
+
 
 watch(() => pageStore.currentPage,
-    postPageData,
+    (currentPage) => {
+      pageStore.circuitBreaker.watch(currentPage.key)
+      postPageData(currentPage)
+    },
     {deep: true})
 
 const widgetStore = useWidgetStore()

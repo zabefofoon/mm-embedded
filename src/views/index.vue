@@ -91,7 +91,7 @@ const listenMessage = ($event: MessageEvent) => {
     widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
     postPages()
     widgetStore.postWidgetStoreToCanvas()
-  }  else if ($event.data.type === 'realTimeWidgetGroups') {
+  } else if ($event.data.type === 'realTimeWidgetGroups') {
     widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
     widgetStore.postWidgetGroupsToEditor()
     postPages()
@@ -105,15 +105,18 @@ const initIframe = () => setTimeout(() => {
   widgetStore.postWidgetStoreToCanvas()
 }, 250)
 
-const postPages = () => canvas.value
-    ?.contentWindow
-    ?.postMessage({
-      type: 'pagesMutation',
-      data: {
-        pages: deepClone(pageStore.pages),
-        currentPageId: pageStore.currentPageId
-      }
-    })
+const postPages = () => {
+  if (pageStore.circuitBreaker.status === 'off')
+    canvas.value
+        ?.contentWindow
+        ?.postMessage({
+          type: 'pagesMutation',
+          data: {
+            pages: deepClone(pageStore.pages),
+            currentPageId: pageStore.currentPageId
+          }
+        })
+}
 
 const postScreenData = (isShowSpacing: boolean,
                         isShowOutline: boolean,

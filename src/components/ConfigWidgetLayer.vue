@@ -4,7 +4,7 @@
     <HeaderGoWidgetsButton class="absolute top-1 right-0"/>
     <HeaderGoWidgetsButton class="absolute top-1 left-0 -translate-x-full"/>
     <iframe class="w-full h-full"
-            src="http://localhost:5174?save=true"
+            src="https://zabefofoon.github.io/dsm-embbedded?save=true"
             allow="clipboard-read; clipboard-write"
             @load="widgetStore.setWidgetEditor($event.target)"></iframe>
   </div>
@@ -13,14 +13,12 @@
 <script setup lang="ts">
 import {useWidgetStore} from "../store/widget.store"
 import HeaderGoWidgetsButton from "../components/HeaderGoWidgetsButton.vue"
-import {onBeforeUnmount, onMounted, ref} from "vue"
-import {storeToRefs} from "pinia"
+import {onBeforeUnmount, onMounted} from "vue"
 import {deepClone} from "../util/util"
 import {usePagesStore} from "../store/page.store"
 
 const pageStore = usePagesStore()
 const widgetStore = useWidgetStore()
-const {widgetGroups} = storeToRefs(widgetStore)
 
 onMounted(() => window.addEventListener('message', updateProjectDetail))
 onBeforeUnmount(() => window.removeEventListener('message', updateProjectDetail))
@@ -39,7 +37,6 @@ const updateProjectDetail = (event: MessageEvent) => {
     alert('save the project')
   } else if (event.data.type === 'editRealtime') {
     widgetStore.setWidgetGroups(JSON.parse(event.data.groups))
-    console.log('editRealtime')
     window.parent
         ?.postMessage({
           type: 'editWidgetGroupsRealtime',
