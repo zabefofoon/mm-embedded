@@ -38,6 +38,7 @@ import {deepClone} from "../util/util"
 import {useWidgetStore} from "../store/widget.store"
 import {generateCss} from "../util/generateCss"
 import {storeToRefs} from "pinia"
+import {usePeerStore} from "../store/peer.store"
 
 const screenStore = useScreenStore()
 
@@ -46,6 +47,8 @@ const {widgetGroups} = storeToRefs(widgetStore)
 
 const pageStore = usePagesStore()
 const canvas = ref<HTMLIFrameElement>()
+
+const peerStore = usePeerStore()
 
 onBeforeMount(() => window.addEventListener('message', listenMessage))
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
@@ -79,8 +82,20 @@ const listenMessage = ($event: MessageEvent) => {
     setTimeout(() => {
       postPages()
       widgetStore.postWidgetStoreToCanvas()
+      widgetStore.postWidgetGroupsToEditor()
     }, 100)
-
+  } else if ($event.data.type === 'connectedUser') {
+    peerStore.setConnectedUsers($event.data.data)
+  } else if ($event.data.type === 'realTimeEdit') {
+    pageStore.loadPages($event.data.data?.pages || [])
+    widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
+    postPages()
+    widgetStore.postWidgetStoreToCanvas()
+  }  else if ($event.data.type === 'realTimeWidgetGroups') {
+    widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
+    widgetStore.postWidgetGroupsToEditor()
+    postPages()
+    widgetStore.postWidgetStoreToCanvas()
   }
 }
 

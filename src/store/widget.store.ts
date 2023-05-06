@@ -13,6 +13,18 @@ export const useWidgetStore = defineStore('widgets', () => {
     canvas.value = iframe
   }
 
+  const widgetEditor = ref<HTMLIFrameElement>()
+  const setWidgetEditor = (iframe?: HTMLIFrameElement) => {
+    widgetEditor.value = iframe
+  }
+
+  const postWidgetGroupsToEditor = () => widgetEditor.value
+      ?.contentWindow
+      ?.postMessage({
+        type: 'realtimeSetGroups',
+        groups: deepClone(widgetGroups.value)
+      }, '*')
+
   const isLayerShow = ref(false)
   const toggleLayer = (value?: boolean) => {
     isLayerShow.value = value !== undefined ? value : !isLayerShow.value
@@ -41,6 +53,11 @@ export const useWidgetStore = defineStore('widgets', () => {
     toggleLayer,
 
     widgetGroups,
-    setWidgetGroups
+    setWidgetGroups,
+
+    widgetEditor,
+    setWidgetEditor,
+
+    postWidgetGroupsToEditor
   }
 })

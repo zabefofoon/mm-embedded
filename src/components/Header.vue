@@ -16,6 +16,14 @@
     <HeaderScreenSize v-if="screenStore.screenMode === 'size'"/>
     <HeaderScreenView v-else-if="screenStore.screenMode === 'view'"/>
     <HeaderScreenDownload v-else-if="screenStore.screenMode === 'download'"/>
+    <div class="flex gap-1 | ml-auto mr-12">
+      <button v-for="user in peerStore.connectedUsers"
+              :title="user"
+              class="user-pill | px-2.5 py-1 | text-sm text-white rounded-full "
+              @key="user">
+        {{ user.charAt(0).toUpperCase() }}
+      </button>
+    </div>
   </header>
 </template>
 
@@ -29,6 +37,7 @@ import {useScreenStore} from "../store/screen.store"
 import {usePagesStore} from "../store/page.store"
 import {useWidgetStore} from "../store/widget.store"
 import {deepClone} from "../util/util"
+import {usePeerStore} from "../store/peer.store"
 
 const screenStore = useScreenStore()
 
@@ -47,8 +56,26 @@ const save = () => {
   alert('saved')
 }
 
+const peerStore = usePeerStore()
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.user-pill {
+  &:nth-child(4n-3) {
+    background: #B10F2E;
+  }
 
+  &:nth-child(4n-2) {
+    background: #1B98E0;
+  }
+
+  &:nth-child(4n-1) {
+    background: #FAC748;
+  }
+
+  &:nth-child(4n) {
+    background: #99C5B5;
+  }
+
+}
 </style>
