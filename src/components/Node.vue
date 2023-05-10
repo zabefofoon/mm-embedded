@@ -46,7 +46,7 @@ const spacingClass = computed(() => screenStore.isShowSpacing ? 'p-2' : '')
 
 const outlineClass = computed(() => screenStore.isShowOutline ? 'border-2' : 'border-0')
 
-const selectedClass = computed(() => pageStore.currentPage?.selectedIds.includes(props.node.id)
+const selectedClass = computed(() => pageStore.selectedNodeIds.includes(props.node.id)
     ? 'border-orange-500'
     : 'border-slate-500')
 

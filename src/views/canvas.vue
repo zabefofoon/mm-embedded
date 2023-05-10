@@ -52,9 +52,10 @@ const listenKeydown = ($event: KeyboardEvent) => {
 
 const listenMessage = ($event: MessageEvent) => {
   if ($event.data.type === 'pagesMutation') {
-    const data = <{ pages: PageData[], currentPageId: string }>$event.data.data
+    const data = <{ pages: PageData[], currentPageId: string, selectedNodeIds: string[] }>$event.data.data
     pageStore.loadPages(data.pages)
     pageStore.selectPage(data.currentPageId)
+    pageStore.selectedNodeIds = data.selectedNodeIds
   } else if ($event.data.type === 'widgetGroupsMutation') {
     const groups = <Group[]>$event.data.data
     widgetStore.setWidgetGroups(groups)
@@ -82,7 +83,10 @@ const postPageData = (pageData: PageData) => {
     window.parent
         ?.postMessage({
           type: 'pageMutation',
-          data: deepClone(pageData)
+          data: {
+            pageData: deepClone(pageData),
+            selectedNodeIds: deepClone(pageStore.selectedNodeIds)
+          }
         })
 }
 

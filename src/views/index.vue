@@ -55,9 +55,12 @@ onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
 
 const listenMessage = ($event: MessageEvent) => {
   if ($event.data.type === 'pageMutation') {
-    const pageData = <PageData>$event.data.data
-    if (pageData?.key !== pageStore.currentPage?.key)
+    const pageData = <PageData>$event.data.data.pageData
+    if (pageData?.key !== pageStore.currentPage?.key) {
       pageStore.setPageData(pageData)
+      pageStore.selectedNodeIds = $event.data.data.selectedNodeIds
+    }
+
   } else if ($event.data.type === 'command') {
     if ($event.data.data === 'removeNode')
       pageStore.removeNode()
@@ -115,7 +118,8 @@ const postPages = () => {
           type: 'pagesMutation',
           data: {
             pages: deepClone(pageStore.pages),
-            currentPageId: pageStore.currentPageId
+            currentPageId: pageStore.currentPageId,
+            selectedNodeIds: deepClone(pageStore.selectedNodeIds)
           }
         })
 }

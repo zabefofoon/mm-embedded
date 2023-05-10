@@ -49,7 +49,6 @@ export type PageData = {
   name: string
   key: number
   nodes: Node[]
-  selectedIds: string[]
 }
 
 const createPage = (): PageData => ({
@@ -57,10 +56,11 @@ const createPage = (): PageData => ({
   name: 'Page',
   key: 0,
   nodes: [new Node()],
-  selectedIds: [],
 })
 
 export const usePagesStore = defineStore('pages', () => {
+
+      const selectedNodeIds = ref<string[]>([])
 
       const widgetStore = useWidgetStore()
 
@@ -120,7 +120,7 @@ export const usePagesStore = defineStore('pages', () => {
         pages.value.splice(index + 1, 0, page)
       }
 
-      const selectedNodes = computed(() => currentPage.value.selectedIds.map((id) => findNode(id)))
+      const selectedNodes = computed(() => selectedNodeIds.value.map((id) => findNode(id)))
 
       const setPageData = (pageData: PageData) => {
         pages.value.forEach((page) => {
@@ -128,7 +128,6 @@ export const usePagesStore = defineStore('pages', () => {
             page.key++
             page.key = pageData.key
             page.nodes = Node.makeNodes(pageData.nodes)
-            page.selectedIds = pageData.selectedIds
           }
         })
       }
@@ -194,7 +193,7 @@ export const usePagesStore = defineStore('pages', () => {
         recursive(currentPage.value?.nodes)
       }
 
-      const getSelectedNodeOne = () => findNode(currentPage.value.selectedIds[0])
+      const getSelectedNodeOne = () => findNode(selectedNodeIds.value[0])
 
       const copiedNode = ref<Node>()
       const setCopiedNode = (node: Node) => {
@@ -216,13 +215,13 @@ export const usePagesStore = defineStore('pages', () => {
 
       const selectNodeOne = (id?: string) => {
         if (currentPage.value) {
-          currentPage.value.selectedIds = id === undefined ? [] : [id]
+          selectedNodeIds.value =  id === undefined ? [] : [id]
           currentPage.value.key++
         }
       }
 
       const selectParentNode = () => {
-        currentPage.value.selectedIds = selectedNodes.value[0]?.parentId
+        selectedNodeIds.value = selectedNodes.value[0]?.parentId
             ? [selectedNodes.value[0]?.parentId]
             : []
         currentPage.value.key++
@@ -233,7 +232,7 @@ export const usePagesStore = defineStore('pages', () => {
       const removeNodeMarker = () => actionManager.execute((RemoveMarker.of()))
 
       const selectNodeMany = (id: string) => {
-        currentPage.value.selectedIds.push(id)
+        selectedNodeIds.value.push(id)
         currentPage.value.key++
       }
 
@@ -269,6 +268,8 @@ export const usePagesStore = defineStore('pages', () => {
       const circuitBreaker = new CircuitBreaker()
 
       return {
+        selectedNodeIds,
+
         actionManager,
 
         pages,

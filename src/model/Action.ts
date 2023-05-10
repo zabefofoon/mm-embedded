@@ -50,14 +50,15 @@ export class AddSiblingNodeUp extends AbstractAction {
   }
 
   do(isRedo?: boolean): void {
-    this.selectedIds = this.pageStore.currentPage.selectedIds
-    if (this.pageStore.currentPage.selectedIds.length === 0) {
+    console.log(this.pageStore.selectedNodeIds)
+    this.selectedIds = this.pageStore.selectedNodeIds
+    if (this.pageStore.selectedNodeIds.length === 0) {
       const createdNode = new Node()
       createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
       this.pageStore.currentPage.nodes.push(createdNode)
     } else {
-      const selectedId = this.pageStore.currentPage.selectedIds[0]
+      const selectedId = this.pageStore.selectedNodeIds[0]
       const found = this.pageStore.findNode(selectedId)
       const parent = this.pageStore.findNode(found?.parentId)
       const index = parent
@@ -73,7 +74,7 @@ export class AddSiblingNodeUp extends AbstractAction {
           : this.pageStore.currentPage.nodes.splice(index, 0, createdNode)
     }
 
-    this.pageStore.currentPage.selectedIds = this.createdNodeIds
+    this.pageStore.selectedNodeIds = this.createdNodeIds
     this.pageStore.currentPage.key++
   }
 
@@ -107,14 +108,14 @@ export class AddSiblingNodeDown extends AbstractAction {
   }
 
   do(isRedo?: boolean): void {
-    this.selectedIds = this.pageStore.currentPage.selectedIds
-    if (this.pageStore.currentPage.selectedIds.length === 0) {
+    this.selectedIds = this.pageStore.selectedNodeIds
+    if (this.pageStore.selectedNodeIds.length === 0) {
       const createdNode = new Node()
       createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
       this.pageStore.currentPage.nodes.push(createdNode)
     } else {
-      const selectedId = this.pageStore.currentPage.selectedIds[0]
+      const selectedId = this.pageStore.selectedNodeIds[0]
       const found = this.pageStore.findNode(selectedId)
       const parent = this.pageStore.findNode(found?.parentId)
       const index = parent
@@ -130,7 +131,7 @@ export class AddSiblingNodeDown extends AbstractAction {
           : this.pageStore.currentPage.nodes.splice(index + 1, 0, createdNode)
     }
 
-    this.pageStore.currentPage.selectedIds = this.createdNodeIds
+    this.pageStore.selectedNodeIds = this.createdNodeIds
     this.pageStore.currentPage.key++
   }
 
@@ -164,15 +165,15 @@ export class AddChildNode extends AbstractAction {
   }
 
   do(isRedo?: boolean): void {
-    this.selectedIds = this.pageStore.currentPage.selectedIds
-    this.pageStore.currentPage.selectedIds.length === 0
+    this.selectedIds = this.pageStore.selectedNodeIds
+    this.pageStore.selectedNodeIds.length === 0
         ? [true].forEach(() => {
           const createdNode = new Node()
           createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
           this.createdNodeIds.push(createdNode.id)
           this.pageStore.currentPage.nodes.push(createdNode)
         })
-        : this.pageStore.currentPage.selectedIds
+        : this.pageStore.selectedNodeIds
             .forEach((selectedId) => {
               const found = this.pageStore.findNode(selectedId)
               if (found) {
@@ -183,7 +184,7 @@ export class AddChildNode extends AbstractAction {
               }
             })
 
-    this.pageStore.currentPage.selectedIds = this.createdNodeIds
+    this.pageStore.selectedNodeIds = this.createdNodeIds
     this.pageStore.currentPage.key++
   }
 
@@ -217,9 +218,9 @@ export class AddParentNode extends AbstractAction {
   }
 
   do(): void {
-    this.selectedIds = this.pageStore.currentPage.selectedIds
+    this.selectedIds = this.pageStore.selectedNodeIds
 
-    if (this.pageStore.currentPage.selectedIds.length === 0) {
+    if (this.pageStore.selectedNodeIds.length === 0) {
       const createdNode = new Node()
       this.createdNodeIds.push(createdNode.id)
       this.pageStore.currentPage.nodes.push(createdNode)
@@ -242,7 +243,7 @@ export class AddParentNode extends AbstractAction {
       }
     }
 
-    this.pageStore.currentPage.selectedIds = this.createdNodeIds
+    this.pageStore.selectedNodeIds = this.createdNodeIds
     this.pageStore.currentPage.key++
   }
 
@@ -276,7 +277,7 @@ export class RemoveNode extends AbstractAction {
   }
 
   do(): void {
-    this.pageStore.currentPage.selectedIds.forEach((selectedId) => {
+    this.pageStore.selectedNodeIds.forEach((selectedId) => {
       const found = this.pageStore.findNode(selectedId)
       const parent = this.pageStore.findNode(found?.parentId)
       const foundIndex = parent
@@ -294,14 +295,14 @@ export class RemoveNode extends AbstractAction {
     })
 
     if (this.deletedNodes.length > 1)
-      this.pageStore.currentPage.selectedIds = []
+      this.pageStore.selectedNodeIds = []
     else {
       const parent = this.pageStore.findNode(this.deletedNodes[0].node?.parentId)
       parent
-          ? this.pageStore.currentPage.selectedIds = parent.nodes.length > 0
+          ? this.pageStore.selectedNodeIds = parent.nodes.length > 0
               ? [parent.nodes[Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)].id]
               : [parent.id]
-          : this.pageStore.currentPage.selectedIds = this.pageStore.currentPage.nodes.length > 0
+          : this.pageStore.selectedNodeIds = this.pageStore.currentPage.nodes.length > 0
               ? [this.pageStore.currentPage.nodes[Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)].id]
               : []
     }
@@ -318,7 +319,7 @@ export class RemoveNode extends AbstractAction {
       else
         this.pageStore.currentPage.nodes.splice(deletedNode.index, 0, deletedNode.node)
     })
-    this.pageStore.currentPage.selectedIds = this.deletedNodes.map((item) => item.node.id)
+    this.pageStore.selectedNodeIds = this.deletedNodes.map((item) => item.node.id)
     this.deletedNodes = []
   }
 

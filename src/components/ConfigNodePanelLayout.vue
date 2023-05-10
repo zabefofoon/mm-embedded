@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pageStore.currentPage?.selectedIds.length === 1"
+  <div v-if="pageStore.selectedNodeIds.length === 1"
        class="flex flex-col">
     <h3 class="bg-slate-400 text-white | px-3 py-1 | text-sm">layout</h3>
     <ResponsiveButton :model-value="pageStore.selectedNodes[0]?.selectedResponsiveMode"

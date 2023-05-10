@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pageStore.currentPage?.selectedIds.length === 1"
+  <div v-if="pageStore.selectedNodeIds.length === 1"
        class="flex flex-col">
     <h3 class="bg-slate-400 text-white text-sm | px-3 py-1">marker</h3>
     <ul>
