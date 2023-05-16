@@ -161,8 +161,6 @@ const generatedCss = computed(() => generateCss(pageStore.currentPage?.nodes || 
 
 onMounted(() => window.addEventListener('keydown', listenKeydown))
 onBeforeUnmount(() => window.removeEventListener('keydown', listenKeydown))
-
-
 </script>
 
 <style scoped>
