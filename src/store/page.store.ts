@@ -283,7 +283,7 @@ export const usePagesStore = defineStore('pages', () => {
               ?.postMessage({
                 type: 'dragNode',
                 data: {dragAction: deepClone(dragAction)}
-              })
+              }, '*')
 
           dragAction = DragNode.of()
 
