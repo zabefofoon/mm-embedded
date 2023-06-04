@@ -50,7 +50,6 @@ export class AddSiblingNodeUp extends AbstractAction {
   }
 
   do(isRedo?: boolean): void {
-    console.log(this.pageStore.selectedNodeIds)
     this.selectedIds = this.pageStore.selectedNodeIds
     if (this.pageStore.selectedNodeIds.length === 0) {
       const createdNode = new Node()
@@ -1240,5 +1239,122 @@ export class RemoveMarker extends AbstractAction {
 
   static of(): RemoveMarker {
     return new RemoveMarker()
+  }
+}
+
+export class DragNode extends AbstractAction {
+  actionName = 'DragNode'
+  nodeId?: string
+  parentId?: string
+  oldIndex?: number
+  newIndex?: number
+  originalParentId?: string
+
+  constructor(dragNodeRaw?: DragNode) {
+    super()
+    if (dragNodeRaw) {
+      this.nodeId = dragNodeRaw.nodeId
+      this.parentId = dragNodeRaw.parentId
+      this.oldIndex = dragNodeRaw.oldIndex
+      this.newIndex = dragNodeRaw.newIndex
+    }
+  }
+
+  do(isRedo?: boolean): void {
+    if (!this.parentId) {
+      const found = <Node>this.pageStore.findNode(this.nodeId)
+      const parent = this.pageStore.findNode(found.parentId)
+      if (parent) {
+        parent.nodes = parent.nodes.filter((node) => node.id !== found.id)
+        this.originalParentId = parent.id
+      }
+      found.parentId = ''
+      this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+      this.pageStore.currentPage.nodes.splice(this.newIndex || 0, 0, found)
+    } else {
+      const found = <Node>this.pageStore.findNode(this.nodeId)
+      const parent = this.pageStore.findNode(found.parentId)
+      parent
+          ? parent.nodes = parent.nodes.filter((node) => node.id !== found.id)
+          : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+
+      const parentId = this.parentId.replace(/drag_/gi, '')
+      const foundParent = this.pageStore.findNode(parentId)
+
+      if (foundParent) {
+        this.originalParentId = found.parentId
+        found.parentId = this.parentId?.replace(/drag_/gi, '')
+        foundParent.nodes = foundParent.nodes.filter((node) => node.id !== this.nodeId)
+        foundParent.nodes.splice(this.newIndex || 0, 0, found)
+      }
+    }
+    this.pageStore.selectNodeOne(this.nodeId)
+
+  }
+
+  undo(): void {
+    const found = <Node>this.pageStore.findNode(this.nodeId)
+    const parent = this.pageStore.findNode(found?.parentId)
+    if (parent) {
+      parent.nodes = parent.nodes.filter((node) => node.id !== this.nodeId)
+      const originalParent = this.pageStore.findNode(this.originalParentId)
+      originalParent
+          ? originalParent.nodes.splice(this.oldIndex || 0, 0, found)
+          : this.pageStore.currentPage.nodes.splice(this.oldIndex || 0, 0, found)
+      this.originalParentId = found.parentId
+      found.parentId = originalParent?.id || ''
+    } else {
+      this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+      const originalParent = this.pageStore.findNode(this.originalParentId)
+      originalParent
+          ? originalParent.nodes.splice(this.oldIndex || 0, 0, found)
+          : this.pageStore.currentPage.nodes.splice(this.oldIndex || 0, 0, found)
+      this.originalParentId = found.parentId
+      found.parentId = originalParent?.id || ''
+    }
+    this.pageStore.selectNodeOne(this.nodeId)
+
+  }
+
+  redo(): void {
+    const found = <Node>this.pageStore.findNode(this.nodeId)
+    const parent = this.pageStore.findNode(found?.parentId)
+
+    parent
+        ? parent.nodes = parent.nodes.filter((node) => node.id !== this.nodeId)
+        : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+
+    const originalParent = this.pageStore.findNode(this.originalParentId)
+    this.originalParentId = parent?.id
+    originalParent
+        ? originalParent.nodes.splice(this.newIndex || 0, 0, found)
+        : this.pageStore.currentPage.nodes.splice(this.newIndex || 0, 0, found)
+
+    found.parentId = originalParent?.id || ''
+    this.pageStore.selectNodeOne(this.nodeId)
+  }
+
+  setNodeId(id: string): this {
+    this.nodeId = id
+    return this
+  }
+
+  setOldIndex(index: number): this {
+    this.oldIndex = index
+    return this
+  }
+
+  setParentId(id: string): this {
+    this.parentId = id
+    return this
+  }
+
+  setNewIndex(index: number): this {
+    this.newIndex = index
+    return this
+  }
+
+  static of(dragNodeRaw?: DragNode): DragNode {
+    return new DragNode(dragNodeRaw)
   }
 }

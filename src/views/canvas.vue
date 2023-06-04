@@ -2,9 +2,14 @@
   <div class="bg-white shadow-md | min-h-screen"
        @click="pageStore.selectNodeOne()">
     <UiStyle>{{ generatedCss }}</UiStyle>
-    <Node v-for="node in pageStore.currentPage?.nodes"
-          :key="node.id"
-          :node="node"/>
+    <draggable v-bind="dragOptions"
+               :list="pageStore.currentPage?.nodes"
+               @start="startHandler"
+               @end="endHandler">
+      <Node v-for="node in pageStore.currentPage?.nodes"
+            :key="node.id"
+            :node="node"/>
+    </draggable>
   </div>
 </template>
 
@@ -20,6 +25,7 @@ import {useWidgetStore} from "../store/widget.store"
 import {storeToRefs} from "pinia"
 import {useScreenStore} from "../store/screen.store"
 import type {Group} from "../model/Widget"
+import {VueDraggableNext as Draggable} from "vue-draggable-next"
 
 onMounted(() => {
   window.addEventListener('message', listenMessage)
@@ -102,6 +108,18 @@ const widgetStore = useWidgetStore()
 const {widgetGroups} = storeToRefs(widgetStore)
 
 const generatedCss = computed(() => generateCss(pageStore.currentPage?.nodes, widgetGroups.value, isShowHidden.value))
+
+const dragOptions = {
+  animation: 200,
+  group: {name: 'g1'},
+  disabled: false,
+  ghostClass: 'ghost',
+  draggable: '.draggable'
+}
+
+const startHandler = ($event: any) => pageStore.dragNode('start', $event.item.id, $event.oldIndex)
+
+const endHandler = ($event: any) => pageStore.dragNode('end', $event.to.id, $event.newIndex)
 </script>
 
 <style scoped lang="scss">

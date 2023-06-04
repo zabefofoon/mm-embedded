@@ -20,6 +20,7 @@ import {
   AddParentNode,
   AddSiblingNodeDown,
   AddSiblingNodeUp,
+  DragNode,
   PasteNode,
   RemoveMarker,
   RemoveNode,
@@ -215,7 +216,7 @@ export const usePagesStore = defineStore('pages', () => {
 
       const selectNodeOne = (id?: string) => {
         if (currentPage.value) {
-          selectedNodeIds.value =  id === undefined ? [] : [id]
+          selectedNodeIds.value = id === undefined ? [] : [id]
           currentPage.value.key++
         }
       }
@@ -266,6 +267,33 @@ export const usePagesStore = defineStore('pages', () => {
       }
 
       const circuitBreaker = new CircuitBreaker()
+
+      let dragAction = DragNode.of()
+      const dragNode = (type: 'start' | 'end',
+                        nodeId: string,
+                        index: number) => {
+        if (type === 'start') {
+          dragAction = DragNode.of()
+          dragAction.setNodeId(nodeId).setOldIndex(index)
+        } else {
+          const action = <DragNode>dragAction
+          action.setParentId(nodeId).setNewIndex(index)
+
+          window.parent
+              ?.postMessage({
+                type: 'dragNode',
+                data: {dragAction: deepClone(dragAction)}
+              })
+
+          dragAction = DragNode.of()
+
+        }
+      }
+
+      const handleDragNode = (dragNode: DragNode) => {
+        actionManager.execute(DragNode.of(dragNode))
+        currentPage.value.key++
+      }
 
       return {
         selectedNodeIds,
@@ -336,7 +364,10 @@ export const usePagesStore = defineStore('pages', () => {
 
         nodeForEach,
 
-        circuitBreaker
+        circuitBreaker,
+
+        dragNode,
+        handleDragNode
       }
     }
 )

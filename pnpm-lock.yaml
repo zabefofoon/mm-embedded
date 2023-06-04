@@ -22,6 +22,9 @@ dependencies:
   vue:
     specifier: ^3.2.47
     version: 3.2.47
+  vue-draggable-next:
+    specifier: ^2.2.0
+    version: 2.2.0(sortablejs@1.15.0)(vue@3.2.47)
   vue-final-modal:
     specifier: ^3.4.11
     version: 3.4.11
@@ -2784,6 +2787,10 @@ packages:
       is-fullwidth-code-point: 4.0.0
     dev: true
 
+  /sortablejs@1.15.0:
+    resolution: {integrity: sha512-bv9qgVMjUMf89wAvM6AxVvS/4MX3sPeN0+agqShejLU5z5GX4C75ow1O2e5k4L6XItUyAK3gH6AxSbXrOM5e8w==}
+    dev: false
+
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
     engines: {node: '>=0.10.0'}
@@ -3257,6 +3264,16 @@ packages:
         optional: true
     dependencies:
       vue: 3.2.47
+
+  /vue-draggable-next@2.2.0(sortablejs@1.15.0)(vue@3.2.47):
+    resolution: {integrity: sha512-JQ7Ac4knnpsA47/acUhRR7negDHNZDLdpbXRR+n89f516rJDt+eHh48tfqTe80q2UfnLymQ46zi81gCMKFU4DQ==}
+    peerDependencies:
+      sortablejs: ^1.14.0
+      vue: ^3.2.2
+    dependencies:
+      sortablejs: 1.15.0
+      vue: 3.2.47
+    dev: false
 
   /vue-final-modal@3.4.11:
     resolution: {integrity: sha512-tKBM4hcUo16rUGa/UaYMlut11cRfxMZnahz9u+mAoSk8mQNdnm9FHzOeHIcUxNHvMC/YyVBlOHi+2GqOVO8zig==}

@@ -185,3 +185,7 @@ export type ResponsiveNodeLayout = {
 export type ResponsiveMode = 'small' | 'large'
 
 export type Direction = 'left' | 'top' | 'right' | 'bottom'
+
+export type ItemDragEvent = {
+  [key in 'moved' | 'added' | 'removed']?: { element?: Item, newIndex?: number, oldIndex?: number }
+}

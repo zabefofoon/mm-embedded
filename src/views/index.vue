@@ -93,16 +93,18 @@ const listenMessage = ($event: MessageEvent) => {
     if (pageStore.circuitBreaker.status === 'off') {
       pageStore.loadPages($event.data.data?.pages || [])
       if ($event.data.data?.widgetGroups)
-      widgetStore.setWidgetGroups($event.data.data.widgetGroups)
+        widgetStore.setWidgetGroups($event.data.data.widgetGroups)
       postPages()
       widgetStore.postWidgetStoreToCanvas()
     }
   } else if ($event.data.type === 'realTimeWidgetGroups') {
     if ($event.data.data?.widgetGroups)
-    widgetStore.setWidgetGroups($event.data.data.widgetGroups)
+      widgetStore.setWidgetGroups($event.data.data.widgetGroups)
     widgetStore.postWidgetGroupsToEditor()
     postPages()
     widgetStore.postWidgetStoreToCanvas()
+  } else if ($event.data.type === 'dragNode') {
+    pageStore.handleDragNode($event.data.data.dragAction)
   }
 }
 
