@@ -268,24 +268,23 @@ export const usePagesStore = defineStore('pages', () => {
 
       const circuitBreaker = new CircuitBreaker()
 
-      let dragAction = DragNode.of()
+      let dragAction: Partial<DragNode> = {}
       const dragNode = (type: 'start' | 'end',
                         nodeId: string,
                         index: number) => {
         if (type === 'start') {
-          dragAction = DragNode.of()
-          dragAction.setNodeId(nodeId).setOldIndex(index)
+          dragAction.nodeId = nodeId
+          dragAction.oldIndex = index
         } else {
-          const action = <DragNode>dragAction
-          action.setParentId(nodeId).setNewIndex(index)
-
+          dragAction.parentId = nodeId
+          dragAction.newIndex = index
           window.parent
               ?.postMessage({
                 type: 'dragNode',
                 data: {dragAction: deepClone(dragAction)}
               }, '*')
 
-          dragAction = DragNode.of()
+          dragAction = {}
 
         }
       }
