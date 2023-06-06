@@ -1,17 +1,13 @@
 <template>
-  <aside class="w-96 h-full | pb-20 | border-l overflow-auto | flex flex-col gap-3">
+  <aside class="w-96 h-full | border-l overflow-auto | flex flex-col">
     <ConfigNodePanelAdd/>
     <ConfigNodePanelLayout/>
-    <ConfigNodePanelWidget/>
-    <ConfigNodePanelMarker/>
   </aside>
 </template>
 
 <script setup lang="ts">
 import ConfigNodePanelAdd from "./ConfigNodePanelAdd.vue"
-import ConfigNodePanelLayout from "./ConfigNodePanelLayout.vue"
-import ConfigNodePanelWidget from "./ConfigNodePanelWidget.vue"
-import ConfigNodePanelMarker from "./ConfigNodePanelMarker.vue"</script>
+import ConfigNodePanelLayout from "./ConfigNodePanelLayout.vue"</script>
 
 <style scoped>
 
