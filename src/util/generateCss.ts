@@ -17,6 +17,15 @@ const generateCoreCss = (isShowHidden: boolean) => {
 .node {
   width: 100%;
   border-collapse: collapse;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.node > div {
+  width: 100%;
 }
 
 @media (min-width: 0px) {
@@ -64,23 +73,23 @@ const generateCoreCss = (isShowHidden: boolean) => {
       align-items: end;
   }
   
-  .small\\:position-relative {
+  .node.small\\:position-relative {
       position: relative;
   }
   
-  .small\\:position-absolute {
+  .node.small\\:position-absolute {
       position: absolute;
   }
   
-  .small\\:position-sticky {
+  .node.small\\:position-sticky {
       position: sticky;
   }
   
-  .small\\:position-fixed {
+  .node.small\\:position-fixed {
       position: fixed;
   }
   
-  .small\\:transparent {
+  .node.small\\:transparent {
       background: #ffffff;
   }
 }
@@ -88,10 +97,6 @@ const generateCoreCss = (isShowHidden: boolean) => {
 @media (min-width:0) and (max-width:767px) {
   .small\\:hidden-true {
       ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
-  }
-    
-  .small\\:hidden-false {
-      ${isShowHidden ? 'opacity: 1;' : ''}
   }
 }
 
@@ -145,28 +150,130 @@ const generateCoreCss = (isShowHidden: boolean) => {
       ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
   }
   
-  .large\\:hidden-false {
-      ${isShowHidden ? 'opacity: 1;' : ''}
-  }
-  
-  .large\\:position-relative {
+  .node.large\\:position-relative {
       position: relative;
   }
   
-  .large\\:position-absolute {
+  .node.large\\:position-absolute {
       position: absolute;
   }
   
-  .large\\:position-sticky {
+  .node.large\\:position-sticky {
       position: sticky;
   }
   
-  .large\\:position-fixed {
+  .node.large\\:position-fixed {
       position: fixed;
   }
   
   .large\\:transparent {
       background: #ffffff;
+  }
+}
+`
+}
+
+export const generateDragAreaCss = () => {
+  return `
+.drag-area {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+@media (min-width: 0px) {
+  .drag-area.small\\:type-stack {
+      display: flex;
+  }
+
+  .drag-area.small\\:direction-horizontal {
+      flex-direction: row;
+  }
+
+  .drag-area.small\\:direction-vertical {
+      flex-direction: column;
+  }
+
+  .drag-area.small\\:type-grid {
+      display: grid;
+  }
+
+  .drag-area.small\\:mainAxis-start {
+      justify-content: start;
+  }
+  
+  .drag-area.small\\:mainAxis-center {
+      justify-content: center;
+  }
+  
+  .drag-area.small\\:mainAxis-end {
+      justify-content: end;
+  }
+  
+  .drag-area.small\\:mainAxis-between {
+      justify-content: space-between;
+  }
+  
+  .drag-area.small\\:crossAxis-start {
+      align-items: start;
+  }
+  
+  .drag-area.small\\:crossAxis-center {
+      align-items: center;
+  }
+  
+  .drag-area.small\\:crossAxis-end {
+      align-items: end;
+  }
+}
+
+@media (min-width: 768px) {
+  .drag-area.large\\:type-stack {
+      display: flex
+  }
+
+  .drag-area.large\\:direction-horizontal {
+      flex-direction: row;
+  }
+
+  .drag-area.large\\:direction-vertical {
+      flex-direction: column;
+  }
+
+  .drag-area.large\\:type-grid {
+      display: grid;
+  }
+  
+  .drag-area.large\\:mainAxis-start {
+      justify-content: start;
+  }
+  
+  .drag-area.large\\:mainAxis-center {
+      justify-content: center;
+  }
+  
+  .drag-area.large\\:mainAxis-end {
+      justify-content: end;
+  }
+  
+  .drag-area.large\\:mainAxis-between {
+      justify-content: space-between;
+  }
+  
+  .drag-area.large\\:crossAxis-start {
+      align-items: start;
+  }
+  
+  .drag-area.large\\:crossAxis-center {
+      align-items: center;
+  }
+  
+  .drag-area.large\\:crossAxis-end {
+      align-items: end;
   }
 }
 `

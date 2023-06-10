@@ -13,9 +13,9 @@ const generateNodeCss = (node: NodeType) => (<ResponsiveMode[]>Object
     .keys(node.layout))
     .reduce<string>((acc, current) => {
       let result = ''
-      if (node.layout[current].type)
+      if (node.layout[current].type === 'grid')
         result = result + `${current}:type-${node.layout[current].type} `
-      if (node.layout[current].direction)
+      if (node.layout[current].direction === 'horizontal')
         result = result + `${current}:direction-${node.layout[current].direction} `
       if (node.layout[current].columns)
         result = result + `${current}:columns-${node.layout[current].columns} `
@@ -23,8 +23,6 @@ const generateNodeCss = (node: NodeType) => (<ResponsiveMode[]>Object
         result = result + `${current}:gap-${node.layout[current].gap} `
       if (node.layout[current].width)
         result = result + `${current}:width-${node.layout[current].width} `
-      else
-        result = result + `${current}:width-full `
       if (node.layout[current].height)
         result = result + `${current}:height-${node.layout[current].height} `
       if (node.layout[current].maxWidth)
@@ -32,22 +30,15 @@ const generateNodeCss = (node: NodeType) => (<ResponsiveMode[]>Object
 
       if (node.layout[current].mainAxis !== undefined)
         result = result + `${current}:mainAxis-${node.layout[current].mainAxis} `
-      else
-        result = result + `${current}:mainAxis-start `
 
       if (node.layout[current].crossAxis !== undefined)
         result = result + `${current}:crossAxis-${node.layout[current].crossAxis} `
-      else
-        result = result + `${current}:crossAxis-start `
 
       if (node.layout[current].position !== undefined)
         result = result + `${current}:position-${node.layout[current].position} `
-      else
-        result = result + `${current}:position-relative `
 
-
-      if (node.layout[current].hidden !== undefined)
-        result = result + `${current}:hidden-${node.layout[current].hidden || false} `
+      if (node.layout[current].hidden)
+        result = result + `${current}:hidden-${node.layout[current].hidden} `
 
       if (node.layout[current].paddingLeft !== undefined)
         result = result + `${current}:padding-left-${node.layout[current].paddingLeft} `

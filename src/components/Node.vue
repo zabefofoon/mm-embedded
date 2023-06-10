@@ -1,6 +1,6 @@
 <template>
   <div :id="node.id"
-       class="draggable node | w-full min-h-8 | border border-dashed"
+       class="draggable node | min-h-8 | border border-dashed"
        :class="[selectedClass, layoutClass, spacingClass, outlineClass, flexClass]"
        @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id) :  pageStore.selectNodeOne(node.id)">
     <div v-if="screenStore.isShowMarker && node.marker"
@@ -20,7 +20,7 @@
       <draggable v-bind="dragOptions"
                  :list="node.nodes"
                  :id="`drag_${node.id}`"
-                 class="drag-area w-full h-full"
+                 class="drag-area"
                  :class="[flexClass, gridClass]"
                  @start="startHandler"
                  @end="endHandler">
@@ -72,22 +72,14 @@ const gridClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.layou
 const flexClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.layout))
     .reduce<string>((acc, current) => {
       let result = ''
-      if (props.node.layout[current].type === 'stack')
-        result = result + `${current}:type-${props.node.layout[current].type} `
-      if (props.node.layout[current].direction)
+      if (props.node.layout[current].direction === 'horizontal')
         result = result + `${current}:direction-${props.node.layout[current].direction} `
       if (props.node.layout[current].gap)
         result = result + `${current}:gap-${props.node.layout[current].gap} `
-
       if (props.node.layout[current].mainAxis !== undefined)
         result = result + `${current}:mainAxis-${props.node.layout[current].mainAxis} `
-      else
-        result = result + `${current}:mainAxis-start `
-
       if (props.node.layout[current].crossAxis !== undefined)
         result = result + `${current}:crossAxis-${props.node.layout[current].crossAxis} `
-      else
-        result = result + `${current}:crossAxis-start `
 
       return acc + result
     }, ''))
@@ -104,11 +96,8 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
 
       if (props.node.layout[current].position !== undefined)
         result = result + `${current}:position-${props.node.layout[current].position} `
-      else
-        result = result + `${current}:position-relative `
 
-
-      if (props.node.layout[current].hidden !== undefined)
+      if (props.node.layout[current].hidden)
         result = result + `${current}:hidden-${props.node.layout[current].hidden || false} `
 
       if (props.node.layout[current].paddingLeft !== undefined)

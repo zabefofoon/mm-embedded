@@ -20,7 +20,7 @@ import {computed, onBeforeUnmount, onMounted, watch} from "vue"
 import {deepClone} from "../util/util"
 import UiStyle from "../components/atom/Style.vue"
 import Node from "../components/Node.vue"
-import {generateCss} from "../util/generateCss"
+import {generateCss, generateDragAreaCss} from "../util/generateCss"
 import {useWidgetStore} from "../store/widget.store"
 import {storeToRefs} from "pinia"
 import {useScreenStore} from "../store/screen.store"
@@ -107,7 +107,7 @@ watch(() => pageStore.currentPage,
 const widgetStore = useWidgetStore()
 const {widgetGroups} = storeToRefs(widgetStore)
 
-const generatedCss = computed(() => generateCss(pageStore.currentPage?.nodes, widgetGroups.value, isShowHidden.value))
+const generatedCss = computed(() => generateDragAreaCss() + '\n' + generateCss(pageStore.currentPage?.nodes, widgetGroups.value, isShowHidden.value))
 
 const dragOptions = {
   animation: 200,
