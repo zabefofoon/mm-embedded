@@ -39,7 +39,6 @@ import {useWidgetStore} from "../store/widget.store"
 import {generateCss} from "../util/generateCss"
 import {storeToRefs} from "pinia"
 import {usePeerStore} from "../store/peer.store"
-import essential from '../assets/json/essential_group.json'
 
 
 const screenStore = useScreenStore()
@@ -52,15 +51,7 @@ const canvas = ref<HTMLIFrameElement>()
 
 const peerStore = usePeerStore()
 
-onBeforeMount(() => {
-  window.addEventListener('message', listenMessage)
-
-  setTimeout(() => {
-    widgetStore.setWidgetGroups(essential)
-    widgetStore.postWidgetGroupsToEditor()
-  }, 1000)
-
-})
+onBeforeMount(() => window.addEventListener('message', listenMessage))
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
 
 const listenMessage = ($event: MessageEvent) => {
