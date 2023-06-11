@@ -1,29 +1,29 @@
 <template>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="width"
-           class="w-20 | text-xs">width</label>
+           class="tw-w-20 | tw-text-xs">width</label>
     <input id="width"
-           class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
+           class="tw-px-1 | tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
            placeholder="px, %, vw"
            :value="width"
            @keydown.stop
            @change="setNodesLayoutWidth($event)"/>
   </li>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="height"
-           class="w-20 | text-xs">height</label>
+           class="tw-w-20 | tw-text-xs">height</label>
     <input id="height"
-           class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
+           class="tw-px-1 | tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
            placeholder="px, %, vw"
            :value="height"
            @keydown.stop
            @change="setNodesLayoutHeight"/>
   </li>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="max-width"
-           class="w-20 | text-xs">maxWidth</label>
+           class="tw-w-20 | tw-text-xs">maxWidth</label>
     <input id="max-width"
-           class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
+           class="tw-px-1 | tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
            placeholder="px, %, vw"
            :value="maxWidth"
            @keydown.stop

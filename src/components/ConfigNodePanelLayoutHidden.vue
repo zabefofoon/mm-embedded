@@ -1,9 +1,9 @@
 <template>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="crossAxis"
-           class="w-20 | text-xs">hidden</label>
-    <button class="w-full | px-1 | text-sm border  hover:border-orange-500"
-            :class="isHidden ? 'text-slate-500 border-slate-500' : 'text-slate-200 border-slate-200'"
+           class="tw-w-20 | tw-text-xs">hidden</label>
+    <button class="tw-w-full | tw-px-1 | tw-text-sm tw-border hover:tw-border-orange-500"
+            :class="isHidden ? 'tw-text-slate-500 tw-border-slate-500' : 'tw-text-slate-200 tw-border-slate-200'"
             @click="pageStore.setNodesLayoutHidden(!isHidden)">
       hidden
     </button>

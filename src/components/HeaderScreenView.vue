@@ -1,15 +1,15 @@
 <template>
-  <div class="flex justify-center gap-2">
-    <IconButton icon="icon-spacing"
+  <div class="tw-flex tw-justify-center tw-gap-2">
+    <IconButton icon="mm-icon-spacing"
                 :active="screenStore.isShowSpacing"
                 @click="screenStore.toggleShowSpacing()"/>
-    <IconButton icon="icon-outline"
+    <IconButton icon="mm-icon-outline"
                 :active="screenStore.isShowOutline"
                 @click="screenStore.toggleShowOutline()"/>
-    <IconButton icon="icon-hidden"
+    <IconButton icon="mm-icon-hidden"
                 :active="screenStore.isShowHidden"
                 @click="screenStore.toggleShowHidden()"/>
-    <IconButton icon="icon-marker"
+    <IconButton icon="mm-icon-marker"
                 :active="screenStore.isShowMarker"
                 @click="screenStore.toggleMarker()"/>
   </div>

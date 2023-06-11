@@ -1,20 +1,20 @@
 <template>
-  <li class="flex items-center gap-2 | px-3 py-1">
-    <label for="type" class="w-20 | text-xs">type</label>
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
+    <label for="type" class="tw-w-20 | tw-text-xs">type</label>
     <select id="type"
-            class="w-full | text-sm border border-white hover:border-orange-500"
-            :value="type"
+            class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
+            :value="type || 'stack'"
             @change="setNodesLayoutType($event)">
       <option>stack</option>
       <option>grid</option>
     </select>
   </li>
   <li v-if="type === 'stack'"
-      class="flex items-center gap-2 | px-3 py-1">
+      class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="direction"
-           class="w-20 | text-xs">direction</label>
+           class="tw-w-20 | tw-text-xs">direction</label>
     <select id="direction"
-            class="w-full | text-sm border border-white hover:border-orange-500"
+            class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
             :value="direction"
             @change="setNodesLayoutStackDirection">
       <option value="horizontal"
@@ -27,34 +27,34 @@
     </select>
   </li>
   <li v-if="type === 'grid'"
-      class="flex items-center gap-2 | px-3 py-1">
+      class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="columns"
-           class="w-20 | text-xs">columns</label>
+           class="tw-w-20 | tw-text-xs">columns</label>
     <input id="columns"
            min="1"
            max="12"
-           class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
+           class="tw-px-1 | tw-w-full | tw-text-sm border tw-border-white hover:tw-border-orange-500"
            type="number"
            placeholder="length"
            :value="columns"
            @keydown.stop
            @change="setNodesLayoutGridColumns($event)"/>
   </li>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="gap"
-           class="w-20 | text-xs">gap</label>
+           class="tw-w-20 | tw-text-xs">gap</label>
     <input id="gap"
-           class="px-1 | w-full | text-sm border border-white hover:border-orange-500"
+           class="tw-px-1 | tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
            placeholder="px, %, vw"
            :value="gap"
            @keydown.stop
            @change="setNodesLayoutGap($event)"/>
   </li>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="mainAxis"
-           class="w-20 | text-xs">mainAxis</label>
+           class="tw-w-20 | tw-text-xs">mainAxis</label>
     <select id="mainAxis"
-            class="w-full | text-sm border border-white hover:border-orange-500"
+            class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
             :value="mainAxis"
             @change="setNodesLayoutMainAxis">
       <option>start</option>
@@ -64,11 +64,11 @@
       <option v-show="false" :value="undefined" label="start"></option>
     </select>
   </li>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="crossAxis"
-           class="w-20 | text-xs">crossAxis</label>
+           class="tw-w-20 | tw-text-xs">crossAxis</label>
     <select id="crossAxis"
-            class="w-full | text-sm border border-white hover:border-orange-500"
+            class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
             :value="crossAxis"
             @change="setNodesLayoutCrossAxis">
       <option>start</option>

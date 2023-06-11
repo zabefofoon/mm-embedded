@@ -1,7 +1,7 @@
 <template>
-  <button class="flex items-center | px-1 | text-slate-500 border border-slate-500 hover:bg-slate-200"
-          :class="[{'bg-slate-500': active}, {'text-white': active}]">
-    <i class="icon text-xl"
+  <button class="tw-flex tw-items-center | tw-px-1 | tw-text-slate-500 tw-border tw-border-slate-500 hover:tw-bg-slate-200"
+          :class="[{'tw-bg-slate-500': active}, {'tw-text-white': active}]">
+    <i class="mm-icon tw-text-xl"
        :class="icon"></i>
   </button>
 </template>

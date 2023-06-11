@@ -1,43 +1,43 @@
 <template>
-  <aside class="w-80 | border-r | p-3">
-    <div class="flex items-center gap-1">
-      <button class="flex items-center | text-slate-500"
+  <aside class="tw-w-80 | tw-border-r | tw-p-3">
+    <div class="tw-flex tw-items-center tw-gap-1">
+      <button class="tw-flex tw-items-center | tw-text-slate-500"
               @click="pageStore.addPage()">
-        <i class="icon icon-add"></i>
+        <i class="mm-icon mm-icon-add"></i>
       </button>
       <button v-if="pageStore.currentPageId"
-              class="flex items-center | text-slate-500"
+              class="tw-flex tw-items-center | tw-text-slate-500"
               @click="pageStore.removePage()">
-        <i class="icon icon-minus"></i>
+        <i class="mm-icon mm-icon-minus"></i>
       </button>
-      <div class="h-4 | mx-1 | border-r border-slate-300"></div>
+      <div class="tw-h-4 | tw-mx-1 | tw-border-r tw-border-slate-300"></div>
       <button v-if="pageStore.currentPageId"
-              class="flex items-center | text-slate-500"
+              class="tw-flex tw-items-center | tw-text-slate-500"
               @click="pageStore.copyPage()">
-        <i class="icon icon-copy"></i>
+        <i class="mm-icon mm-icon-copy"></i>
       </button>
-      <div class="h-4 | mx-1 | border-r border-slate-300"></div>
+      <div class="tw-h-4 | tw-mx-1 | tw-border-r tw-border-slate-300"></div>
       <button v-if="pageStore.currentPageId"
-              class="flex items-center | text-slate-500"
+              class="tw-flex tw-items-center | tw-text-slate-500"
               @click="pageStore.moveUpPage()">
-        <i class="icon icon-arrow-top"></i>
+        <i class="mm-icon mm-icon-arrow-top"></i>
       </button>
       <button v-if="pageStore.currentPageId"
-              class="flex items-center | text-slate-500"
+              class="tw-flex tw-items-center | tw-text-slate-500"
               @click="pageStore.moveDownPage()">
-        <i class="icon icon-arrow-bottom"></i>
+        <i class="mm-icon mm-icon-arrow-bottom"></i>
       </button>
     </div>
-    <hr class="my-1"/>
-    <ul class="flex flex-col gap-2">
+    <hr class="tw-my-1"/>
+    <ul class="tw-flex tw-flex-col tw-gap-2">
       <li v-for="(page) in pageStore.pages"
           :key="page.id"
-          class="page-list | flex items-center">
-        <button class="w-full | flex items-center gap-1 | text-sm text-left text-gray-400"
-                :class="[{'text-slate-500': page.id === pageStore.currentPageId}, {'font-bold': page.id === pageStore.currentPageId}]"
+          class="page-list | tw-flex tw-items-center">
+        <button class="w-full | tw-flex tw-items-center tw-gap-1 | tw-text-sm tw-text-left tw-text-gray-400"
+                :class="[{'tw-text-slate-500': page.id === pageStore.currentPageId}, {'tw-font-bold': page.id === pageStore.currentPageId}]"
                 @click="pageStore.selectPage(page.id)">
-          <i class="icon icon-page"></i>
-          <input class="px-1 | w-full"
+          <i class="mm-icon mm-icon-page"></i>
+          <input class="tw-px-1 | tw-w-full"
                  v-model="page.name"/>
         </button>
       </li>

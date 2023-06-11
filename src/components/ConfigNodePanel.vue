@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-96 h-full | border-l overflow-auto | flex flex-col">
+  <aside class="tw-w-96 tw-h-full | tw-border-l tw-overflow-auto | tw-flex tw-flex-col">
     <ConfigNodePanelAdd/>
     <ConfigNodePanelLayout/>
   </aside>

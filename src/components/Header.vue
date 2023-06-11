@@ -1,25 +1,25 @@
 <template>
-  <header class="border-b | flex items-center gap-2 | pl-4 py-2">
+  <header class="tw-border-b | tw-flex items-center tw-gap-2 | tw-pl-4 tw-py-2">
     <IconButton v-if="$route.query.save"
-                icon="icon-save"
+                icon="mm-icon-save"
                 @click="save"/>
-    <IconButton icon="icon-screen-size"
+    <IconButton icon="mm-icon-screen-size"
                 :active="screenStore.screenMode === 'size'"
                 @click="screenStore.setScreenMode('size')"/>
-    <IconButton icon="icon-eye"
+    <IconButton icon="mm-icon-eye"
                 :active="screenStore.screenMode === 'view'"
                 @click="screenStore.setScreenMode('view')"/>
-    <IconButton icon="icon-download"
+    <IconButton icon="mm-icon-download"
                 :active="screenStore.screenMode === 'download'"
                 @click="screenStore.setScreenMode('download')"/>
     <IconDivider/>
     <HeaderScreenSize v-if="screenStore.screenMode === 'size'"/>
     <HeaderScreenView v-else-if="screenStore.screenMode === 'view'"/>
     <HeaderScreenDownload v-else-if="screenStore.screenMode === 'download'"/>
-    <div class="flex gap-1 | ml-auto mr-12">
+    <div class="tw-flex tw-gap-1 | tw-ml-auto tw-mr-12">
       <button v-for="user in peerStore.connectedUsers"
               :title="user"
-              class="user-pill | px-2.5 py-1 | text-sm text-white rounded-full "
+              class="user-pill | tw-px-2.5 tw-py-1 | tw-text-sm tw-text-white tw-rounded-full"
               @key="user">
         {{ user.charAt(0).toUpperCase() }}
       </button>

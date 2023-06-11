@@ -1,8 +1,8 @@
 <template>
   <button
-      class="flex items-center | ml-auto p-2 px-2 | rounded-l-full bg-blue-500 hover:bg-orange-500 text-white"
+      class="tw-flex tw-items-center | tw-ml-auto tw-p-2 tw-px-2 | tw-rounded-l-full tw-bg-blue-500 hover:tw-bg-orange-500 tw-text-white"
       @click="widgetStore.toggleLayer()">
-    <i class="icon icon-grid"></i>
+    <i class="mm-icon mm-icon-grid"></i>
   </button>
 </template>
 

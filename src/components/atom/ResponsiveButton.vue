@@ -1,12 +1,12 @@
 <template>
-  <div class="flex">
-    <button class="w-full | py-1 | text-xs border hover:border-slate-400 text-slate-400"
-            :class="modelValue === 'small' ? ['font-bold border-slate-500 text-slate-500'] : ['text-slate-300']"
+  <div class="tw-flex">
+    <button class="tw-w-full | tw-py-1 | tw-text-xs tw-border hover:tw-border-slate-400 tw-text-slate-400"
+            :class="modelValue === 'small' ? ['tw-font-bold tw-border-slate-500 tw-text-slate-500'] : ['tw-text-slate-300']"
             @click="changeCurrentValue('small')">
       0px~
     </button>
-    <button class="w-full | py-1 | text-slate-300 text-xs border hover:border-slate-400 hover:text-slate-400"
-            :class="modelValue === 'large' ? ['font-bold border-slate-500 text-slate-500'] : ['text-slate-300']"
+    <button class="tw-w-full | tw-py-1 | tw-text-slate-300 tw-text-xs tw-border hover:tw-border-slate-400 hover:tw-text-slate-400"
+            :class="modelValue === 'large' ? ['tw-font-bold tw-border-slate-500 tw-text-slate-500'] : ['tw-text-slate-300']"
             @click="changeCurrentValue('large')">
       768px~
     </button>

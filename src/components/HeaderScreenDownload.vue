@@ -1,8 +1,8 @@
 <template>
-  <div class="flex justify-center gap-2">
-    <IconButton icon="icon-html"
+  <div class="tw-flex tw-justify-center tw-gap-2">
+    <IconButton icon="mm-icon-html"
                 @click="downloadHtml"/>
-    <IconButton icon="icon-css"
+    <IconButton icon="mm-icon-css"
                 @click="downloadCss"/>
   </div>
 </template>

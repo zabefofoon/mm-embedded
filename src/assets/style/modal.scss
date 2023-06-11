@@ -1,10 +1,10 @@
-.modal-container {
+.mm-modal-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.modal-content {
+.mm-modal-content {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -15,18 +15,18 @@
   background: #fff;
 }
 
-.modal__title {
+.mm-modal__title {
   margin: 0 0 .5rem 0;
   font-size: 1.5rem;
   font-weight: 700;
 }
 
-.modal__content {
+.mm-modal__content {
   flex-grow: 1;
   overflow-y: auto;
 }
 
-.modal__action {
+.mm-modal__action {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -34,7 +34,7 @@
   padding: 1rem 0 0;
 }
 
-.modal__close {
+.mm-modal__close {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;

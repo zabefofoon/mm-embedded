@@ -1,15 +1,15 @@
 <template>
   <UiStyle>{{ generatedCss }}</UiStyle>
-  <div class="flex flex-col | relative | w-full h-screen | overflow-hidden">
+  <div class="tw-flex tw-flex-col | tw-relative | tw-w-full tw-h-screen | tw-overflow-hidden">
     <Header/>
-    <div class="flex | w-full h-full"
+    <div class="tw-flex | tw-w-full tw-h-full"
          style="max-height: calc(100vh - 40px);">
       <PagesPanel/>
-      <main class="w-full h-full | p-3 | bg-slate-100">
-        <div class="flex justify-center | h-full">
+      <main class="tw-w-full tw-h-full | tw-p-3 | tw-bg-slate-100">
+        <div class="tw-flex tw-justify-center | tw-h-full">
           <iframe ref="canvas"
                   :style="{width: screenStore.screenSize.width, height: screenStore.screenSize.height}"
-                  class="w-full h-full"
+                  class="tw-w-full tw-h-full"
                   src="./#/canvas"
                   @load="initIframe">
           </iframe>

@@ -1,28 +1,28 @@
 <template>
   <VueFinalModal v-slot="{ params, close }"
                  v-bind="$attrs"
-                 classes="modal-container"
-                 content-class="modal-content w-4/5 h-4/5"
+                 classes="mm-modal-container"
+                 content-class="mm-modal-content | tw-w-4/5 tw-h-4/5"
                  @opened="fit">
-    <span class="modal__title | flex items-center">
-      <span class="text-slate-500">Widgets</span>
-      <button class="flex items-center | ml-auto | text-slate-500"
+    <span class="mm-modal__title | tw-flex tw-items-center">
+      <span class="tw-text-slate-500">Widgets</span>
+      <button class="tw-flex tw-items-center | tw-ml-auto | tw-text-slate-500"
               @click="close()">
-        <i class="icon icon-close"></i>
+        <i class="mm-icon mm-icon-close"></i>
       </button>
     </span>
-    <div class="modal__content px-2">
-      <div class="flex flex-col gap-16 | h-full">
+    <div class="mm-modal__content | tw-px-2">
+      <div class="tw-flex tw-flex-col tw-gap-16 | tw-h-full">
         <div v-for="(widgetGroup, index) in widgetGroups"
              :key="widgetGroup.name + index"
-             class="flex flex-col gap-2">
-          <h3 class="text-lg text-slate-500 font-bold">
+             class="tw-flex tw-flex-col tw-gap-2">
+          <h3 class="tw-text-lg tw-text-slate-500 tw-font-bold">
             {{ widgetGroup.name }}
           </h3>
-          <div class="grid grid-cols-6 gap-4">
+          <div class="tw-grid tw-grid-cols-6 tw-gap-4">
             <div v-for="(item, itemIndex) in widgetGroup.items"
                  :key="`${index}_${itemIndex}`"
-                 class="flex items-center justify-center | w-full aspect-square | border overflow-hidden cursor-pointer hover:border-orange-500"
+                 class="tw-flex tw-items-center tw-justify-center | tw-w-full tw-aspect-square | tw-border tw-overflow-hidden tw-cursor-pointer hover:tw-border-orange-500"
                  @click="selectWidget(item)">
               <div ref="itemElement"
                    :id="item.id"

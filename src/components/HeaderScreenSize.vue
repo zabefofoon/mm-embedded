@@ -1,24 +1,24 @@
 <template>
-  <div class="flex justify-center gap-2">
-    <IconButton icon="icon-screen-xl"
+  <div class="tw-flex tw-justify-center tw-gap-2">
+    <IconButton icon="mm-icon-screen-xl"
                 @click="selectSize('100%')"
                 :active="screenStore.screenSize.width === '100%'"/>
-    <IconButton icon="icon-screen-l"
+    <IconButton icon="mm-icon-screen-l"
                 @click="selectSize('75%')"
                 :active="screenStore.screenSize.width === '75%'"/>
-    <IconButton icon="icon-screen-m"
+    <IconButton icon="mm-icon-screen-m"
                 @click="selectSize('50%')"
                 :active="screenStore.screenSize.width === '50%'"/>
-    <IconButton icon="icon-screen-s"
+    <IconButton icon="mm-icon-screen-s"
                 @click="selectSize('33.33%')"
                 :active="screenStore.screenSize.width === '33.33%'"/>
     <IconDivider/>
-    <div class="flex items-center gap-3">
-      <input class="w-20 | px-1 | border text-sm"
+    <div class="tw-flex tw-items-center tw-gap-3">
+      <input class="tw-w-20 | tw-px-1 | tw-border tw-text-sm"
              placeholder="width"
              v-model="screenStore.screenSize.width"/>
-      <span class="text-sm">x</span>
-      <input class="w-20 | px-1 | border text-sm bg-slate-100"
+      <span class="tw-text-sm">x</span>
+      <input class="tw-w-20 | tw-px-1 | tw-border tw-text-sm tw-bg-slate-100"
              placeholder="height"
              v-model="screenStore.screenSize.height"
              disabled/>

@@ -1,9 +1,9 @@
 <template>
-  <li class="flex items-center gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
     <label for="position"
-           class="w-20 | text-xs">position</label>
+           class="tw-w-20 | tw-text-xs">position</label>
     <select id="position"
-            class="w-full | text-sm border border-white hover:border-orange-500"
+            class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
             :value="position"
             @change="setNodesLayoutPosition($event)">
       <option>relative</option>
@@ -13,41 +13,41 @@
       <option v-show="false" :value="undefined" label="relative"></option>
     </select>
   </li>
-  <li class="flex items-start gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-start tw-gap-2 | tw-px-3 tw-py-1">
     <label for="inset"
-           class="w-20 | text-xs">inset</label>
-    <div class="w-full">
-      <div class="flex gap-1">
-        <div class="flex gap-2 | w-1/2">
-          <label for="left"><i class="icon icon-padding-left"></i></label>
+           class="tw-w-20 | tw-text-xs">inset</label>
+    <div class="tw-w-full">
+      <div class="tw-flex tw-gap-1">
+        <div class="tw-flex tw-gap-2 | tw-w-1/2">
+          <label for="left"><i class="mm-icon mm-icon-padding-left"></i></label>
           <input id="left"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="left"
                  @change="setNodesLayoutInset('left', $event)"/>
         </div>
-        <div class="flex gap-2 | w-1/2">
-          <label for="right"><i class="icon icon-padding-right"></i></label>
+        <div class="tw-flex tw-gap-2 | tw-w-1/2">
+          <label for="right"><i class="mm-icon mm-icon-padding-right"></i></label>
           <input id="right"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="right"
                  @change="setNodesLayoutInset('right', $event)"/>
         </div>
       </div>
-      <div class="flex gap-1">
-        <div class="flex gap-2 | w-1/2">
-          <label for="top"><i class="icon icon-padding-top"></i></label>
+      <div class="tw-flex tw-gap-1">
+        <div class="tw-flex tw-gap-2 | tw-w-1/2">
+          <label for="top"><i class="mm-icon mm-icon-padding-top"></i></label>
           <input id="top"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="top"
                  @change="setNodesLayoutInset('top', $event)"/>
         </div>
-        <div class="flex gap-2 | w-1/2">
-          <label for="bottom"><i class="icon icon-padding-bottom"></i></label>
+        <div class="tw-flex tw-gap-2 | tw-w-1/2">
+          <label for="bottom"><i class="mm-icon mm-icon-padding-bottom"></i></label>
           <input id="bottom"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="bottom"
                  @change="setNodesLayoutInset('bottom', $event)"/>

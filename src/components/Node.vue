@@ -1,22 +1,22 @@
 <template>
   <div :id="node.id"
-       class="draggable node | min-h-8 | border border-dashed"
+       class="draggable node | tw-min-h-8 | tw-border tw-border-dashed"
        :class="[selectedClass, layoutClass, spacingClass, outlineClass, flexClass]"
        @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id) :  pageStore.selectNodeOne(node.id)">
     <div v-if="screenStore.isShowMarker && node.marker"
-         class="marker | absolute top-0 right-0 | w-3 h-3 | bg-orange-500">
-      <article class="w-80 h-60 | absolute z-10 | bg-white border shadow-md">
+         class="marker | tw-absolute tw-top-0 tw-right-0 | tw-w-3 tw-h-3 | tw-bg-orange-500">
+      <article class="tw-w-80 tw-h-60 | tw-absolute tw-z-10 | tw-bg-white tw-border tw-shadow-md">
         <textarea v-model="node.marker.text"
-                  class="w-full h-full | p-2 | resize-none text-slate-500 text-sm"
+                  class="tw-w-full tw-h-full | tw-p-2 | tw-resize-none tw-text-slate-500 tw-text-sm"
                   placeholder="text"
                   @keydown.stop></textarea>
       </article>
     </div>
     <div v-if="node.widget"
          v-html="node.widget.html"
-         class="w-full h-full"></div>
+         class="tw-w-full tw-h-full"></div>
     <template v-else>
-      <p class="w-full text-center text-slate-500">space</p>
+      <p class="tw-w-full tw-text-center tw-text-slate-500">space</p>
       <draggable v-bind="dragOptions"
                  :list="node.nodes"
                  :id="`drag_${node.id}`"
@@ -51,13 +51,13 @@ const screenStore = useScreenStore()
 
 const pageStore = usePagesStore()
 
-const spacingClass = computed(() => screenStore.isShowSpacing ? 'p-2' : '')
+const spacingClass = computed(() => screenStore.isShowSpacing ? 'tw-p-2' : '')
 
-const outlineClass = computed(() => screenStore.isShowOutline ? 'border-2' : 'border-0')
+const outlineClass = computed(() => screenStore.isShowOutline ? 'tw-border-2' : 'tw-border-0')
 
 const selectedClass = computed(() => pageStore.selectedNodeIds.includes(props.node.id)
-    ? 'border-orange-500'
-    : 'border-slate-500')
+    ? 'tw-border-orange-500'
+    : 'tw-border-slate-500')
 
 const gridClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.layout))
     .reduce<string>((acc, current) => {

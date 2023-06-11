@@ -1,9 +1,9 @@
 <template>
-  <div class="w-full h-screen | absolute top-0 z-1 | flex flex-col | bg-white | transition-all"
-       :class="widgetStore.isLayerShow ? 'left-0' : 'left-full'">
-    <HeaderGoWidgetsButton class="absolute top-1 right-0"/>
-    <HeaderGoWidgetsButton class="absolute top-1 left-0 -translate-x-full"/>
-    <iframe class="w-full h-full"
+  <div class="tw-w-full tw-h-screen | tw-absolute tw-top-0 tw-z-1 | tw-flex tw-flex-col | tw-bg-white | tw-transition-all"
+       :class="widgetStore.isLayerShow ? 'tw-left-0' : 'tw-left-full'">
+    <HeaderGoWidgetsButton class="tw-absolute tw-top-1 tw-right-0"/>
+    <HeaderGoWidgetsButton class="tw-absolute tw-top-1 tw-left-0 tw--translate-x-full"/>
+    <iframe class="tw-w-full tw-h-full"
             src="https://zabefofoon.github.io/dsm-embbedded?save=true"
             allow="clipboard-read; clipboard-write"
             @load="widgetStore.setWidgetEditor($event.target)"></iframe>

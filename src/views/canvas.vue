@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow-md | min-h-screen"
+  <div class="tw-bg-white tw-shadow-md | tw-min-h-screen"
        @click="pageStore.selectNodeOne()">
     <UiStyle>{{ generatedCss }}</UiStyle>
     <draggable v-bind="dragOptions"

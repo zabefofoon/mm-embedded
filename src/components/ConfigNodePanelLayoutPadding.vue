@@ -1,39 +1,39 @@
 <template>
-  <li class="flex items-start gap-2 | px-3 py-1">
+  <li class="tw-flex tw-items-start tw-gap-2 | tw-px-3 tw-py-1">
     <label for="padding-left"
-           class="w-20 | text-xs">padding</label>
-    <div class="w-full">
-      <div class="flex gap-1">
-        <div class="flex gap-2 | w-1/2">
-          <label for="padding-left"><i class="icon icon-padding-left"></i></label>
+           class="tw-w-20 | tw-text-xs">padding</label>
+    <div class="tw-w-full">
+      <div class="tw-flex tw-gap-1">
+        <div class="tw-flex tw-gap-2 | tw-w-1/2">
+          <label for="padding-left"><i class="mm-icon mm-icon-padding-left"></i></label>
           <input id="padding-left"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="left"
                  @change="setNodesLayoutPadding('left', $event)"/>
         </div>
-        <div class="flex gap-2 | w-1/2">
-          <label for="padding-right"><i class="icon icon-padding-right"></i></label>
+        <div class="tw-flex gap-2 | tw-w-1/2">
+          <label for="padding-right"><i class="mm-icon mm-icon-padding-right"></i></label>
           <input id="padding-right"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="right"
                  @change="setNodesLayoutPadding('right', $event)"/>
         </div>
       </div>
-      <div class="flex gap-1">
-        <div class="flex gap-2 | w-1/2">
-          <label for="padding-top"><i class="icon icon-padding-top"></i></label>
+      <div class="tw-flex tw-gap-1">
+        <div class="tw-flex tw-gap-2 | tw-w-1/2">
+          <label for="padding-top"><i class="mm-icon mm-icon-padding-top"></i></label>
           <input id="padding-top"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="top"
                  @change="setNodesLayoutPadding('top', $event)"/>
         </div>
-        <div class="flex gap-2 | w-1/2">
-          <label for="padding-bottom"><i class="icon icon-padding-bottom"></i></label>
+        <div class="tw-flex gap-2 | tw-w-1/2">
+          <label for="padding-bottom"><i class="mm-icon mm-icon-padding-bottom"></i></label>
           <input id="padding-bottom"
-                 class="w-full | text-sm border border-white hover:border-orange-500"
+                 class="tw-w-full | tw-text-sm border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="bottom"
                  @change="setNodesLayoutPadding('bottom', $event)"/>
