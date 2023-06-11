@@ -4,8 +4,10 @@
        :class="[selectedClass, layoutClass, spacingClass, outlineClass, flexClass]"
        @click.stop="$event.ctrlKey || $event.metaKey ? pageStore.selectNodeMany(node.id) :  pageStore.selectNodeOne(node.id)">
     <div v-if="screenStore.isShowMarker && node.marker"
-         class="marker | tw-absolute tw-top-0 tw-right-0 | tw-w-3 tw-h-3 | tw-bg-orange-500">
-      <article class="tw-w-80 tw-h-60 | tw-absolute tw-z-10 | tw-bg-white tw-border tw-shadow-md">
+         class="marker | tw-absolute tw-top-0 tw-right-0 | tw-bg-orange-500"
+         style="width: 1rem !important; height: 1rem !important;"
+         @mouseenter="calculateMarkerPosition">
+      <article class="tw-w-80 tw-h-60 | tw-absolute tw-z-10 tw-top-2 tw-left-2 | tw-bg-white tw-border tw-shadow-md">
         <textarea v-model="node.marker.text"
                   class="tw-w-full tw-h-full | tw-p-2 | tw-resize-none tw-text-slate-500 tw-text-sm"
                   placeholder="text"
@@ -156,6 +158,17 @@ const dragOptions = {
 const startHandler = ($event: any) => pageStore.dragNode('start', $event.item.id, $event.oldIndex)
 
 const endHandler = ($event: any) => pageStore.dragNode('end', $event.to.id, $event.newIndex)
+
+const calculateMarkerPosition = ($event: MouseEvent) => {
+  const target = <HTMLDivElement>$event.target
+  const {left, top} = target.getBoundingClientRect()
+  const isRight = left < document.body.offsetWidth / 2
+  const isTop = top < document.body.offsetHeight / 2
+  const x = isRight ? 0 : -100
+  const y = isTop ? 0 : -100
+  const article = target.getElementsByTagName('article')[0]
+  if (article) article.style.transform = `translate(${x}%, ${y}%)`
+}
 </script>
 
 <style scoped lang="scss">
