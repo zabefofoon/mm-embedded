@@ -14,7 +14,8 @@
     </div>
     <div v-if="node.widget"
          v-html="node.widget.html"
-         class="tw-w-full tw-h-full"></div>
+         class="tw-w-full tw-h-full"
+         :class="{'analyze': widgetStore.selectedUsingWidgetId === node.widget?.id}"></div>
     <template v-else>
       <p class="tw-w-full tw-text-center tw-text-slate-500">space</p>
       <draggable v-bind="dragOptions"
@@ -39,6 +40,7 @@ import {useScreenStore} from "../store/screen.store"
 import type {ResponsiveMode} from "../model/Node"
 import {Node as NodeType} from "../model/Node"
 import {VueDraggableNext as Draggable} from "vue-draggable-next"
+import {useWidgetStore} from "../store/widget.store"
 
 const props = defineProps({
   node: {
@@ -50,6 +52,8 @@ const props = defineProps({
 const screenStore = useScreenStore()
 
 const pageStore = usePagesStore()
+
+const widgetStore = useWidgetStore()
 
 const spacingClass = computed(() => screenStore.isShowSpacing ? 'tw-p-2' : '')
 
@@ -168,6 +172,22 @@ const endHandler = ($event: any) => pageStore.dragNode('end', $event.to.id, $eve
 .node:has(.node) {
   > p {
     display: none;
+  }
+}
+
+.analyze {
+
+  &:after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(249, 115, 22, .1);
+    border: 1px solid rgba(249, 115, 22, .5);
+
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 </style>

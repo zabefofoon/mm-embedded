@@ -1,11 +1,12 @@
 import {defineStore} from "pinia"
-import {ref} from "vue"
+import {computed, ref, watch} from "vue"
 import {deepClone} from "../util/util"
 import {usePagesStore} from "./page.store"
 import type {Group} from "../model/Widget"
-
+import {useScreenStore} from "./screen.store"
 
 export const useWidgetStore = defineStore('widgets', () => {
+  const screenStore = useScreenStore()
   const pageStore = usePagesStore()
 
   const canvas = ref<HTMLIFrameElement>()
@@ -45,6 +46,25 @@ export const useWidgetStore = defineStore('widgets', () => {
         data: deepClone(widgetGroups.value)
       })
 
+  const widgets = computed(() => widgetGroups.value.flatMap((group) => group.items))
+
+  const selectedUsingWidgetId = ref()
+  const selectUsingWidget = (widgetId?: string) => selectedUsingWidgetId.value = widgetId
+
+  const getUsingWidgetLength = (widgetId?: string) => {
+    let length = 0
+    pageStore.nodeForEach((node) => {
+      if (node.widget?.id === widgetId) length++
+    })
+    return length
+  }
+
+  const getUsingWidget = (widgetId?: string) => widgets.value
+      .find((widget) => widget.id === widgetId)
+
+  watch(() => screenStore.screenMode === 'analyzeWidget',
+      () => selectUsingWidget())
+
   return {
     setCanvas,
     postWidgetStoreToCanvas,
@@ -58,6 +78,14 @@ export const useWidgetStore = defineStore('widgets', () => {
     widgetEditor,
     setWidgetEditor,
 
-    postWidgetGroupsToEditor
+    postWidgetGroupsToEditor,
+
+    widgets,
+    getUsingWidgetLength,
+
+    selectedUsingWidgetId,
+    selectUsingWidget,
+
+    getUsingWidget
   }
 })

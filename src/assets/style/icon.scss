@@ -316,3 +316,9 @@
   -webkit-mask-image: url($src);
   mask-image: url($src);
 }
+
+.mm-icon-analyze {
+  $src: 'https://api.iconify.design/mdi/table-eye.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}

@@ -12,6 +12,9 @@
     <IconButton icon="mm-icon-download"
                 :active="screenStore.screenMode === 'download'"
                 @click="screenStore.setScreenMode('download')"/>
+    <IconButton icon="mm-icon-analyze"
+                :active="screenStore.screenMode === 'analyzeWidget'"
+                @click="screenStore.setScreenMode('analyzeWidget')"/>
     <IconDivider/>
     <HeaderScreenSize v-if="screenStore.screenMode === 'size'"/>
     <HeaderScreenView v-else-if="screenStore.screenMode === 'view'"/>

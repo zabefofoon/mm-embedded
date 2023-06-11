@@ -39,6 +39,8 @@ import {useWidgetStore} from "../store/widget.store"
 import {generateCss} from "../util/generateCss"
 import {storeToRefs} from "pinia"
 import {usePeerStore} from "../store/peer.store"
+import essential from '../assets/json/essential_group.json'
+
 
 const screenStore = useScreenStore()
 
@@ -50,7 +52,15 @@ const canvas = ref<HTMLIFrameElement>()
 
 const peerStore = usePeerStore()
 
-onBeforeMount(() => window.addEventListener('message', listenMessage))
+onBeforeMount(() => {
+  window.addEventListener('message', listenMessage)
+
+  setTimeout(() => {
+    widgetStore.setWidgetGroups(essential)
+    widgetStore.postWidgetGroupsToEditor()
+  }, 1000)
+
+})
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
 
 const listenMessage = ($event: MessageEvent) => {
@@ -59,6 +69,7 @@ const listenMessage = ($event: MessageEvent) => {
     if (pageData?.key !== pageStore.currentPage?.key) {
       pageStore.setPageData(pageData)
       pageStore.selectedNodeIds = $event.data.data.selectedNodeIds
+      screenStore.setScreenMode('size')
     }
 
   } else if ($event.data.type === 'command') {
@@ -131,12 +142,19 @@ const postPages = () => {
 const postScreenData = (isShowSpacing: boolean,
                         isShowOutline: boolean,
                         isShowHidden: boolean,
-                        isShowMarker: boolean) => {
-  canvas.value?.contentWindow?.postMessage({
-    type: 'screenMutation',
-    data: deepClone({isShowSpacing, isShowOutline, isShowHidden, isShowMarker})
-  })
-}
+                        isShowMarker: boolean) => canvas.value
+    ?.contentWindow
+    ?.postMessage({
+      type: 'screenMutation',
+      data: deepClone({isShowSpacing, isShowOutline, isShowHidden, isShowMarker})
+    })
+
+const postSelectedUsingWidgetId = () => canvas.value
+    ?.contentWindow
+    ?.postMessage({
+      type: 'selectUsingWidget',
+      data: widgetStore.selectedUsingWidgetId
+    })
 
 watch(() => pageStore.currentPage, postPages, {deep: true})
 
@@ -150,6 +168,8 @@ watch(() => [
         screenStore.isShowOutline,
         screenStore.isShowHidden,
         screenStore.isShowMarker))
+
+watch(() => widgetStore.selectedUsingWidgetId, postSelectedUsingWidgetId)
 
 const listenKeydown = ($event: KeyboardEvent) => {
   const isCtrl = $event.ctrlKey || $event.metaKey

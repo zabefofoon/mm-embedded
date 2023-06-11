@@ -71,6 +71,8 @@ const listenMessage = ($event: MessageEvent) => {
     screenStore.toggleShowOutline(isShowOutline)
     screenStore.toggleShowHidden(isShowHidden)
     screenStore.toggleMarker(isShowMarker)
+  } else if ($event.data.type === 'selectUsingWidget') {
+    widgetStore.selectUsingWidget($event.data.data)
   }
 }
 
