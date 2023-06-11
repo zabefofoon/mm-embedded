@@ -255,7 +255,7 @@ const generateCoreCss = (isShowHidden: boolean) => {
   align-items: start;
 }
 
-.node > div {
+.node > * {
   width: 100%;
 }
 
