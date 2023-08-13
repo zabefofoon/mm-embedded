@@ -1,9 +1,11 @@
 import {defineStore} from "pinia"
 import {computed, ref, watch} from "vue"
-import {deepClone} from "../util/util"
 import {usePagesStore} from "./page.store"
-import type {Group} from "../model/Widget"
+import type {Group, Item} from "../model/Widget"
 import {useScreenStore} from "./screen.store"
+import {postCanvasWidgetGroupsMutation} from "../messenger/postToCanvas.msg"
+import {postInjectGroups as _postWidgetGroupsToEditor} from "../messenger/postToWidgetLayer.msg"
+import {generateUniqueId} from "../util/util"
 
 export const useWidgetStore = defineStore('widgets', () => {
   const screenStore = useScreenStore()
@@ -19,12 +21,7 @@ export const useWidgetStore = defineStore('widgets', () => {
     widgetEditor.value = iframe
   }
 
-  const postWidgetGroupsToEditor = () => widgetEditor.value
-      ?.contentWindow
-      ?.postMessage({
-        type: 'realtimeSetGroups',
-        groups: deepClone(widgetGroups.value)
-      }, '*')
+  const postWidgetGroupsToEditor = () => _postWidgetGroupsToEditor(widgetEditor.value, widgetGroups.value)
 
   const isLayerShow = ref(false)
   const toggleLayer = (value?: boolean) => {
@@ -35,16 +32,12 @@ export const useWidgetStore = defineStore('widgets', () => {
 
   const setWidgetGroups = (groups: Group[]) => {
     widgetGroups.value = groups
+    postCanvasWidgetGroupsMutation(canvas.value, widgetGroups.value)
     postWidgetStoreToCanvas()
     pageStore.updateNodesWidget()
   }
 
-  const postWidgetStoreToCanvas = () => canvas.value
-      ?.contentWindow
-      ?.postMessage({
-        type: 'widgetGroupsMutation',
-        data: deepClone(widgetGroups.value)
-      })
+  const postWidgetStoreToCanvas = () => postCanvasWidgetGroupsMutation(canvas.value, widgetGroups.value)
 
   const widgets = computed(() => widgetGroups.value.flatMap((group) => group.items))
 
@@ -64,6 +57,22 @@ export const useWidgetStore = defineStore('widgets', () => {
 
   watch(() => screenStore.screenMode === 'analyzeWidget',
       () => selectUsingWidget())
+
+  const importWidgets = (items: Item[]) => {
+
+    items.forEach((item) => {
+      item.id = generateUniqueId()
+    })
+
+    const foundImportedGroup = widgetGroups.value.find((group) => group.name === 'imported')
+
+    foundImportedGroup
+        ? foundImportedGroup.items = [...foundImportedGroup.items, ...items]
+        : widgetGroups.value.push({name: 'imported', items})
+
+    postWidgetGroupsToEditor()
+    postWidgetStoreToCanvas()
+  }
 
   return {
     setCanvas,
@@ -86,6 +95,7 @@ export const useWidgetStore = defineStore('widgets', () => {
     selectedUsingWidgetId,
     selectUsingWidget,
 
-    getUsingWidget
+    getUsingWidget,
+    importWidgets
   }
 })

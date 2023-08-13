@@ -1,6 +1,6 @@
 <template>
   <header class="tw-border-b | tw-flex items-center tw-gap-2 | tw-pl-4 tw-py-2">
-    <IconButton v-if="$route.query.save"
+    <IconButton v-if="$route.query.edit"
                 icon="mm-icon-save"
                 @click="save"/>
     <IconButton icon="mm-icon-screen-size"
@@ -39,8 +39,8 @@ import HeaderScreenDownload from "./HeaderScreenDownload.vue"
 import {useScreenStore} from "../store/screen.store"
 import {usePagesStore} from "../store/page.store"
 import {useWidgetStore} from "../store/widget.store"
-import {deepClone} from "../util/util"
 import {usePeerStore} from "../store/peer.store"
+import {postProjectSaveProject} from "../messenger/postToProject.msg"
 
 const screenStore = useScreenStore()
 
@@ -48,14 +48,7 @@ const pageStore = usePagesStore()
 const widgetStore = useWidgetStore()
 
 const save = () => {
-  window.parent
-      ?.postMessage({
-        type: 'saveProject',
-        data: {
-          pages: deepClone(pageStore.pages),
-          widgetGroups: deepClone(widgetStore.widgetGroups),
-        }
-      }, '*')
+  postProjectSaveProject(pageStore.pages, widgetStore.widgetGroups)
   alert('saved')
 }
 

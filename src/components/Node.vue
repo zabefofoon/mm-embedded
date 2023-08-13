@@ -143,7 +143,7 @@ const adjustMarkerBody = () => setTimeout(() => {
       })
 })
 
-watch(() => pageStore.currentPage.nodes,
+watch(() => pageStore.currentPage?.nodes,
     () => adjustMarkerBody(),
     {immediate: true, deep: true})
 

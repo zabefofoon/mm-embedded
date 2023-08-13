@@ -32,13 +32,19 @@ import UiStyle from "../components/atom/Style.vue"
 import ConfigWidgetLayer from "../components/ConfigWidgetLayer.vue"
 import {useScreenStore} from "../store/screen.store"
 import {computed, onBeforeMount, onBeforeUnmount, onMounted, ref, watch} from "vue"
-import type {PageData} from "../store/page.store"
 import {usePagesStore} from "../store/page.store"
-import {deepClone} from "../util/util"
 import {useWidgetStore} from "../store/widget.store"
 import {generateCss} from "../util/generateCss"
 import {storeToRefs} from "pinia"
 import {usePeerStore} from "../store/peer.store"
+import {
+  postCanvasPageMutation,
+  postCanvasScreenMutation,
+  postCanvasSelectUsingWidget
+} from "../messenger/postToCanvas.msg"
+import {receiveFromCanvas} from "../messenger/receiveFromCanvas.msg"
+import {receiveFromProject} from "../messenger/receiveFromProject.msg"
+import type {Item} from "../model/Widget"
 
 
 const screenStore = useScreenStore()
@@ -54,100 +60,79 @@ const peerStore = usePeerStore()
 onBeforeMount(() => window.addEventListener('message', listenMessage))
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
 
-const listenMessage = ($event: MessageEvent) => {
-  if ($event.data.type === 'pageMutation') {
-    const pageData = <PageData>$event.data.data.pageData
-    if (pageData?.key !== pageStore.currentPage?.key) {
-      pageStore.setPageData(pageData)
-      pageStore.selectedNodeIds = $event.data.data.selectedNodeIds
+const listenCanvasMessage = ($event: MessageEvent) => {
+
+  const [type, data] = receiveFromCanvas($event)
+
+  if (type === 'pageMutation') {
+    if (data.pageData && data.pageData?.key !== pageStore.currentPage?.key) {
+      pageStore.setPageData(data.pageData)
+      pageStore.selectedNodeIds = data.selectedNodeIds || []
       screenStore.setScreenMode('size')
     }
-
-  } else if ($event.data.type === 'command') {
-    if ($event.data.data === 'removeNode')
+  } else if (type === 'command') {
+    if (data.command === 'removeNode')
       pageStore.removeNode()
-    else if ($event.data.data === 'addChildNode')
+    else if (data.command === 'addChildNode')
       pageStore.addChildNode()
-    else if ($event.data.data === 'addSiblingNodeDown')
+    else if (data.command === 'addSiblingNodeDown')
       pageStore.addSiblingNodeDown()
-    else if ($event.data.data === 'copyNode')
+    else if (data.command === 'copyNode')
       pageStore.copyNode()
-    else if ($event.data.data === 'cutNode')
+    else if (data.command === 'cutNode')
       pageStore.cutNode()
-    else if ($event.data.data === 'pasteNode')
+    else if (data.command === 'pasteNode')
       pageStore.pasteNode()
-    else if ($event.data.data === 'undo')
+    else if (data.command === 'undo')
       pageStore.actionManager.executeUndo()
-    else if ($event.data.data === 'redo')
+    else if (data.command === 'redo')
       pageStore.actionManager.executeRedo()
-  } else if ($event.data.type === 'loadData') {
-    pageStore.loadPages($event.data.data?.pages || [])
-    widgetStore.setWidgetGroups($event.data.data?.widgetGroups || [])
-    pageStore.selectPage(pageStore.pages?.[0].id)
+  } else if (type === 'dragNode' && data.dragAction)
+    pageStore.handleDragNode(data.dragAction)
+}
+
+
+const listenProjectMessage = ($event: MessageEvent) => {
+  const [type, data] = receiveFromProject($event)
+  if (type === 'loadData') {
+    pageStore.loadPages(data.pages || [])
+    widgetStore.setWidgetGroups(data.widgetGroups || [])
+    pageStore.selectPage(pageStore.pages?.[0]?.id)
     setTimeout(() => {
-      postPages()
+      postCanvasPages()
       widgetStore.postWidgetStoreToCanvas()
       widgetStore.postWidgetGroupsToEditor()
     }, 100)
-  } else if ($event.data.type === 'connectedUser') {
-    peerStore.setConnectedUsers($event.data.data)
-  } else if ($event.data.type === 'realTimeEdit') {
-    if (pageStore.circuitBreaker.status === 'off') {
-      pageStore.loadPages($event.data.data?.pages || [])
-      if ($event.data.data?.widgetGroups)
-        widgetStore.setWidgetGroups($event.data.data.widgetGroups)
-      postPages()
-      widgetStore.postWidgetStoreToCanvas()
-    }
-  } else if ($event.data.type === 'realTimeWidgetGroups') {
-    if ($event.data.data?.widgetGroups)
-      widgetStore.setWidgetGroups($event.data.data.widgetGroups)
+  } else if (type === 'connectedUser') {
+    peerStore.setConnectedUsers($event.data.users)
+  } else if (type === 'importWidgets') {
+    const widgets: Item[] = $event.data?.widgets || []
+    widgetStore.importWidgets(widgets)
     widgetStore.postWidgetGroupsToEditor()
-    postPages()
+    postCanvasPages()
     widgetStore.postWidgetStoreToCanvas()
-  } else if ($event.data.type === 'dragNode') {
-    pageStore.handleDragNode($event.data.data.dragAction)
   }
+}
+const listenMessage = ($event: MessageEvent) => {
+  listenCanvasMessage($event)
+  listenProjectMessage($event)
 }
 
 const initIframe = () => setTimeout(() => {
   widgetStore.setCanvas(canvas.value)
-  postPages()
+  postCanvasPages()
   widgetStore.postWidgetStoreToCanvas()
 }, 250)
 
-const postPages = () => {
+const postCanvasPages = () => {
   if (pageStore.circuitBreaker.status === 'off')
-    canvas.value
-        ?.contentWindow
-        ?.postMessage({
-          type: 'pagesMutation',
-          data: {
-            pages: deepClone(pageStore.pages),
-            currentPageId: pageStore.currentPageId,
-            selectedNodeIds: deepClone(pageStore.selectedNodeIds)
-          }
-        })
+    postCanvasPageMutation(canvas.value,
+        pageStore.pages,
+        pageStore.selectedNodeIds,
+        pageStore.currentPageId)
 }
 
-const postScreenData = (isShowSpacing: boolean,
-                        isShowOutline: boolean,
-                        isShowHidden: boolean,
-                        isShowMarker: boolean) => canvas.value
-    ?.contentWindow
-    ?.postMessage({
-      type: 'screenMutation',
-      data: deepClone({isShowSpacing, isShowOutline, isShowHidden, isShowMarker})
-    })
-
-const postSelectedUsingWidgetId = () => canvas.value
-    ?.contentWindow
-    ?.postMessage({
-      type: 'selectUsingWidget',
-      data: widgetStore.selectedUsingWidgetId
-    })
-
-watch(() => pageStore.currentPage, postPages, {deep: true})
+watch(() => pageStore.currentPage, postCanvasPages, {deep: true})
 
 watch(() => [
       screenStore.isShowSpacing,
@@ -155,12 +140,14 @@ watch(() => [
       screenStore.isShowHidden,
       screenStore.isShowMarker
     ],
-    () => postScreenData(screenStore.isShowSpacing,
+    () => postCanvasScreenMutation(canvas.value,
+        screenStore.isShowSpacing,
         screenStore.isShowOutline,
         screenStore.isShowHidden,
         screenStore.isShowMarker))
 
-watch(() => widgetStore.selectedUsingWidgetId, postSelectedUsingWidgetId)
+watch(() => widgetStore.selectedUsingWidgetId,
+    (selectedUsingWidgetId) => postCanvasSelectUsingWidget(canvas.value, selectedUsingWidgetId))
 
 const listenKeydown = ($event: KeyboardEvent) => {
   const isCtrl = $event.ctrlKey || $event.metaKey

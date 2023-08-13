@@ -44,13 +44,8 @@ import {
   SetWidget
 } from "../model/Action"
 import {CircuitBreaker} from "../model/CircuitBreaker"
-
-export type PageData = {
-  id: string
-  name: string
-  key: number
-  nodes: Node[]
-}
+import {postEditorDragNode} from "../messenger/postToEditor.msg"
+import type {PageData} from "../model/Page"
 
 const createPage = (): PageData => ({
   id: generateUniqueId(),
@@ -240,7 +235,7 @@ export const usePagesStore = defineStore('pages', () => {
       const findNode = (id?: string): Node | undefined => {
         let found
 
-        const search = (nodes: Node[]) => {
+        const search = (nodes: Node[] = []) => {
           if (nodes.length > 0)
             nodes?.forEach((node) => {
               if (id === node.id)
@@ -249,7 +244,7 @@ export const usePagesStore = defineStore('pages', () => {
                 search(node.nodes)
             })
         }
-        search(currentPage.value.nodes)
+        search(currentPage.value?.nodes)
         return found
       }
 
@@ -278,11 +273,7 @@ export const usePagesStore = defineStore('pages', () => {
         } else {
           dragAction.parentId = nodeId
           dragAction.newIndex = index
-          window.parent
-              ?.postMessage({
-                type: 'dragNode',
-                data: {dragAction: deepClone(dragAction)}
-              }, '*')
+          postEditorDragNode(dragAction)
 
           dragAction = {}
 

@@ -4,7 +4,7 @@
     <HeaderGoWidgetsButton class="tw-absolute tw-top-1 tw-right-0"/>
     <HeaderGoWidgetsButton class="tw-absolute tw-top-1 tw-left-0 tw--translate-x-full"/>
     <iframe class="tw-w-full tw-h-full"
-            src="https://zabefofoon.github.io/dsm-embbedded?save=true"
+            src="https://zabefofoon.github.io/dsm-embbedded/?edit=true"
             allow="clipboard-read; clipboard-write"
             @load="widgetStore.setWidgetEditor($event.target)"></iframe>
   </div>
@@ -14,40 +14,29 @@
 import {useWidgetStore} from "../store/widget.store"
 import HeaderGoWidgetsButton from "../components/HeaderGoWidgetsButton.vue"
 import {onBeforeUnmount, onMounted} from "vue"
-import {deepClone} from "../util/util"
 import {usePagesStore} from "../store/page.store"
+import {postProjectSaveProject, postProjectWidgetGroupsMutation} from "../messenger/postToProject.msg"
+import {receiveFromWidgetLayer} from "../messenger/receiveFromWidgetLayer"
 
 const pageStore = usePagesStore()
 const widgetStore = useWidgetStore()
 
-onMounted(() => window.addEventListener('message', updateProjectDetail))
-onBeforeUnmount(() => window.removeEventListener('message', updateProjectDetail))
+onMounted(() => window.addEventListener('message', listenWidgetLayerMessage))
+onBeforeUnmount(() => window.removeEventListener('message', listenWidgetLayerMessage))
 
-const updateProjectDetail = (event: MessageEvent) => {
-  if (event.data.type === 'saveGroups') {
-    widgetStore.setWidgetGroups(JSON.parse(event.data.groups))
-    window.parent
-        ?.postMessage({
-          type: 'saveProject',
-          data: {
-            pages: deepClone(pageStore.pages),
-            widgetGroups: deepClone(widgetStore.widgetGroups),
-          }
-        }, '*')
+const listenWidgetLayerMessage = (event: MessageEvent) => {
+  const [type, data] = receiveFromWidgetLayer(event)
+  if (type === 'saveGroups') {
+    widgetStore.setWidgetGroups(data.groups || [])
+    postProjectSaveProject(pageStore.pages, widgetStore.widgetGroups)
     alert('save the project')
-  } else if (event.data.type === 'editRealtime') {
-    widgetStore.setWidgetGroups(JSON.parse(event.data.groups))
-    window.parent
-        ?.postMessage({
-          type: 'editWidgetGroupsRealtime',
-          data: {
-            widgetGroups: deepClone(widgetStore.widgetGroups),
-          }
-        }, '*')
+  }
+
+  if (type === 'groupsMutation') {
+    widgetStore.setWidgetGroups(data.groups || [])
+    postProjectWidgetGroupsMutation(widgetStore.widgetGroups)
   }
 }
-
-//watch(widgetGroups, postGroups, {immediate: true})
 </script>
 
 <style scoped>

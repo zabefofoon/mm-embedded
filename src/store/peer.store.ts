@@ -1,8 +1,7 @@
 import {defineStore} from "pinia"
 import {ref, watch} from "vue"
 import {usePagesStore} from "./page.store"
-import {deepClone} from "../util/util"
-
+import {postProjectRealtimeEditProject} from "../messenger/postToProject.msg"
 
 export const usePeerStore = defineStore('peer', () => {
 
@@ -16,13 +15,7 @@ export const usePeerStore = defineStore('peer', () => {
   watch(() => [pageStore.actionManager.actions.length, pageStore.actionManager.undoneActions.length],
       () => {
         if (pageStore.circuitBreaker.status === 'off')
-          window.parent
-              ?.postMessage({
-                type: 'realtimeEditProject',
-                data: {
-                  pages: deepClone(pageStore.pages),
-                }
-              }, '*')
+          postProjectRealtimeEditProject(pageStore.pages)
       }, {deep: true})
 
   return {
