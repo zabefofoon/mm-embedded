@@ -245,6 +245,17 @@ video {
 
 const generateCoreCss = (isShowHidden: boolean) => {
   return `
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  background-color: currentColor;
+}  
+  
 .node {
   width: 100%;
   border-collapse: collapse;
