@@ -47,14 +47,14 @@ import {CircuitBreaker} from "../model/CircuitBreaker"
 import {postEditorDragNode} from "../messenger/postToEditor.msg"
 import type {PageData} from "../model/Page"
 
-const createPage = (): PageData => ({
-  id: generateUniqueId(),
-  name: 'Page',
-  key: 0,
-  nodes: [new Node()],
-})
-
 export const usePagesStore = defineStore('pages', () => {
+
+      const createPage = (): PageData => ({
+        id: generateUniqueId(),
+        name: 'Page',
+        key: 0,
+        nodes: [new Node()],
+      })
 
       const selectedNodeIds = ref<string[]>([])
 
@@ -357,7 +357,9 @@ export const usePagesStore = defineStore('pages', () => {
         circuitBreaker,
 
         dragNode,
-        handleDragNode
+        handleDragNode,
+
+        createPage
       }
     }
 )

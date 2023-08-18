@@ -45,6 +45,8 @@ import {
 import {receiveFromCanvas} from "../messenger/receiveFromCanvas.msg"
 import {receiveFromProject} from "../messenger/receiveFromProject.msg"
 import type {Item} from "../model/Widget"
+import {generateUniqueId} from "../util/util"
+import {Node} from "../model/Node"
 
 
 const screenStore = useScreenStore()
@@ -95,7 +97,7 @@ const listenCanvasMessage = ($event: MessageEvent) => {
 const listenProjectMessage = ($event: MessageEvent) => {
   const [type, data] = receiveFromProject($event)
   if (type === 'loadData') {
-    pageStore.loadPages(data.pages || [])
+    pageStore.loadPages(data.pages || [pageStore.createPage()])
     widgetStore.setWidgetGroups(data.widgetGroups || [])
     pageStore.selectPage(pageStore.pages?.[0]?.id)
     setTimeout(() => {
