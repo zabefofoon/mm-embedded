@@ -70,7 +70,6 @@ const listenCanvasMessage = ($event: MessageEvent) => {
     if (data.pageData && data.pageData?.key !== pageStore.currentPage?.key) {
       pageStore.setPageData(data.pageData)
       pageStore.selectedNodeIds = data.selectedNodeIds || []
-      screenStore.setScreenMode('size')
     }
   } else if (type === 'command') {
     if (data.command === 'removeNode')

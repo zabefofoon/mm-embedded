@@ -59,7 +59,7 @@ const widgetStore = useWidgetStore()
 
 const spacingClass = computed(() => screenStore.isShowSpacing ? 'tw-p-2' : '')
 
-const outlineClass = computed(() => screenStore.isShowOutline ? 'tw-border-2' : 'tw-border-0')
+const outlineClass = computed(() => screenStore.isShowOutline ? 'tw-border-1' : 'tw-border-0')
 
 const selectedClass = computed(() => pageStore.selectedNodeIds.includes(props.node.id)
     ? 'tw-border-orange-500'
