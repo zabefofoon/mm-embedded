@@ -128,7 +128,11 @@ export class Node {
       this.layout[this.selectedResponsiveMode].bottom = value
   }
 
-  static makeNode(node: Node) {
+static of(parentId?: string) {
+  return new Node(parentId)
+}
+
+  static makeNode(node?: Node) {
     return Object.assign(new Node(), node)
   }
 
