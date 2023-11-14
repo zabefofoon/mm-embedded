@@ -1,4 +1,4 @@
-import {usePagesStore} from "../store/page.store"
+import { usePagesStore } from '../store/page.store'
 import type {
   CrossAxis,
   Direction,
@@ -7,32 +7,30 @@ import type {
   NodeDirection,
   NodeLayoutType,
   Position,
-  ResponsiveMode
-} from "./Node"
-import {Node} from "./Node"
-import {deepClone, generateUniqueId} from "../util/util"
-import {useScreenStore} from "../store/screen.store"
-import type {Item} from "./Widget"
+  ResponsiveMode,
+} from './Node'
+import { Node } from './Node'
+import { deepClone, generateUniqueId } from '../util/util'
+import { useScreenStore } from '../store/screen.store'
+import type { Item } from './Widget'
 
 export interface Action {
   readonly actionName: string
 
-  do: () => void,
+  do: () => void
 
-  undo: () => void,
+  undo: () => void
 
-  redo: () => void,
+  redo: () => void
 }
 
 export class AbstractAction implements Action {
   actionName = ''
   pageStore = usePagesStore()
 
-  do(): void {
-  }
+  do(): void {}
 
-  undo(): void {
-  }
+  undo(): void {}
 
   redo(): void {
     this.do()
@@ -40,7 +38,6 @@ export class AbstractAction implements Action {
 }
 
 export class AddSiblingNodeUp extends AbstractAction {
-
   actionName = 'AddSiblingNodeUp'
   createdNodeIds: string[] = []
   selectedIds: string[] = []
@@ -61,16 +58,18 @@ export class AddSiblingNodeUp extends AbstractAction {
       const found = this.pageStore.findNode(selectedId)
       const parent = this.pageStore.findNode(found?.parentId)
       const index = parent
-          ? parent.nodes.findIndex((item) => item.id === found?.id)
-          : this.pageStore.currentPage.nodes.findIndex((item) => item.id === found?.id)
+        ? parent.nodes.findIndex((item) => item.id === found?.id)
+        : this.pageStore.currentPage.nodes.findIndex(
+            (item) => item.id === found?.id
+          )
 
       const createdNode = parent ? new Node(parent.id) : new Node()
       createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
 
       parent
-          ? parent.nodes.splice(index, 0, createdNode)
-          : this.pageStore.currentPage.nodes.splice(index, 0, createdNode)
+        ? parent.nodes.splice(index, 0, createdNode)
+        : this.pageStore.currentPage.nodes.splice(index, 0, createdNode)
     }
 
     this.pageStore.selectedNodeIds = this.createdNodeIds
@@ -82,8 +81,9 @@ export class AddSiblingNodeUp extends AbstractAction {
       const found = this.pageStore.findNode(id)
       const parent = this.pageStore.findNode(found?.parentId)
       parent
-          ? parent.nodes = parent.nodes.filter((node) => node.id !== id)
-          : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== id)
+        ? (parent.nodes = parent.nodes.filter((node) => node.id !== id))
+        : (this.pageStore.currentPage.nodes =
+            this.pageStore.currentPage.nodes.filter((node) => node.id !== id))
     })
     this.pageStore.selectNodeOne(this.selectedIds[0])
   }
@@ -118,16 +118,18 @@ export class AddSiblingNodeDown extends AbstractAction {
       const found = this.pageStore.findNode(selectedId)
       const parent = this.pageStore.findNode(found?.parentId)
       const index = parent
-          ? parent.nodes.findIndex((item) => item.id === found?.id)
-          : this.pageStore.currentPage.nodes.findIndex((item) => item.id === found?.id)
+        ? parent.nodes.findIndex((item) => item.id === found?.id)
+        : this.pageStore.currentPage.nodes.findIndex(
+            (item) => item.id === found?.id
+          )
 
       const createdNode = parent ? new Node(parent.id) : new Node()
       createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
       this.createdNodeIds.push(createdNode.id)
 
       parent
-          ? parent.nodes.splice(index + 1, 0, createdNode)
-          : this.pageStore.currentPage.nodes.splice(index + 1, 0, createdNode)
+        ? parent.nodes.splice(index + 1, 0, createdNode)
+        : this.pageStore.currentPage.nodes.splice(index + 1, 0, createdNode)
     }
 
     this.pageStore.selectedNodeIds = this.createdNodeIds
@@ -139,8 +141,9 @@ export class AddSiblingNodeDown extends AbstractAction {
       const found = this.pageStore.findNode(id)
       const parent = this.pageStore.findNode(found?.parentId)
       parent
-          ? parent.nodes = parent.nodes.filter((node) => node.id !== id)
-          : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== id)
+        ? (parent.nodes = parent.nodes.filter((node) => node.id !== id))
+        : (this.pageStore.currentPage.nodes =
+            this.pageStore.currentPage.nodes.filter((node) => node.id !== id))
     })
     this.pageStore.selectNodeOne(this.selectedIds[0])
   }
@@ -166,22 +169,21 @@ export class AddChildNode extends AbstractAction {
   do(isRedo?: boolean): void {
     this.selectedIds = this.pageStore.selectedNodeIds
     this.pageStore.selectedNodeIds.length === 0
-        ? [true].forEach(() => {
+      ? [true].forEach(() => {
           const createdNode = new Node()
           createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
           this.createdNodeIds.push(createdNode.id)
           this.pageStore.currentPage.nodes.push(createdNode)
         })
-        : this.pageStore.selectedNodeIds
-            .forEach((selectedId) => {
-              const found = this.pageStore.findNode(selectedId)
-              if (found) {
-                const createdNode = new Node(found.id)
-                createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
-                this.createdNodeIds.push(createdNode.id)
-                found.nodes.push(createdNode)
-              }
-            })
+      : this.pageStore.selectedNodeIds.forEach((selectedId) => {
+          const found = this.pageStore.findNode(selectedId)
+          if (found) {
+            const createdNode = new Node(found.id)
+            createdNode.id = isRedo ? this.createdNodeIds[0] : createdNode.id
+            this.createdNodeIds.push(createdNode.id)
+            found.nodes.push(createdNode)
+          }
+        })
 
     this.pageStore.selectedNodeIds = this.createdNodeIds
     this.pageStore.currentPage.key++
@@ -192,8 +194,9 @@ export class AddChildNode extends AbstractAction {
       const found = this.pageStore.findNode(id)
       const parent = this.pageStore.findNode(found?.parentId)
       parent
-          ? parent.nodes = parent.nodes.filter((node) => node.id !== id)
-          : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== id)
+        ? (parent.nodes = parent.nodes.filter((node) => node.id !== id))
+        : (this.pageStore.currentPage.nodes =
+            this.pageStore.currentPage.nodes.filter((node) => node.id !== id))
     })
     this.pageStore.selectNodeOne(this.selectedIds[0])
   }
@@ -236,8 +239,8 @@ export class AddParentNode extends AbstractAction {
         found.nodes = [createdNode]
         createdNode.layout = found.layout
         found.layout = {
-          small: {type: 'stack', direction: 'vertical', hidden: false},
-          large: {type: undefined, direction: undefined, hidden: false}
+          small: { type: 'stack', direction: 'vertical', hidden: false },
+          large: { type: undefined, direction: undefined, hidden: false },
         }
       }
     }
@@ -248,7 +251,10 @@ export class AddParentNode extends AbstractAction {
 
   undo(): void {
     if (this.selectedIds.length === 0) {
-      this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.createdNodeIds[0])
+      this.pageStore.currentPage.nodes =
+        this.pageStore.currentPage.nodes.filter(
+          (node) => node.id !== this.createdNodeIds[0]
+        )
     } else {
       this.createdNodeIds.forEach((id) => {
         const createdNode = <Node>this.pageStore.findNode(id)
@@ -269,7 +275,7 @@ export class AddParentNode extends AbstractAction {
 
 export class RemoveNode extends AbstractAction {
   actionName = 'RemoveNode'
-  deletedNodes: { node: Node, index: number }[] = []
+  deletedNodes: { node: Node; index: number }[] = []
 
   constructor() {
     super()
@@ -280,30 +286,42 @@ export class RemoveNode extends AbstractAction {
       const found = this.pageStore.findNode(selectedId)
       const parent = this.pageStore.findNode(found?.parentId)
       const foundIndex = parent
-          ? parent.nodes.findIndex((item) => item.id === found?.id)
-          : this.pageStore.currentPage.nodes.findIndex((item) => item.id === found?.id)
-
+        ? parent.nodes.findIndex((item) => item.id === found?.id)
+        : this.pageStore.currentPage.nodes.findIndex(
+            (item) => item.id === found?.id
+          )
 
       const deletedNode = parent
-          ? parent.nodes.splice(foundIndex, 1)[0]
-          : this.pageStore.currentPage.nodes.splice(foundIndex, 1)[0]
+        ? parent.nodes.splice(foundIndex, 1)[0]
+        : this.pageStore.currentPage.nodes.splice(foundIndex, 1)[0]
 
-      const deletedData = {index: foundIndex, node: deletedNode}
+      const deletedData = { index: foundIndex, node: deletedNode }
 
       this.deletedNodes.push(deletedData)
     })
 
-    if (this.deletedNodes.length > 1)
-      this.pageStore.selectedNodeIds = []
+    if (this.deletedNodes.length > 1) this.pageStore.selectedNodeIds = []
     else {
-      const parent = this.pageStore.findNode(this.deletedNodes[0].node?.parentId)
+      const parent = this.pageStore.findNode(
+        this.deletedNodes[0].node?.parentId
+      )
       parent
-          ? this.pageStore.selectedNodeIds = parent.nodes.length > 0
-              ? [parent.nodes[Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)].id]
-              : [parent.id]
-          : this.pageStore.selectedNodeIds = this.pageStore.currentPage.nodes.length > 0
-              ? [this.pageStore.currentPage.nodes[Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)].id]
-              : []
+        ? (this.pageStore.selectedNodeIds =
+            parent.nodes.length > 0
+              ? [
+                  parent.nodes[
+                    Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)
+                  ].id,
+                ]
+              : [parent.id])
+        : (this.pageStore.selectedNodeIds =
+            this.pageStore.currentPage.nodes.length > 0
+              ? [
+                  this.pageStore.currentPage.nodes[
+                    Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)
+                  ].id,
+                ]
+              : [])
     }
 
     this.pageStore.currentPage.key++
@@ -313,12 +331,17 @@ export class RemoveNode extends AbstractAction {
     this.deletedNodes.reverse().forEach((deletedNode) => {
       const parent = this.pageStore.findNode(deletedNode.node?.parentId)
 
-      if (parent)
-        parent.nodes.splice(deletedNode.index, 0, deletedNode.node)
+      if (parent) parent.nodes.splice(deletedNode.index, 0, deletedNode.node)
       else
-        this.pageStore.currentPage.nodes.splice(deletedNode.index, 0, deletedNode.node)
+        this.pageStore.currentPage.nodes.splice(
+          deletedNode.index,
+          0,
+          deletedNode.node
+        )
     })
-    this.pageStore.selectedNodeIds = this.deletedNodes.map((item) => item.node.id)
+    this.pageStore.selectedNodeIds = this.deletedNodes.map(
+      (item) => item.node.id
+    )
     this.deletedNodes = []
   }
 
@@ -330,7 +353,7 @@ export class RemoveNode extends AbstractAction {
 export class RemoveParentNode extends AbstractAction {
   actionName = 'RemoveParentNode'
   selectedNodeId?: string
-  deletedNodes: { node: Node, index: number }[] = []
+  deletedNodes: { node: Node; index: number }[] = []
 
   constructor() {
     super()
@@ -339,18 +362,32 @@ export class RemoveParentNode extends AbstractAction {
   do(): void {
     const selectedNode = <Node>this.pageStore.getSelectedNodeOne()
     this.selectedNodeId = selectedNode.id
-    const parentNode = this.pageStore.findNode(this.pageStore.getSelectedNodeOne()?.parentId)
+    const parentNode = this.pageStore.findNode(
+      this.pageStore.getSelectedNodeOne()?.parentId
+    )
     const grandParentNode = this.pageStore.findNode(parentNode?.parentId)
 
     if (grandParentNode) {
-      const foundIndex = grandParentNode.nodes.findIndex((node) => node.id === parentNode?.id)
-      const deletedNodes = grandParentNode.nodes.splice(foundIndex, 1, selectedNode)
-      this.deletedNodes.push({node: deletedNodes[0], index: foundIndex})
+      const foundIndex = grandParentNode.nodes.findIndex(
+        (node) => node.id === parentNode?.id
+      )
+      const deletedNodes = grandParentNode.nodes.splice(
+        foundIndex,
+        1,
+        selectedNode
+      )
+      this.deletedNodes.push({ node: deletedNodes[0], index: foundIndex })
       selectedNode.parentId = grandParentNode.id
     } else {
-      const foundIndex = this.pageStore.currentPage.nodes.findIndex((node) => node.id === parentNode?.id)
-      const deletedNodes = this.pageStore.currentPage.nodes.splice(foundIndex, 1, selectedNode)
-      this.deletedNodes.push({node: deletedNodes[0], index: foundIndex})
+      const foundIndex = this.pageStore.currentPage.nodes.findIndex(
+        (node) => node.id === parentNode?.id
+      )
+      const deletedNodes = this.pageStore.currentPage.nodes.splice(
+        foundIndex,
+        1,
+        selectedNode
+      )
+      this.deletedNodes.push({ node: deletedNodes[0], index: foundIndex })
       selectedNode.parentId = undefined
     }
 
@@ -367,7 +404,11 @@ export class RemoveParentNode extends AbstractAction {
         parent.nodes.splice(deletedNode.index, 1, deletedNode.node)
       } else {
         selected.parentId = deletedNode.node.id
-        this.pageStore.currentPage.nodes.splice(deletedNode.index, 1, deletedNode.node)
+        this.pageStore.currentPage.nodes.splice(
+          deletedNode.index,
+          1,
+          deletedNode.node
+        )
       }
     })
   }
@@ -421,8 +462,13 @@ export class PasteNode extends AbstractAction {
     const createdNode = this.createdNode
     const parent = <Node>this.pageStore.findNode(createdNode?.parentId)
     parent
-        ? parent.nodes = parent.nodes.filter((node) => node.id !== createdNode?.id)
-        : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== createdNode?.id)
+      ? (parent.nodes = parent.nodes.filter(
+          (node) => node.id !== createdNode?.id
+        ))
+      : (this.pageStore.currentPage.nodes =
+          this.pageStore.currentPage.nodes.filter(
+            (node) => node.id !== createdNode?.id
+          ))
 
     this.pageStore.selectNodeOne(this.selectedNodeId)
   }
@@ -462,9 +508,10 @@ export class SelectResponsiveMode extends AbstractAction {
 
   do(redo?: boolean): void {
     this.selectedNodeId = redo
-        ? this.selectedNodeId
-        : this.pageStore.selectedNodes[0]?.id
-    this.savedResponsiveMode = this.pageStore.selectedNodes[0]?.selectedResponsiveMode
+      ? this.selectedNodeId
+      : this.pageStore.selectedNodes[0]?.id
+    this.savedResponsiveMode =
+      this.pageStore.selectedNodes[0]?.selectedResponsiveMode
     this.pageStore.selectedNodes[0]?.selectResponsiveMode(this.responsiveMode)
     const width = this.responsiveMode === 'small' ? '33.33%' : '100%'
     this.screenStore.setScreenSize('width', width)
@@ -472,7 +519,9 @@ export class SelectResponsiveMode extends AbstractAction {
   }
 
   undo(): void {
-    this.pageStore.findNode(this.selectedNodeId)?.selectResponsiveMode(<ResponsiveMode>this.savedResponsiveMode)
+    this.pageStore
+      .findNode(this.selectedNodeId)
+      ?.selectResponsiveMode(<ResponsiveMode>this.savedResponsiveMode)
     this.pageStore.currentPage.key++
     const width = this.savedResponsiveMode === 'small' ? '33.33%' : '100%'
     this.screenStore.setScreenSize('width', width)
@@ -501,8 +550,8 @@ export class SetNodesLayoutType extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -543,8 +592,8 @@ export class SetNodesLayoutStackDirection extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -584,8 +633,8 @@ export class SetNodesLayoutGridColumns extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -625,8 +674,8 @@ export class SetNodesLayoutGap extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -666,8 +715,8 @@ export class SetNodesLayoutWidth extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -707,8 +756,8 @@ export class SetNodesLayoutMaxWidth extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -748,8 +797,8 @@ export class SetNodesLayoutHeight extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -789,8 +838,8 @@ export class SetNodesLayoutMainAxis extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -830,8 +879,8 @@ export class SetNodesLayoutCrossAxis extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -871,8 +920,8 @@ export class SetNodesLayoutPosition extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -912,8 +961,8 @@ export class SetNodesLayoutHidden extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -947,19 +996,21 @@ export class SetNodesLayoutPadding extends AbstractAction {
   savedResponsiveMode?: ResponsiveMode
   savedValue?: string
 
-  constructor(private direction: Direction,
-              private value: string) {
+  constructor(private direction: Direction, private value: string) {
     super()
   }
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
-    this.savedValue = node.layout[node.selectedResponsiveMode][this.directionToField(this.direction)]
+    this.savedValue =
+      node.layout[node.selectedResponsiveMode][
+        this.directionToField(this.direction)
+      ]
 
     node.setPadding(this.direction, this.value)
 
@@ -978,14 +1029,16 @@ export class SetNodesLayoutPadding extends AbstractAction {
     this.pageStore.selectNodeOne(this.selectedNodeId)
   }
 
-  private directionToField(direction: Direction): 'paddingLeft' | 'paddingRight' | 'paddingTop' | 'paddingBottom' {
+  private directionToField(
+    direction: Direction
+  ): 'paddingLeft' | 'paddingRight' | 'paddingTop' | 'paddingBottom' {
     return direction === 'left'
-        ? 'paddingLeft'
-        : direction === 'right'
-            ? 'paddingRight'
-            : direction === 'top'
-                ? 'paddingTop'
-                : 'paddingBottom'
+      ? 'paddingLeft'
+      : direction === 'right'
+      ? 'paddingRight'
+      : direction === 'top'
+      ? 'paddingTop'
+      : 'paddingBottom'
   }
 
   static of(direction: Direction, value: string): SetNodesLayoutPadding {
@@ -999,19 +1052,21 @@ export class SetNodesLayoutInset extends AbstractAction {
   savedResponsiveMode?: ResponsiveMode
   savedValue?: string
 
-  constructor(private direction: Direction,
-              private value: string) {
+  constructor(private direction: Direction, private value: string) {
     super()
   }
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
-    this.savedValue = node.layout[node.selectedResponsiveMode][this.directionToField(this.direction)]
+    this.savedValue =
+      node.layout[node.selectedResponsiveMode][
+        this.directionToField(this.direction)
+      ]
 
     node.setInset(this.direction, this.value)
 
@@ -1030,14 +1085,16 @@ export class SetNodesLayoutInset extends AbstractAction {
     this.pageStore.selectNodeOne(this.selectedNodeId)
   }
 
-  private directionToField(direction: Direction): 'paddingLeft' | 'paddingRight' | 'paddingTop' | 'paddingBottom' {
+  private directionToField(
+    direction: Direction
+  ): 'paddingLeft' | 'paddingRight' | 'paddingTop' | 'paddingBottom' {
     return direction === 'left'
-        ? 'paddingLeft'
-        : direction === 'right'
-            ? 'paddingRight'
-            : direction === 'top'
-                ? 'paddingTop'
-                : 'paddingBottom'
+      ? 'paddingLeft'
+      : direction === 'right'
+      ? 'paddingRight'
+      : direction === 'top'
+      ? 'paddingTop'
+      : 'paddingBottom'
   }
 
   static of(direction: Direction, value: string): SetNodesLayoutInset {
@@ -1057,8 +1114,8 @@ export class SetNodesTransparent extends AbstractAction {
 
   do(isRedo?: boolean): void {
     const node = isRedo
-        ? <Node>this.pageStore.findNode(this.selectedNodeId)
-        : <Node>this.pageStore.selectedNodes[0]
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
 
     this.selectedNodeId = node.id
     this.savedResponsiveMode = node.selectedResponsiveMode
@@ -1089,7 +1146,7 @@ export class SetNodesTransparent extends AbstractAction {
 export class SetWidget extends AbstractAction {
   actionName = 'SetWidget'
   selectedNodeIds?: string[]
-  savedWidgets?: { nodeId?: string, widget?: Item }[]
+  savedWidgets?: { nodeId?: string; widget?: Item }[]
 
   constructor(private widget: Item) {
     super()
@@ -1097,23 +1154,24 @@ export class SetWidget extends AbstractAction {
 
   do(isRedo?: boolean): void {
     this.savedWidgets = isRedo
-        ? this.savedWidgets
-        : this.pageStore.selectedNodes
-            .map((node) => ({
-              nodeId: node?.id,
-              widget: node?.widget
-            }))
+      ? this.savedWidgets
+      : this.pageStore.selectedNodes.map((node) => ({
+          nodeId: node?.id,
+          widget: node?.widget,
+        }))
 
     this.savedWidgets
-        ?.map((data) => data.nodeId)
-        .filter((value): value is string => !!value)
-        .forEach((id) => {
-          const found = <Node>this.pageStore.findNode(id)
-          found.setWidget(this.widget)
-        })
+      ?.map((data) => data.nodeId)
+      .filter((value): value is string => !!value)
+      .forEach((id) => {
+        const found = <Node>this.pageStore.findNode(id)
+        found.setWidget(this.widget)
+      })
 
     this.pageStore.selectNodeOne()
-    this.savedWidgets?.forEach((data) => this.pageStore.selectNodeMany(data.nodeId || ''))
+    this.savedWidgets?.forEach((data) =>
+      this.pageStore.selectNodeMany(data.nodeId || '')
+    )
   }
 
   undo(): void {
@@ -1121,12 +1179,16 @@ export class SetWidget extends AbstractAction {
       const found = <Node>this.pageStore.findNode(data.nodeId)
       data.widget ? found.setWidget(data.widget) : found.removeWidget()
     })
-    this.savedWidgets?.forEach((data) => this.pageStore.selectNodeMany(data.nodeId || ''))
+    this.savedWidgets?.forEach((data) =>
+      this.pageStore.selectNodeMany(data.nodeId || '')
+    )
   }
 
   redo(): void {
     this.do(true)
-    this.savedWidgets?.forEach((data) => this.pageStore.selectNodeMany(data.nodeId || ''))
+    this.savedWidgets?.forEach((data) =>
+      this.pageStore.selectNodeMany(data.nodeId || '')
+    )
   }
 
   static of(widget: Item): SetWidget {
@@ -1137,7 +1199,7 @@ export class SetWidget extends AbstractAction {
 export class RemoveWidget extends AbstractAction {
   actionName = 'RemoveWidget'
   selectedNodeIds?: string[]
-  savedWidgets?: { nodeId?: string, widget?: Item }[]
+  savedWidgets?: { nodeId?: string; widget?: Item }[]
 
   constructor() {
     super()
@@ -1145,23 +1207,24 @@ export class RemoveWidget extends AbstractAction {
 
   do(isRedo?: boolean): void {
     this.savedWidgets = isRedo
-        ? this.savedWidgets
-        : this.pageStore.selectedNodes
-            .map((node) => ({
-              nodeId: node?.id,
-              widget: node?.widget
-            }))
+      ? this.savedWidgets
+      : this.pageStore.selectedNodes.map((node) => ({
+          nodeId: node?.id,
+          widget: node?.widget,
+        }))
 
     this.savedWidgets
-        ?.map((data) => data.nodeId)
-        .filter((value): value is string => !!value)
-        .forEach((id) => {
-          const found = <Node>this.pageStore.findNode(id)
-          found.removeWidget()
-        })
+      ?.map((data) => data.nodeId)
+      .filter((value): value is string => !!value)
+      .forEach((id) => {
+        const found = <Node>this.pageStore.findNode(id)
+        found.removeWidget()
+      })
 
     this.pageStore.selectNodeOne()
-    this.savedWidgets?.forEach((data) => this.pageStore.selectNodeMany(data.nodeId || ''))
+    this.savedWidgets?.forEach((data) =>
+      this.pageStore.selectNodeMany(data.nodeId || '')
+    )
   }
 
   undo(): void {
@@ -1169,12 +1232,16 @@ export class RemoveWidget extends AbstractAction {
       const found = <Node>this.pageStore.findNode(data.nodeId)
       data.widget ? found.setWidget(data.widget) : found.removeWidget()
     })
-    this.savedWidgets?.forEach((data) => this.pageStore.selectNodeMany(data.nodeId || ''))
+    this.savedWidgets?.forEach((data) =>
+      this.pageStore.selectNodeMany(data.nodeId || '')
+    )
   }
 
   redo(): void {
     this.do(true)
-    this.savedWidgets?.forEach((data) => this.pageStore.selectNodeMany(data.nodeId || ''))
+    this.savedWidgets?.forEach((data) =>
+      this.pageStore.selectNodeMany(data.nodeId || '')
+    )
   }
 
   static of(): RemoveWidget {
@@ -1269,14 +1336,20 @@ export class DragNode extends AbstractAction {
         this.originalParentId = parent.id
       }
       found.parentId = ''
-      this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+      this.pageStore.currentPage.nodes =
+        this.pageStore.currentPage.nodes.filter(
+          (node) => node.id !== this.nodeId
+        )
       this.pageStore.currentPage.nodes.splice(this.newIndex || 0, 0, found)
     } else {
       const found = <Node>this.pageStore.findNode(this.nodeId)
       const parent = this.pageStore.findNode(found.parentId)
       parent
-          ? parent.nodes = parent.nodes.filter((node) => node.id !== found.id)
-          : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+        ? (parent.nodes = parent.nodes.filter((node) => node.id !== found.id))
+        : (this.pageStore.currentPage.nodes =
+            this.pageStore.currentPage.nodes.filter(
+              (node) => node.id !== this.nodeId
+            ))
 
       const parentId = this.parentId.replace(/drag_/gi, '')
       const foundParent = this.pageStore.findNode(parentId)
@@ -1284,12 +1357,13 @@ export class DragNode extends AbstractAction {
       if (foundParent) {
         this.originalParentId = found.parentId
         found.parentId = this.parentId?.replace(/drag_/gi, '')
-        foundParent.nodes = foundParent.nodes.filter((node) => node.id !== this.nodeId)
+        foundParent.nodes = foundParent.nodes.filter(
+          (node) => node.id !== this.nodeId
+        )
         foundParent.nodes.splice(this.newIndex || 0, 0, found)
       }
     }
     this.pageStore.selectNodeOne(this.nodeId)
-
   }
 
   undo(): void {
@@ -1299,21 +1373,23 @@ export class DragNode extends AbstractAction {
       parent.nodes = parent.nodes.filter((node) => node.id !== this.nodeId)
       const originalParent = this.pageStore.findNode(this.originalParentId)
       originalParent
-          ? originalParent.nodes.splice(this.oldIndex || 0, 0, found)
-          : this.pageStore.currentPage.nodes.splice(this.oldIndex || 0, 0, found)
+        ? originalParent.nodes.splice(this.oldIndex || 0, 0, found)
+        : this.pageStore.currentPage.nodes.splice(this.oldIndex || 0, 0, found)
       this.originalParentId = found.parentId
       found.parentId = originalParent?.id || ''
     } else {
-      this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+      this.pageStore.currentPage.nodes =
+        this.pageStore.currentPage.nodes.filter(
+          (node) => node.id !== this.nodeId
+        )
       const originalParent = this.pageStore.findNode(this.originalParentId)
       originalParent
-          ? originalParent.nodes.splice(this.oldIndex || 0, 0, found)
-          : this.pageStore.currentPage.nodes.splice(this.oldIndex || 0, 0, found)
+        ? originalParent.nodes.splice(this.oldIndex || 0, 0, found)
+        : this.pageStore.currentPage.nodes.splice(this.oldIndex || 0, 0, found)
       this.originalParentId = found.parentId
       found.parentId = originalParent?.id || ''
     }
     this.pageStore.selectNodeOne(this.nodeId)
-
   }
 
   redo(): void {
@@ -1321,14 +1397,17 @@ export class DragNode extends AbstractAction {
     const parent = this.pageStore.findNode(found?.parentId)
 
     parent
-        ? parent.nodes = parent.nodes.filter((node) => node.id !== this.nodeId)
-        : this.pageStore.currentPage.nodes = this.pageStore.currentPage.nodes.filter((node) => node.id !== this.nodeId)
+      ? (parent.nodes = parent.nodes.filter((node) => node.id !== this.nodeId))
+      : (this.pageStore.currentPage.nodes =
+          this.pageStore.currentPage.nodes.filter(
+            (node) => node.id !== this.nodeId
+          ))
 
     const originalParent = this.pageStore.findNode(this.originalParentId)
     this.originalParentId = parent?.id
     originalParent
-        ? originalParent.nodes.splice(this.newIndex || 0, 0, found)
-        : this.pageStore.currentPage.nodes.splice(this.newIndex || 0, 0, found)
+      ? originalParent.nodes.splice(this.newIndex || 0, 0, found)
+      : this.pageStore.currentPage.nodes.splice(this.newIndex || 0, 0, found)
 
     found.parentId = originalParent?.id || ''
     this.pageStore.selectNodeOne(this.nodeId)
