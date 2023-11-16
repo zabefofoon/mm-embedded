@@ -1,27 +1,32 @@
-import {deepClone} from "../util/util"
-import type {DragNode} from "../model/Action"
-import type {ReceivedDataFromCanvas} from "./receiveFromCanvas.msg"
-import type {PageData} from "../model/Page"
+import type { DragNode } from '../model/Action'
+import type { Page } from '../model/Page'
+import { deepClone } from '../util/util'
+import type { ReceivedDataFromCanvas } from './receiveFromCanvas.msg'
 
-export const postEditorDragNode = (dragAction: Partial<DragNode>) => window
-    .parent
-    ?.postMessage({
+export const postEditorDragNode = (dragAction: Partial<DragNode>) =>
+  window.parent?.postMessage(
+    {
       type: 'dragNode',
-      dragAction: deepClone(dragAction)
-    }, '*')
+      dragAction: deepClone(dragAction),
+    },
+    '*'
+  )
 
-export const postEditorCommand = (command: ReceivedDataFromCanvas['command']) => window
-    .parent
-    ?.postMessage({
+export const postEditorCommand = (command: ReceivedDataFromCanvas['command']) =>
+  window.parent?.postMessage(
+    {
       type: 'command',
-      command
-    }, '*')
+      command,
+    },
+    '*'
+  )
 
-export const postEditorPageMutation = (pageData: PageData,
-                                       selectedNodeIds: string[]) => window
-    .parent
-    ?.postMessage({
-      type: 'pageMutation',
-      pageData: deepClone(pageData),
-      selectedNodeIds: deepClone(selectedNodeIds)
-    })
+export const postEditorPageMutation = (
+  pageData: Page,
+  selectedNodeIds: string[]
+) =>
+  window.parent?.postMessage({
+    type: 'pageMutation',
+    pageData: deepClone(pageData),
+    selectedNodeIds: deepClone(selectedNodeIds),
+  })

@@ -1,5 +1,5 @@
-import {generateUniqueId} from "../util/util"
-import type {Item} from "./Widget"
+import { generateUniqueId } from '../util/util'
+import type { Item } from './Widget'
 
 export type Marker = {
   text: string
@@ -16,23 +16,26 @@ export class Node {
     small: {
       type: 'stack',
       direction: 'vertical',
-      hidden: false
+      hidden: false,
     },
     large: {
       type: 'stack',
       direction: 'vertical',
-      hidden: false
+      hidden: false,
     },
   }
 
   widget?: Item
   marker?: Marker
 
-  constructor(public parentId?: string) {
+  constructor(public parentId?: string) {}
+
+  removeNode(nodeId: string) {
+    this.nodes = this.nodes.filter((node) => node.id !== nodeId)
   }
 
   addMarker(marker?: Marker) {
-    this.marker = marker ? marker : {text: '', date: new Date()}
+    this.marker = marker ? marker : { text: '', date: new Date() }
   }
 
   removeMarker() {
@@ -54,12 +57,11 @@ export class Node {
   setLayoutType(type: NodeLayoutType) {
     this.layout[this.selectedResponsiveMode].type = type
 
-    if (type === 'grid')
-      this.layout[this.selectedResponsiveMode].columns = 1
+    if (type === 'grid') this.layout[this.selectedResponsiveMode].columns = 1
 
     type === 'grid'
-        ? this.layout[this.selectedResponsiveMode].direction = 'vertical'
-        : this.layout[this.selectedResponsiveMode].columns = 1
+      ? (this.layout[this.selectedResponsiveMode].direction = 'vertical')
+      : (this.layout[this.selectedResponsiveMode].columns = 1)
   }
 
   setLayoutStackDirection(direction: NodeDirection) {
@@ -128,9 +130,9 @@ export class Node {
       this.layout[this.selectedResponsiveMode].bottom = value
   }
 
-static of(parentId?: string) {
-  return new Node(parentId)
-}
+  static of(parentId?: string) {
+    return new Node(parentId)
+  }
 
   static makeNode(node?: Node) {
     return Object.assign(new Node(), node)
@@ -147,7 +149,6 @@ static of(parentId?: string) {
     return recursive(nodes)
   }
 }
-
 
 export type NodeDirection = 'horizontal' | 'vertical'
 
@@ -191,5 +192,9 @@ export type ResponsiveMode = 'small' | 'large'
 export type Direction = 'left' | 'top' | 'right' | 'bottom'
 
 export type ItemDragEvent = {
-  [key in 'moved' | 'added' | 'removed']?: { element?: Item, newIndex?: number, oldIndex?: number }
+  [key in 'moved' | 'added' | 'removed']?: {
+    element?: Item
+    newIndex?: number
+    oldIndex?: number
+  }
 }

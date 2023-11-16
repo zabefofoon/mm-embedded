@@ -47,30 +47,11 @@ export class AddSiblingNodeUp extends AbstractAction {
   }
 
   do(): void {
-    this.selectedIds = this.pageStore.selectedNodeIds
-    if (this.selectedIds.length === 0) {
-      const createdNode = Node.of()
-      this.createdNodeIds.push(createdNode.id)
-      this.pageStore.currentPage.nodes.push(createdNode)
-    } else {
-      this.selectedIds.forEach((selectedId) => {
-        const found = this.pageStore.findNode(selectedId)
-        const parent = this.pageStore.findNode(found?.parentId)
+    this.saveSelectedIds()
 
-        const index = parent
-          ? parent.nodes.findIndex((item) => item.id === found?.id)
-          : this.pageStore.currentPage.nodes.findIndex(
-              (item) => item.id === found?.id
-            )
-
-        const createdNode = parent ? Node.of(parent.id) : Node.of()
-        this.createdNodeIds.push(createdNode.id)
-
-        parent
-          ? parent.nodes.splice(index, 0, createdNode)
-          : this.pageStore.currentPage.nodes.splice(index, 0, createdNode)
-      })
-    }
+    this.selectedIds.length === 0
+      ? this.appendNewNode()
+      : this.insertNewNode(false)
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
@@ -82,10 +63,10 @@ export class AddSiblingNodeUp extends AbstractAction {
     this.createdNodeIds.forEach((id) => {
       const found = this.pageStore.findNode(id)
       const parent = this.pageStore.findNode(found?.parentId)
+
       parent
-        ? (parent.nodes = parent.nodes.filter((node) => node.id !== id))
-        : (this.pageStore.currentPage.nodes =
-            this.pageStore.currentPage.nodes.filter((node) => node.id !== id))
+        ? parent?.removeNode(id)
+        : this.pageStore.currentPage.removeNode(id)
     })
 
     this.pageStore.selectNodeOne()
@@ -95,37 +76,51 @@ export class AddSiblingNodeUp extends AbstractAction {
   }
 
   redo(): void {
-    if (this.selectedIds.length === 0) {
-      const createdNode = Node.of()
-      createdNode.id = this.createdNodeIds[0]
-      this.createdNodeIds = []
-      this.createdNodeIds.push(createdNode.id)
-      this.pageStore.currentPage.nodes.push(createdNode)
-    } else {
-      this.selectedIds.forEach((selectedId, selectedNodeIndex) => {
-        const found = this.pageStore.findNode(selectedId)
-        const parent = this.pageStore.findNode(found?.parentId)
-        const index = parent
-          ? parent.nodes.findIndex((item) => item.id === found?.id)
-          : this.pageStore.currentPage.nodes.findIndex(
-              (item) => item.id === found?.id
-            )
-
-        const createdNode = parent ? Node.of(parent.id) : Node.of()
-        createdNode.id = this.createdNodeIds[selectedNodeIndex]
-        this.createdNodeIds = []
-        this.createdNodeIds.push(createdNode.id)
-
-        parent
-          ? parent.nodes.splice(index, 0, createdNode)
-          : this.pageStore.currentPage.nodes.splice(index, 0, createdNode)
-      })
-    }
+    this.selectedIds.length === 0
+      ? this.appendNewNode(true)
+      : this.insertNewNode(true)
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
 
     this.pageStore.updateCurrentPageKey()
+  }
+
+  private insertNewNode(isRedo?: boolean) {
+    this.selectedIds.forEach((selectedId, selectedNodeIndex) => {
+      const found = this.pageStore.findNode(selectedId)
+      const parent = this.pageStore.findNode(found?.parentId)
+
+      const index = parent
+        ? parent.nodes.findIndex((item) => item.id === found?.id)
+        : this.pageStore.currentPage.nodes.findIndex(
+            (item) => item.id === found?.id
+          )
+
+      const createdNode = parent ? Node.of(parent.id) : Node.of()
+
+      isRedo
+        ? (createdNode.id = this.createdNodeIds[selectedNodeIndex])
+        : this.createdNodeIds.push(createdNode.id)
+
+      parent
+        ? parent.nodes.splice(index, 0, createdNode)
+        : this.pageStore.currentPage.nodes.splice(index, 0, createdNode)
+    })
+  }
+
+  private appendNewNode(isRedo?: boolean) {
+    const createdNode = Node.of()
+
+    isRedo
+      ? (createdNode.id = this.createdNodeIds[0])
+      : this.createdNodeIds.push(createdNode.id)
+
+    this.pageStore.currentPage.nodes.push(createdNode)
+  }
+
+  private saveSelectedIds() {
+    this.selectedIds = this.pageStore.selectedNodeIds
   }
 
   static of(): AddSiblingNodeUp {
@@ -143,31 +138,11 @@ export class AddSiblingNodeDown extends AbstractAction {
   }
 
   do(): void {
-    this.selectedIds = this.pageStore.selectedNodeIds
-    if (this.selectedIds.length === 0) {
-      const createdNode = new Node()
-      this.createdNodeIds.push(createdNode.id)
-      this.pageStore.currentPage.nodes.push(createdNode)
-    } else {
-      this.selectedIds.forEach((selectedId, selectedNodeIndex) => {
-        const found = this.pageStore.findNode(selectedId)
-        const parent = this.pageStore.findNode(found?.parentId)
-        const index = parent
-          ? parent.nodes.findIndex((item) => item.id === found?.id)
-          : this.pageStore.currentPage.nodes.findIndex(
-              (item) => item.id === found?.id
-            )
+    this.saveSelectedIds()
 
-        const createdNode = parent ? new Node(parent.id) : new Node()
-        this.createdNodeIds.push(createdNode.id)
-
-        parent
-          ? parent.nodes.splice(index + 1, 0, createdNode)
-          : this.pageStore.currentPage.nodes.splice(index + 1, 0, createdNode)
-      })
-    }
-
-    this.pageStore.selectedNodeIds = this.createdNodeIds
+    this.selectedIds.length === 0
+      ? this.appendNewNode()
+      : this.insertNewNode(false)
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
@@ -179,44 +154,58 @@ export class AddSiblingNodeDown extends AbstractAction {
     this.createdNodeIds.forEach((id) => {
       const found = this.pageStore.findNode(id)
       const parent = this.pageStore.findNode(found?.parentId)
-      parent
-        ? (parent.nodes = parent.nodes.filter((node) => node.id !== id))
-        : (this.pageStore.currentPage.nodes =
-            this.pageStore.currentPage.nodes.filter((node) => node.id !== id))
+      parent ? parent.removeNode(id) : this.pageStore.currentPage.removeNode(id)
     })
-    this.pageStore.selectNodeOne(this.selectedIds[0])
+
+    this.pageStore.selectNodeOne()
+    this.selectedIds.forEach(this.pageStore.selectNodeMany)
   }
 
   redo(): void {
-    if (this.pageStore.selectedNodeIds.length === 0) {
-      const createdNode = new Node()
-      createdNode.id = this.createdNodeIds[0]
-      this.createdNodeIds = []
-      this.createdNodeIds.push(createdNode.id)
-      this.pageStore.currentPage.nodes.push(createdNode)
-    } else
-      this.selectedIds.forEach((selectedId, selectedNodeIndex) => {
-        const found = this.pageStore.findNode(selectedId)
-        const parent = this.pageStore.findNode(found?.parentId)
-        const index = parent
-          ? parent.nodes.findIndex((item) => item.id === found?.id)
-          : this.pageStore.currentPage.nodes.findIndex(
-              (item) => item.id === found?.id
-            )
-
-        const createdNode = parent ? new Node(parent.id) : new Node()
-        createdNode.id = this.createdNodeIds[selectedNodeIndex]
-        this.createdNodeIds = []
-        this.createdNodeIds.push(createdNode.id)
-
-        parent
-          ? parent.nodes.splice(index + 1, 0, createdNode)
-          : this.pageStore.currentPage.nodes.splice(index + 1, 0, createdNode)
-      })
+    this.selectedIds.length === 0
+      ? this.appendNewNode(true)
+      : this.insertNewNode(true)
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
+
     this.pageStore.updateCurrentPageKey()
+  }
+
+  private insertNewNode(isRedo?: boolean) {
+    this.selectedIds.forEach((selectedId, selectedNodeIndex) => {
+      const found = this.pageStore.findNode(selectedId)
+      const parent = this.pageStore.findNode(found?.parentId)
+      const index = parent
+        ? parent.nodes.findIndex((item) => item.id === found?.id)
+        : this.pageStore.currentPage.nodes.findIndex(
+            (item) => item.id === found?.id
+          )
+
+      const createdNode = parent ? Node.of(parent.id) : Node.of()
+
+      isRedo
+        ? (createdNode.id = this.createdNodeIds[selectedNodeIndex])
+        : this.createdNodeIds.push(createdNode.id)
+
+      parent
+        ? parent.nodes.splice(index + 1, 0, createdNode)
+        : this.pageStore.currentPage.nodes.splice(index + 1, 0, createdNode)
+    })
+  }
+
+  private saveSelectedIds() {
+    this.selectedIds = this.pageStore.selectedNodeIds
+  }
+
+  private appendNewNode(isRedo?: boolean) {
+    const createdNode = Node.of()
+
+    isRedo
+      ? (createdNode.id = this.createdNodeIds[0])
+      : this.createdNodeIds.push(createdNode.id)
+
+    this.pageStore.currentPage.nodes.push(createdNode)
   }
 
   static of(): AddSiblingNodeDown {
@@ -234,24 +223,13 @@ export class AddChildNode extends AbstractAction {
   }
 
   do(): void {
-    this.selectedIds = this.pageStore.selectedNodeIds
-    this.selectedIds.length === 0
-      ? [true].forEach(() => {
-          const createdNode = new Node()
-          this.createdNodeIds.push(createdNode.id)
-          this.pageStore.currentPage.nodes.push(createdNode)
-        })
-      : this.selectedIds.forEach((selectedId) => {
-          const found = this.pageStore.findNode(selectedId)
-          if (found) {
-            const createdNode = new Node(found.id)
-            this.createdNodeIds.push(createdNode.id)
-            found.nodes.push(createdNode)
-          }
-        })
+    this.saveSelectedIds()
+
+    this.selectedIds.length === 0 ? this.appendNewNode() : this.insertNewNode()
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
+
     this.pageStore.updateCurrentPageKey()
   }
 
@@ -259,38 +237,46 @@ export class AddChildNode extends AbstractAction {
     this.createdNodeIds.forEach((id) => {
       const found = this.pageStore.findNode(id)
       const parent = this.pageStore.findNode(found?.parentId)
-      parent
-        ? (parent.nodes = parent.nodes.filter((node) => node.id !== id))
-        : (this.pageStore.currentPage.nodes =
-            this.pageStore.currentPage.nodes.filter((node) => node.id !== id))
+      parent ? parent.removeNode(id) : this.pageStore.currentPage.removeNode(id)
     })
+
     this.pageStore.selectNodeOne()
     this.selectedIds.forEach(this.pageStore.selectNodeMany)
+
+    this.pageStore.updateCurrentPageKey()
   }
 
   redo(): void {
     this.selectedIds.length === 0
-      ? [true].forEach(() => {
-          const createdNode = new Node()
-          createdNode.id = this.createdNodeIds[0]
-          this.createdNodeIds = []
-          this.createdNodeIds.push(createdNode.id)
-          this.pageStore.currentPage.nodes.push(createdNode)
-        })
-      : this.selectedIds.forEach((selectedId, selectedNodeIndex) => {
-          const found = this.pageStore.findNode(selectedId)
-          if (found) {
-            const createdNode = new Node(found.id)
-            createdNode.id = this.createdNodeIds[selectedNodeIndex]
-            this.createdNodeIds = []
-            this.createdNodeIds.push(createdNode.id)
-            found.nodes.push(createdNode)
-          }
-        })
+      ? this.appendNewNode()
+      : this.insertNewNode(true)
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
+
     this.pageStore.updateCurrentPageKey()
+  }
+
+  private insertNewNode(isRedo?: boolean) {
+    this.selectedIds.forEach((selectedId, selectedNodeIndex) => {
+      const found = this.pageStore.findNode(selectedId)!
+      const createdNode = Node.of(found.id)
+      isRedo
+        ? (createdNode.id = this.createdNodeIds[selectedNodeIndex])
+        : this.createdNodeIds.push(createdNode.id)
+      found.nodes.push(createdNode)
+    })
+  }
+
+  private appendNewNode() {
+    const createdNode = Node.of()
+    this.createdNodeIds = []
+    this.createdNodeIds.push(createdNode.id)
+    this.pageStore.currentPage.nodes.push(createdNode)
+  }
+
+  private saveSelectedIds() {
+    this.selectedIds = this.pageStore.selectedNodeIds
   }
 
   static of(): AddChildNode {
@@ -308,34 +294,8 @@ export class AddParentNode extends AbstractAction {
   }
 
   do(): void {
-    this.selectedIds = this.pageStore.selectedNodeIds
-
-    if (this.selectedIds.length === 0) {
-      const createdNode = Node.of()
-      this.createdNodeIds.push(createdNode.id)
-      this.pageStore.currentPage.nodes.push(createdNode)
-    } else {
-      this.selectedIds.forEach((selectedId) => {
-        const found = this.pageStore.findNode(selectedId)
-        if (found) {
-          const createdNode = Node.of(found.id)
-
-          this.createdNodeIds.push(found.id)
-
-          createdNode.widget = found.widget
-          found.widget = undefined
-          createdNode.nodes = found.nodes
-          found.nodes = [createdNode]
-          createdNode.layout = found.layout
-          found.layout = {
-            small: { type: 'stack', direction: 'vertical', hidden: false },
-            large: { type: undefined, direction: undefined, hidden: false },
-          }
-
-          createdNode.nodes.forEach((node) => (node.parentId = createdNode.id))
-        }
-      })
-    }
+    this.saveSelectedIds()
+    this.selectedIds.length === 0 ? this.appendNewNode() : this.insertNewNode()
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
@@ -365,36 +325,40 @@ export class AddParentNode extends AbstractAction {
   }
 
   redo() {
-    if (this.selectedIds.length === 0) {
-      const createdNode = Node.of()
-      this.createdNodeIds = []
-      this.createdNodeIds.push(createdNode.id)
-      this.pageStore.currentPage.nodes.push(createdNode)
-    } else {
-      this.selectedIds.forEach((selectedId) => {
-        const found = this.pageStore.findNode(selectedId)
-        if (found) {
-          const createdNode = Node.of(found.id)
-          this.createdNodeIds = []
-          this.createdNodeIds.push(found.id)
-
-          createdNode.widget = found.widget
-          found.widget = undefined
-          createdNode.nodes = found.nodes
-          found.nodes = [createdNode]
-          createdNode.layout = found.layout
-          found.layout = {
-            small: { type: 'stack', direction: 'vertical', hidden: false },
-            large: { type: undefined, direction: undefined, hidden: false },
-          }
-          createdNode.nodes.forEach((node) => (node.parentId = createdNode.id))
-        }
-      })
-    }
+    this.selectedIds.length === 0 ? this.appendNewNode() : this.insertNewNode()
 
     this.pageStore.selectNodeOne()
     this.createdNodeIds.forEach(this.pageStore.selectNodeMany)
     this.pageStore.updateCurrentPageKey()
+  }
+
+  private insertNewNode() {
+    this.selectedIds.forEach((selectedId) => {
+      const found = <Node>this.pageStore.findNode(selectedId)
+      const createdNode = Node.of(found.id)
+      this.createdNodeIds.push(found.id)
+      createdNode.widget = found.widget
+      found.widget = undefined
+      createdNode.nodes = found.nodes
+      found.nodes = [createdNode]
+      createdNode.layout = found.layout
+      found.layout = {
+        small: { type: 'stack', direction: 'vertical', hidden: false },
+        large: { type: 'stack', direction: 'vertical', hidden: false },
+      }
+      createdNode.nodes.forEach((node) => (node.parentId = createdNode.id))
+    })
+  }
+
+  private appendNewNode() {
+    const createdNode = Node.of()
+    this.createdNodeIds = []
+    this.createdNodeIds.push(createdNode.id)
+    this.pageStore.currentPage.nodes.push(createdNode)
+  }
+
+  private saveSelectedIds() {
+    this.selectedIds = this.pageStore.selectedNodeIds
   }
 
   static of(): AddParentNode {
@@ -412,64 +376,21 @@ export class RemoveNode extends AbstractAction {
   }
 
   do(): void {
-    this.selectedIds = this.pageStore.selectedNodeIds
-
-    this.selectedIds.forEach((selectedId) => {
-      const found = this.pageStore.findNode(selectedId)
-      const parent = this.pageStore.findNode(found?.parentId)
-      const foundIndex = parent
-        ? parent.nodes.findIndex((item) => item.id === found?.id)
-        : this.pageStore.currentPage.nodes.findIndex(
-            (item) => item.id === found?.id
-          )
-
-      const deletedNode = parent
-        ? parent.nodes.splice(foundIndex, 1)[0]
-        : this.pageStore.currentPage.nodes.splice(foundIndex, 1)[0]
-
-      const deletedData = { index: foundIndex, node: deletedNode }
-
-      this.deletedNodes.push(deletedData)
-    })
-
-    if (this.deletedNodes.length > 1) this.pageStore.selectedNodeIds = []
-    else {
-      const parent = this.pageStore.findNode(
-        this.deletedNodes[0].node?.parentId
-      )
-      parent
-        ? (this.pageStore.selectedNodeIds =
-            parent.nodes.length > 0
-              ? [
-                  parent.nodes[
-                    Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)
-                  ].id,
-                ]
-              : [parent.id])
-        : (this.pageStore.selectedNodeIds =
-            this.pageStore.currentPage.nodes.length > 0
-              ? [
-                  this.pageStore.currentPage.nodes[
-                    Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)
-                  ].id,
-                ]
-              : [])
-    }
+    this.saveSelectedIds()
+    this.deleteNodes()
+    this.deletedNodes.length > 1
+      ? this.pageStore.selectNodeOne()
+      : this.selectNodeAfterDeleteds()
 
     this.pageStore.updateCurrentPageKey()
   }
 
   undo(): void {
-    this.deletedNodes.reverse().forEach((deletedNode) => {
-      const parent = this.pageStore.findNode(deletedNode.node?.parentId)
-
-      if (parent) parent.nodes.splice(deletedNode.index, 0, deletedNode.node)
-      else
-        this.pageStore.currentPage.nodes.splice(
-          deletedNode.index,
-          0,
-          deletedNode.node
-        )
+    this.deletedNodes.reverse().forEach(({ node, index }) => {
+      const parent = this.pageStore.findNode(node?.parentId)
+      parent
+        ? parent.nodes.splice(index, 0, node)
+        : this.pageStore.currentPage.nodes.splice(index, 0, node)
     })
     this.pageStore.selectedNodeIds = this.deletedNodes.map(
       (item) => item.node.id
@@ -478,6 +399,14 @@ export class RemoveNode extends AbstractAction {
   }
 
   redo(): void {
+    this.deleteNodes()
+    this.deletedNodes.length > 1
+      ? this.pageStore.selectNodeOne()
+      : this.selectNodeAfterDeleteds()
+    this.pageStore.updateCurrentPageKey()
+  }
+
+  private deleteNodes() {
     this.selectedIds.forEach((selectedId) => {
       const found = this.pageStore.findNode(selectedId)
       const parent = this.pageStore.findNode(found?.parentId)
@@ -490,37 +419,25 @@ export class RemoveNode extends AbstractAction {
       const deletedNode = parent
         ? parent.nodes.splice(foundIndex, 1)[0]
         : this.pageStore.currentPage.nodes.splice(foundIndex, 1)[0]
-
-      const deletedData = { index: foundIndex, node: deletedNode }
-
-      this.deletedNodes.push(deletedData)
+      this.deletedNodes.push({ index: foundIndex, node: deletedNode })
     })
+  }
 
-    if (this.deletedNodes.length > 1) this.pageStore.selectedNodeIds = []
-    else {
-      const parent = this.pageStore.findNode(
-        this.deletedNodes[0].node?.parentId
-      )
-      parent
-        ? (this.pageStore.selectedNodeIds =
-            parent.nodes.length > 0
-              ? [
-                  parent.nodes[
-                    Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)
-                  ].id,
-                ]
-              : [parent.id])
-        : (this.pageStore.selectedNodeIds =
-            this.pageStore.currentPage.nodes.length > 0
-              ? [
-                  this.pageStore.currentPage.nodes[
-                    Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)
-                  ].id,
-                ]
-              : [])
-    }
+  private selectNodeAfterDeleteds() {
+    const parent = this.pageStore.findNode(this.deletedNodes[0].node?.parentId)
+    const nodeIndex = Math.max(0, (this.deletedNodes[0]?.index || 0) - 1)
+    const selectNode = parent
+      ? parent.nodes.length > 0
+        ? parent.nodes[nodeIndex].id
+        : parent.id
+      : this.pageStore.currentPage.nodes.length > 0
+      ? this.pageStore.currentPage.nodes[nodeIndex].id
+      : undefined
+    this.pageStore.selectNodeOne(selectNode)
+  }
 
-    this.pageStore.updateCurrentPageKey()
+  private saveSelectedIds() {
+    this.selectedIds = this.pageStore.selectedNodeIds
   }
 
   static of(): RemoveNode {
@@ -537,12 +454,15 @@ export class RemoveParentNode extends AbstractAction {
     super()
   }
 
+  private saveSelectedId() {
+    this.selectedNodeId = this.pageStore.getSelectedNodeOne()!.id
+  }
+
   do(): void {
-    const selectedNode = <Node>this.pageStore.getSelectedNodeOne()
-    this.selectedNodeId = selectedNode.id
-    const parentNode = this.pageStore.findNode(
-      this.pageStore.getSelectedNodeOne()?.parentId
-    )
+    this.saveSelectedId()
+
+    const selectedNode = <Node>this.pageStore.findNode(this.selectedNodeId)
+    const parentNode = this.pageStore.findNode(selectedNode?.parentId)
     const grandParentNode = this.pageStore.findNode(parentNode?.parentId)
 
     if (grandParentNode) {
@@ -573,30 +493,19 @@ export class RemoveParentNode extends AbstractAction {
   }
 
   undo(): void {
-    this.deletedNodes.forEach((deletedNode) => {
+    this.deletedNodes.forEach(({ node, index }) => {
       const selected = <Node>this.pageStore.findNode(this.selectedNodeId)
-      
-      if (deletedNode.node.parentId) {
-        const parent = <Node>this.pageStore.findNode(deletedNode.node.parentId)
-        selected.parentId = deletedNode.node.id
-        parent.nodes.splice(deletedNode.index, 1, deletedNode.node)
-      } else {
-        selected.parentId = deletedNode.node.id
-        this.pageStore.currentPage.nodes.splice(
-          deletedNode.index,
-          1,
-          deletedNode.node
-        )
-      }
+      selected.parentId = node.id
+      node.parentId
+        ? this.pageStore.findNode(node.parentId)?.nodes.splice(index, 1, node)
+        : this.pageStore.currentPage.nodes.splice(index, 1, node)
     })
+    this.pageStore.selectNodeOne(this.selectedNodeId)
   }
 
   redo(): void {
     const selectedNode = <Node>this.pageStore.findNode(this.selectedNodeId)
-    
-    const parentNode = this.pageStore.findNode(
-      this.pageStore.getSelectedNodeOne()?.parentId
-    )
+    const parentNode = this.pageStore.findNode(selectedNode?.parentId)
     const grandParentNode = this.pageStore.findNode(parentNode?.parentId)
 
     if (grandParentNode) {
@@ -735,7 +644,7 @@ export class SelectResponsiveMode extends AbstractAction {
     this.pageStore
       .findNode(this.selectedNodeId)
       ?.selectResponsiveMode(<ResponsiveMode>this.savedResponsiveMode)
-      this.pageStore.updateCurrentPageKey()
+    this.pageStore.updateCurrentPageKey()
     const width = this.savedResponsiveMode === 'small' ? '33.33%' : '100%'
     this.screenStore.setScreenSize('width', width)
     this.pageStore.selectNodeOne(this.selectedNodeId)

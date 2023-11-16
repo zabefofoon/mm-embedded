@@ -1,8 +1,8 @@
 import type {DragNode} from "../model/Action"
-import type {PageData} from "../model/Page"
+import type {Page} from "../model/Page"
 
 export type ReceivedDataFromCanvas = {
-  pageData: PageData
+  pageData: Page
   selectedNodeIds: string[]
   dragAction: DragNode
   command: 'removeNode'

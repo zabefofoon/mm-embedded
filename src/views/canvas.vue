@@ -25,7 +25,7 @@ import {useScreenStore} from "../store/screen.store"
 import {VueDraggableNext as Draggable} from "vue-draggable-next"
 import {postEditorCommand, postEditorPageMutation} from "../messenger/postToEditor.msg"
 import {receiveFromEditor} from "../messenger/receiveFromEditor.msg"
-import type {PageData} from "../model/Page"
+import type {Page} from "../model/Page"
 
 onMounted(() => {
   window.addEventListener('message', listenMessage)
@@ -77,7 +77,7 @@ const screenStore = useScreenStore()
 const {isShowHidden} = storeToRefs(screenStore)
 
 const pageStore = usePagesStore()
-const postPageData = (pageData: PageData) => {
+const postPageData = (pageData: Page) => {
   if (pageStore.circuitBreaker.status === 'off')
     postEditorPageMutation(pageData, pageStore.selectedNodeIds)
 }

@@ -1,8 +1,8 @@
 import type {Group} from "../model/Widget"
 import {deepClone} from "../util/util"
-import type {PageData} from "../model/Page"
+import type {Page} from "../model/Page"
 
-export const postProjectSaveProject = (pages: PageData[],
+export const postProjectSaveProject = (pages: Page[],
                                        widgetGroups: Group[]) => window
     .parent
     ?.postMessage({
@@ -18,7 +18,7 @@ export const postProjectWidgetGroupsMutation = (widgetGroups: Group[]) => window
       widgetGroups: deepClone(widgetGroups),
     }, '*')
 
-export const postProjectRealtimeEditProject = (pages: PageData[]) => window
+export const postProjectRealtimeEditProject = (pages: Page[]) => window
     .parent
     ?.postMessage({
       type: 'pageMutation',

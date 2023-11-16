@@ -1,8 +1,8 @@
 import type {Group} from "../model/Widget"
-import type {PageData} from "../model/Page"
+import type {Page} from "../model/Page"
 
 export type ReceivedData = {
-  pages: PageData[]
+  pages: Page[]
   currentPageId: string
   selectedNodeIds: string[]
   data: Group[]

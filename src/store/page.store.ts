@@ -42,31 +42,24 @@ import type {
   ResponsiveMode,
 } from '../model/Node'
 import { Node } from '../model/Node'
-import type { PageData } from '../model/Page'
+import { Page } from '../model/Page'
 import type { Item } from '../model/Widget'
-import { deepClone, generateUniqueId } from '../util/util'
+import { deepClone } from '../util/util'
 import { useWidgetStore } from './widget.store'
 
 export const usePagesStore = defineStore('pages', () => {
-  const createPage = (): PageData => ({
-    id: generateUniqueId(),
-    name: 'Page',
-    key: 0,
-    nodes: [new Node()],
-  })
-
   const selectedNodeIds = ref<string[]>([])
 
   const widgetStore = useWidgetStore()
 
-  const initialPage = createPage()
+  const initialPage = Page.of()
 
-  const pages = ref<PageData[]>([initialPage])
+  const pages = ref<Page[]>([initialPage])
 
   const currentPageId = ref<string | undefined>(initialPage.id)
 
   const currentPage = computed(
-    () => <PageData>pages.value.find((page) => page.id === currentPageId.value)
+    () => <Page>pages.value.find((page) => page.id === currentPageId.value)
   )
   const updateCurrentPageKey = () => currentPage.value.key++
 
@@ -77,7 +70,7 @@ export const usePagesStore = defineStore('pages', () => {
     actionManager.emptyActions()
   }
 
-  const loadPages = (_pages: PageData[]) => {
+  const loadPages = (_pages: Page[]) => {
     pages.value = _pages
 
     pages.value.forEach((page) => (page.nodes = Node.makeNodes(page.nodes)))
@@ -87,7 +80,7 @@ export const usePagesStore = defineStore('pages', () => {
     const index = pages.value.findIndex(
       (page) => page.id === currentPageId.value
     )
-    const created = createPage()
+    const created = Page.of()
     pages.value.splice(index + 1, 0, created)
     selectPage(created.id)
   }
@@ -96,7 +89,7 @@ export const usePagesStore = defineStore('pages', () => {
     const index = pages.value.findIndex(
       (page) => page.id === currentPageId.value
     )
-    const created = createPage()
+    const created = Page.of()
     created.nodes = Node.makeNodes(deepClone(currentPage.value?.nodes || []))
     created.name = `[Copy]${currentPage.value?.name}`
     pages.value.splice(index + 1, 0, created)
@@ -132,7 +125,7 @@ export const usePagesStore = defineStore('pages', () => {
     selectedNodeIds.value.map((id) => findNode(id))
   )
 
-  const setPageData = (pageData: PageData) => {
+  const setPageData = (pageData: Page) => {
     pages.value.forEach((page) => {
       if (page.id === pageData.id) {
         page.key++
@@ -382,7 +375,6 @@ export const usePagesStore = defineStore('pages', () => {
     dragNode,
     handleDragNode,
 
-    createPage,
     updateCurrentPageKey,
   }
 })
