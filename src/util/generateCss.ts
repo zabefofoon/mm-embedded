@@ -266,6 +266,12 @@ const generateCoreCss = (isShowHidden: boolean) => {
   align-items: start;
 }
 
+.empty-node {
+  border: 1px dashed #ccc;
+  text-align: center;
+  padding: 4px 0;
+}
+
 .node > * {
   width: 100%;
 }

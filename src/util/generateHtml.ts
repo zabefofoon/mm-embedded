@@ -3,9 +3,12 @@ import type {Node as NodeType, ResponsiveMode} from "../model/Node"
 export const generateHtml = (nodes: NodeType[]): string => nodes
     .reduce((acc, current) => {
       const classes = generateNodeCss(current)
-      const html = current.widget?.html
-          ? `<div class="node ${classes}">${current.widget.html.replace(/\r|\n|\t/, '')}</div>`
-          : `<div class="node ${classes}">${generateHtml(current.nodes)}</div>`
+      
+      const html = current.nodes.length === 0
+      ? `<div class="node ${classes}"><div class="empty-node">space</div></div>`
+      :current.widget?.html
+      ? `<div class="node ${classes}">${current.widget.html.replace(/\r|\n|\t/, '')}</div>`
+      : `<div class="node ${classes}">${generateHtml(current.nodes)}</div>`
       return acc + html
     }, '')
 
