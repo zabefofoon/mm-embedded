@@ -56,7 +56,7 @@ const downloadJson = () => {
 
   const element = document.createElement('a')
   element.setAttribute('href', 'data:text/json;charset=utf-8, ' + encodeURIComponent(JSON.parse(beautifyJson(JSON.stringify(json), [], 2,100))))
-  element.setAttribute('download', 'pages.json')
+  element.setAttribute('download', 'data.json')
   document.body.appendChild(element)
 
   element.click()
