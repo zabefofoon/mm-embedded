@@ -37,7 +37,7 @@
            type="number"
            placeholder="length"
            :value="columns"
-           @keydown.stop
+           @keydown.enter="(<HTMLInputElement>$event.target).blur()"
            @change="setNodesLayoutGridColumns($event)"/>
   </li>
   <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
@@ -47,7 +47,7 @@
            class="tw-px-1 | tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
            placeholder="px, %, vw"
            :value="gap"
-           @keydown.stop
+           @keydown.enter="(<HTMLInputElement>$event.target).blur()"
            @change="setNodesLayoutGap($event)"/>
   </li>
   <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
@@ -83,6 +83,7 @@
 import {usePagesStore} from "../store/page.store"
 import {computed} from "vue"
 import type {CrossAxis, MainAxis, NodeDirection, NodeLayoutType} from "../model/Node"
+import { prependUnit } from "../util/util";
 
 const pageStore = usePagesStore()
 
@@ -109,7 +110,7 @@ const setNodesLayoutGridColumns = (event: Event) => {
 const gap = computed(() => pageStore.selectedNodes[0]?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].gap)
 const setNodesLayoutGap = (event: Event) => {
   const value = (<HTMLInputElement>event.target).value
-  pageStore.setNodesLayoutGap(value)
+  pageStore.setNodesLayoutGap(prependUnit(value))
 }
 
 const mainAxis = computed(() => pageStore.selectedNodes[0]?.layout[pageStore.selectedNodes[0].selectedResponsiveMode].mainAxis)

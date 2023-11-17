@@ -90,6 +90,7 @@ const listenCanvasMessage = ($event: MessageEvent) => {
     else if (data.command === 'pasteNode') pageStore.pasteNode()
     else if (data.command === 'undo') pageStore.actionManager.executeUndo()
     else if (data.command === 'redo') pageStore.actionManager.executeRedo()
+    else if (data.command === 'selectParentNode') pageStore.selectParentNode()
   } else if (type === 'dragNode' && data.dragAction)
     pageStore.handleDragNode(data.dragAction)
 }
@@ -164,10 +165,14 @@ watch(
 
 const listenKeydown = ($event: KeyboardEvent) => {
   const isCtrl = $event.ctrlKey || $event.metaKey
-  if ($event.code === 'KeyZ' && isCtrl && $event.shiftKey)
+  if ($event.code === 'KeyZ' && isCtrl && $event.shiftKey) {
+    $event.preventDefault()
     pageStore.actionManager.executeRedo()
-  else if ($event.code === 'KeyZ' && isCtrl)
+  }
+  else if ($event.code === 'KeyZ' && isCtrl) {
+    $event.preventDefault()
     pageStore.actionManager.executeUndo()
+  }
 }
 
 const generatedCss = computed(() =>

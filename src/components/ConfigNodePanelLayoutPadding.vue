@@ -10,7 +10,8 @@
                  class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="left"
-                 @change="setNodesLayoutPadding('left', $event)"/>
+                 @change="setNodesLayoutPadding('left', $event)"
+                 @keydown.enter="(<HTMLInputElement>$event.target).blur()"/>
         </div>
         <div class="tw-flex gap-2 | tw-w-1/2">
           <label for="padding-right"><i class="mm-icon mm-icon-padding-right"></i></label>
@@ -18,7 +19,8 @@
                  class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="right"
-                 @change="setNodesLayoutPadding('right', $event)"/>
+                 @change="setNodesLayoutPadding('right', $event)"
+                 @keydown.enter="(<HTMLInputElement>$event.target).blur()"/>
         </div>
       </div>
       <div class="tw-flex tw-gap-1">
@@ -28,7 +30,8 @@
                  class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="top"
-                 @change="setNodesLayoutPadding('top', $event)"/>
+                 @change="setNodesLayoutPadding('top', $event)"
+                 @keydown.enter="(<HTMLInputElement>$event.target).blur()"/>
         </div>
         <div class="tw-flex gap-2 | tw-w-1/2">
           <label for="padding-bottom"><i class="mm-icon mm-icon-padding-bottom"></i></label>
@@ -36,7 +39,8 @@
                  class="tw-w-full | tw-text-sm border tw-border-white hover:tw-border-orange-500"
                  placeholder="px"
                  :value="bottom"
-                 @change="setNodesLayoutPadding('bottom', $event)"/>
+                 @change="setNodesLayoutPadding('bottom', $event)"
+                 @keydown.enter="(<HTMLInputElement>$event.target).blur()"/>
         </div>
       </div>
     </div>
@@ -47,6 +51,7 @@
 import {usePagesStore} from "../store/page.store"
 import {computed} from "vue"
 import type {Direction} from "../model/Node"
+import { prependUnit } from "../util/util";
 
 const pageStore = usePagesStore()
 
@@ -57,7 +62,7 @@ const bottom = computed(() => pageStore.selectedNodes[0]?.layout[pageStore.selec
 
 const setNodesLayoutPadding = (direction: Direction, event: Event) => {
   const value = (<HTMLInputElement>event.target).value
-  pageStore.setNodesLayoutPadding(direction, value)
+  pageStore.setNodesLayoutPadding(direction, prependUnit(value))
 }
 </script>
 

@@ -13,6 +13,7 @@ export type ReceivedDataFromCanvas = {
       | 'pasteNode'
       | 'redo'
       | 'undo'
+      | 'selectParentNode'
 }
 export type ReceivedDataType = 'dragNode'
     | 'command'

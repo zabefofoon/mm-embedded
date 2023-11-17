@@ -54,6 +54,8 @@ const listenKeydown = ($event: KeyboardEvent) => {
     postEditorCommand('redo')
   else if ($event.code === 'KeyZ' && isCtrl)
     postEditorCommand('undo')
+  else if ($event.code === 'ArrowUp' && isCtrl)
+    postEditorCommand('selectParentNode')
 }
 
 const listenMessage = ($event: MessageEvent) => {
