@@ -251,6 +251,12 @@
   mask-image: url($src);
 }
 
+.mm-icon-json {
+  $src: 'https://api.iconify.design/carbon/json.svg';
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
 .mm-icon-save {
   $src: 'https://api.iconify.design/material-symbols/save-outline.svg';
   -webkit-mask-image: url($src);

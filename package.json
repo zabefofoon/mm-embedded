@@ -12,10 +12,12 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
   "dependencies": {
+    "json-beautify": "^1.1.1",
     "lodash.merge": "^4.6.2",
     "lodash.omit": "^4.5.0",
     "pinia": "^2.0.33",
     "pinia-plugin-persistedstate": "^3.1.0",
+    "pretty": "^2.0.0",
     "short-unique-id": "^4.4.4",
     "swiper": "^9.1.1",
     "vue": "^3.2.47",
@@ -29,6 +31,7 @@
     "@types/jsdom": "^21.1.0",
     "@types/lodash.omit": "^4.5.7",
     "@types/node": "^18.15.3",
+    "@types/pretty": "^2.0.3",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vue/test-utils": "^2.3.1",
     "@vue/tsconfig": "^0.1.3",
