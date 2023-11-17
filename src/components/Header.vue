@@ -1,7 +1,7 @@
 <template>
   <header class="tw-border-b | tw-flex items-center tw-gap-2 | tw-pl-4 tw-py-2">
     <IconButton v-if="$route.query.edit" icon="mm-icon-save" @click="save" />
-    <IconDivider />   
+    <IconDivider />
     <HeaderScreenSize />
     <IconDivider />
     <HeaderScreenView />
@@ -11,7 +11,7 @@
     <IconButton
       icon="mm-icon-analyze"
       :active="screenStore.screenMode === 'analyzeWidget'"
-      @click="screenStore.setScreenMode('analyzeWidget')" />
+      @click="toggleAnalyzeWidget" />
     <div class="tw-flex tw-gap-1 | tw-ml-auto tw-mr-12">
       <button
         v-for="user in peerStore.connectedUsers"
@@ -25,16 +25,16 @@
 </template>
 
 <script setup lang="ts">
+import { postProjectSaveProject } from '../messenger/postToProject.msg'
+import { usePagesStore } from '../store/page.store'
+import { usePeerStore } from '../store/peer.store'
+import { useScreenStore } from '../store/screen.store'
+import { useWidgetStore } from '../store/widget.store'
+import HeaderScreenDownload from './HeaderScreenDownload.vue'
+import HeaderScreenSize from './HeaderScreenSize.vue'
+import HeaderScreenView from './HeaderScreenView.vue'
 import IconButton from './atom/IconButton.vue'
 import IconDivider from './atom/IconDivider.vue'
-import HeaderScreenView from './HeaderScreenView.vue'
-import HeaderScreenSize from './HeaderScreenSize.vue'
-import HeaderScreenDownload from './HeaderScreenDownload.vue'
-import { useScreenStore } from '../store/screen.store'
-import { usePagesStore } from '../store/page.store'
-import { useWidgetStore } from '../store/widget.store'
-import { usePeerStore } from '../store/peer.store'
-import { postProjectSaveProject } from '../messenger/postToProject.msg'
 
 const screenStore = useScreenStore()
 
@@ -47,6 +47,12 @@ const save = () => {
 }
 
 const peerStore = usePeerStore()
+
+const toggleAnalyzeWidget = () => {
+  screenStore.screenMode === 'analyzeWidget'
+    ? screenStore.setScreenMode()
+    : screenStore.setScreenMode('analyzeWidget')
+}
 </script>
 
 <style lang="scss" scoped>

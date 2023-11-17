@@ -6,11 +6,11 @@ export type ScreenSize = {
   height: string
 }
 
-export type ScreenMode = 'size' | 'view' | 'download' | 'analyzeWidget'
+export type ScreenMode = 'analyzeWidget' | undefined
 
 export const useScreenStore = defineStore('screen', () => {
-  const screenMode = ref<ScreenMode>('size')
-  const setScreenMode = (mode: ScreenMode) => {
+  const screenMode = ref<ScreenMode>()
+  const setScreenMode = (mode?: ScreenMode) => {
     screenMode.value = mode
   }
 

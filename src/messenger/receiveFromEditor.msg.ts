@@ -14,6 +14,7 @@ export type ReceivedData = {
   }
   widgetGroups: Group[]
   widgetId?: string
+  selectedUsingWidgetId?: string
 }
 export type ReceivedDataType = 'pagesMutation'
     | 'widgetGroupsMutation'

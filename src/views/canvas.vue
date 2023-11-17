@@ -80,8 +80,9 @@ const listenMessage = ($event: MessageEvent) => {
     screenStore.toggleShowOutline(data.screenData?.isShowOutline)
     screenStore.toggleShowHidden(data.screenData?.isShowHidden)
     screenStore.toggleMarker(data.screenData?.isShowMarker)
-  } else if (type === 'selectUsingWidget')
-    widgetStore.selectUsingWidget(data.widgetId)
+  } else if (type === 'selectUsingWidget') 
+    widgetStore.selectUsingWidget(data?.selectedUsingWidgetId) 
+    
 }
 
 const screenStore = useScreenStore()
