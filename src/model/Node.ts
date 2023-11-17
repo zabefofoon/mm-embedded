@@ -30,7 +30,7 @@ export class Node {
 
   constructor(public parentId?: string) {}
 
-  removeNode(nodeId: string) {
+  removeNode(nodeId?: string) {
     this.nodes = this.nodes.filter((node) => node.id !== nodeId)
   }
 
@@ -128,6 +128,16 @@ export class Node {
       this.layout[this.selectedResponsiveMode].right = value
     else if (direction === 'bottom')
       this.layout[this.selectedResponsiveMode].bottom = value
+  }
+
+  setId(id: string) {
+    this.id = id
+    return this
+  }
+
+  setParentId(id?: string) {
+    this.parentId = id
+    return this
   }
 
   static of(parentId?: string) {

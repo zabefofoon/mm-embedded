@@ -7,7 +7,7 @@ export class Page {
   key = 0
   nodes = [Node.of()]
 
-  removeNode(nodeId: string) {
+  removeNode(nodeId?: string) {
     this.nodes = this.nodes.filter((node) => node.id !== nodeId)
   }
 
