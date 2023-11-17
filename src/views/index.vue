@@ -91,6 +91,9 @@ const listenCanvasMessage = ($event: MessageEvent) => {
     else if (data.command === 'undo') pageStore.actionManager.executeUndo()
     else if (data.command === 'redo') pageStore.actionManager.executeRedo()
     else if (data.command === 'selectParentNode') pageStore.selectParentNode()
+    else if (data.command === 'selectPrevSiblingNode') pageStore.selectPrevSiblingNode()
+    else if (data.command === 'selectNextSiblingNode') pageStore.selectNextSiblingNode()
+    else if (data.command === 'selectChildNode') pageStore.selectChildNode()
   } else if (type === 'dragNode' && data.dragAction)
     pageStore.handleDragNode(data.dragAction)
 }

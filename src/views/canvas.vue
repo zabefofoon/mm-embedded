@@ -56,6 +56,15 @@ const listenKeydown = ($event: KeyboardEvent) => {
     postEditorCommand('undo')
   else if ($event.code === 'ArrowUp' && isCtrl)
     postEditorCommand('selectParentNode')
+  else if ($event.code === 'ArrowUp')
+    postEditorCommand('selectPrevSiblingNode')
+  else if ($event.code === 'ArrowUp')
+    postEditorCommand('selectPrevSiblingNode')
+  else if ($event.code === 'ArrowDown' && isCtrl)
+    postEditorCommand('selectChildNode')
+  else if ($event.code === 'ArrowDown')
+    postEditorCommand('selectNextSiblingNode')
+    
 }
 
 const listenMessage = ($event: MessageEvent) => {

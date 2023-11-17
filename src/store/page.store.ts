@@ -246,6 +246,57 @@ export const usePagesStore = defineStore('pages', () => {
     updateCurrentPageKey()
   }
 
+  const selectPrevSiblingNode = () => {
+    if (selectedNodeIds.value.length === 0) {
+      selectNodeOne(currentPage.value.nodes.at(-1)?.id)
+    } else {
+      const parent = findNode(selectedNodeIds.value[0])?.parentId
+        ? findNode(findNode(selectedNodeIds.value[0])?.parentId)
+        : currentPage.value
+
+      const foundIndex =
+        parent?.nodes.findIndex(
+          (node) => node.id === selectedNodeIds.value[0]
+        ) || 0
+      const index =
+        foundIndex - 1 < 0 ? (parent?.nodes.length || 0) - 1 : foundIndex - 1
+
+      selectNodeOne(parent?.nodes[index].id)
+    }
+
+    updateCurrentPageKey()
+  }
+
+  const selectNextSiblingNode = () => {
+    if (selectedNodeIds.value.length === 0) {
+      selectNodeOne(currentPage.value.nodes.at(0)?.id)
+    } else {
+      const parent = findNode(selectedNodeIds.value[0])?.parentId
+        ? findNode(findNode(selectedNodeIds.value[0])?.parentId)
+        : currentPage.value
+
+      const foundIndex =
+        parent?.nodes.findIndex(
+          (node) => node.id === selectedNodeIds.value[0]
+        ) || 0
+
+        const index =
+        foundIndex + 1  > (parent?.nodes.length || 0) - 1 
+        ? 0 
+        : foundIndex + 1
+
+      selectNodeOne(parent?.nodes[index].id)
+    }
+    updateCurrentPageKey()
+  }
+
+  const selectChildNode = () => {
+    selectedNodeIds.value.length === 0
+      ? selectNodeOne(currentPage.value.nodes.at(0)?.id)
+      : selectNodeOne(findNode(selectedNodeIds.value[0])?.nodes[0]?.id)
+    updateCurrentPageKey()
+  }
+
   const addNodeMarker = () => actionManager.execute(AddMarker.of())
 
   const removeNodeMarker = () => actionManager.execute(RemoveMarker.of())
@@ -333,6 +384,9 @@ export const usePagesStore = defineStore('pages', () => {
     selectNodeOne,
     selectNodeMany,
     selectParentNode,
+    selectPrevSiblingNode,
+    selectNextSiblingNode,
+    selectChildNode,
 
     setNodesLayoutType,
     setNodesLayoutStackDirection,

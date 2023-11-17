@@ -14,6 +14,9 @@ export type ReceivedDataFromCanvas = {
       | 'redo'
       | 'undo'
       | 'selectParentNode'
+      | 'selectPrevSiblingNode'
+      | 'selectNextSiblingNode'
+      | 'selectChildNode'
 }
 export type ReceivedDataType = 'dragNode'
     | 'command'
