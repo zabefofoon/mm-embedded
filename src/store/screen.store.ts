@@ -1,5 +1,6 @@
-import {defineStore} from "pinia"
-import {ref} from "vue"
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
+import type { ResponsiveMode } from '../model/Node'
 
 export type ScreenSize = {
   width: string
@@ -35,12 +36,16 @@ export const useScreenStore = defineStore('screen', () => {
   }
   const screenSize = ref<ScreenSize>({
     width: '100%',
-    height: '100%'
+    height: '100%',
   })
 
   const setScreenSize = (axis: keyof ScreenSize, value: string) => {
     screenSize.value[axis] = value
   }
+
+  const responsiveMode = computed<ResponsiveMode>(() => {
+    return screenSize.value.width === '100%' ? 'large' : 'small'
+  })
 
   return {
     isShowSpacing,
@@ -59,6 +64,8 @@ export const useScreenStore = defineStore('screen', () => {
     setScreenMode,
 
     screenSize,
-    setScreenSize
+    setScreenSize,
+
+    responsiveMode
   }
 })
