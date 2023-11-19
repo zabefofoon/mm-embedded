@@ -33,8 +33,8 @@ dependencies:
     specifier: ^3.2.47
     version: 3.2.47
   vue-draggable-next:
-    specifier: ^2.2.0
-    version: 2.2.0(sortablejs@1.15.0)(vue@3.2.47)
+    specifier: ^2.2.1
+    version: 2.2.1(sortablejs@1.15.0)(vue@3.2.47)
   vue-final-modal:
     specifier: ^3.4.11
     version: 3.4.11
@@ -3989,8 +3989,8 @@ packages:
       vue: 3.2.47
     dev: true
 
-  /vue-draggable-next@2.2.0(sortablejs@1.15.0)(vue@3.2.47):
-    resolution: {integrity: sha512-JQ7Ac4knnpsA47/acUhRR7negDHNZDLdpbXRR+n89f516rJDt+eHh48tfqTe80q2UfnLymQ46zi81gCMKFU4DQ==}
+  /vue-draggable-next@2.2.1(sortablejs@1.15.0)(vue@3.2.47):
+    resolution: {integrity: sha512-EAMS1IRHF0kZO0o5PMOinsQsXIqsrKT1hKmbICxG3UEtn7zLFkLxlAtajcCcUTisNvQ6TtCB5COjD9a1raNADw==}
     peerDependencies:
       sortablejs: ^1.14.0
       vue: ^3.2.2
