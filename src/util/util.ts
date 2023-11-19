@@ -14,5 +14,9 @@ export const removeSpacing = (str: string) =>
   str.replace(/\n|\r|\t|\s\s+/gi, '').replace(/>\s+</gi, '><')
 
 export const prependUnit = (value: string, unit = 'px') => {
-  return isNaN(Number(value)) ? value : String(value + unit)
+  return isNaN(Number(value)) 
+  ? value 
+  : value
+  ? String(value + unit)
+  : value
 }
