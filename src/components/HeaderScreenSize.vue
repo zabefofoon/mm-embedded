@@ -2,18 +2,22 @@
   <div class="tw-flex tw-justify-center tw-gap-2">
     <IconButton
       icon="mm-icon-screen-xl"
+      title="Screen xLarge"
       @click="selectSize('100%')"
       :active="screenStore.screenSize.width === '100%'" />
     <IconButton
       icon="mm-icon-screen-l"
+      title="Screen large"
       @click="selectSize('75%')"
       :active="screenStore.screenSize.width === '75%'" />
     <IconButton
       icon="mm-icon-screen-m"
+      title="Screen medium"
       @click="selectSize('50%')"
       :active="screenStore.screenSize.width === '50%'" />
     <IconButton
       icon="mm-icon-screen-s"
+      title="Screen small"
       @click="selectSize('33.33%')"
       :active="screenStore.screenSize.width === '33.33%'" />
     <!-- <IconDivider/>

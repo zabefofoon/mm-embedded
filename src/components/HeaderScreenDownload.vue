@@ -1,8 +1,10 @@
 <template>
   <div class="tw-flex tw-justify-center tw-gap-2">
     <IconButton icon="mm-icon-html"
+                title="Download html"
                 @click="downloadHtml"/>
     <IconButton icon="mm-icon-json"
+                title="Download json"
                 @click="downloadJson"/>
   </div>
 </template>
