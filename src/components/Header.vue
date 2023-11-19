@@ -1,6 +1,7 @@
 <template>
   <header class="tw-border-b | tw-flex items-center tw-gap-2 | tw-pl-4 tw-py-2">
     <IconButton v-if="$route.query.edit" icon="mm-icon-save" @click="save" />
+    <IconButton icon="mm-icon-upload" @click="loadFile" />
     <IconDivider />
     <HeaderScreenSize />
     <IconDivider />
@@ -26,6 +27,7 @@
 
 <script setup lang="ts">
 import { postProjectSaveProject } from '../messenger/postToProject.msg'
+import type { ReceivedData } from '../messenger/receiveFromProject.msg'
 import { usePagesStore } from '../store/page.store'
 import { usePeerStore } from '../store/peer.store'
 import { useScreenStore } from '../store/screen.store'
@@ -52,6 +54,31 @@ const toggleAnalyzeWidget = () => {
   screenStore.screenMode === 'analyzeWidget'
     ? screenStore.setScreenMode()
     : screenStore.setScreenMode('analyzeWidget')
+}
+
+const loadFile = () => {
+  const element = document.createElement('input')
+  element.setAttribute('type', 'file')
+  element.click()
+  document.body.appendChild(element)
+  element.onchange = (event: Event) => {
+    const fileReader = new FileReader()
+    const file = (<HTMLInputElement>event.target).files?.[0]
+
+    if (!file) return
+    fileReader.readAsText(file, 'utf-8')
+    fileReader.onload = () => {
+      const result = <ReceivedData>JSON.parse(<string>fileReader.result)
+      pageStore.loadPages(result.pages)
+      widgetStore.setWidgetGroups(result.widgetGroups || [])
+      pageStore.selectPage(pageStore.pages?.[0]?.id)
+      setTimeout(() => {
+        widgetStore.postWidgetStoreToCanvas()
+        widgetStore.postWidgetGroupsToEditor()
+      }, 100)
+    }
+  }
+  document.body.removeChild(element)
 }
 </script>
 

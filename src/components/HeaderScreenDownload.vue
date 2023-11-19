@@ -49,7 +49,6 @@ const downloadHtml = () => {
 
 const downloadJson = () => {
   const json = {
-      type: 'saveProject',
       pages: deepClone(pageStore.pages),
       widgetGroups: deepClone(widgetStore.widgetGroups)
     }

@@ -1,3 +1,8 @@
+@mixin generateIcon($src) {
+  -webkit-mask-image: url($src);
+  mask-image: url($src);
+}
+
 .mm-icon {
   display: inline-block;
   width: 1em;
@@ -10,321 +15,219 @@
 }
 
 .mm-icon-grid {
-  $src: 'https://api.iconify.design/material-symbols/grid-view.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/grid-view.svg');
 }
 
 .mm-icon-explore {
-  $src: 'https://api.iconify.design/ic/outline-explore.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ic/outline-explore.svg');
 }
 
 .mm-icon-file {
-  $src: 'https://api.iconify.design/arcticons/atomic-science.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/arcticons/atomic-science.svg');
 }
 
 .mm-icon-copy {
-  $src: 'https://api.iconify.design/material-symbols/copy-all-sharp.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/copy-all-sharp.svg');
 }
 
 .mm-icon-cut {
-  $src: 'https://api.iconify.design/material-symbols/cut.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/cut.svg');
 }
 
 .mm-icon-paste {
-  $src: 'https://api.iconify.design/material-symbols/content-paste.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/content-paste.svg');
 }
 
 .mm-icon-add {
-  $src: 'https://api.iconify.design/material-symbols/add.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/add.svg')
 }
 
 .mm-icon-minus {
-  $src: 'https://api.iconify.design/ic/baseline-minus.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ic/baseline-minus.svg')
 }
 
 .mm-icon-delete {
-  $src: 'https://api.iconify.design/material-symbols/delete-outline.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/delete-outline.svg')
 }
 
 .mm-icon-overflow {
-  $src: 'https://api.iconify.design/carbon/overflow-menu-vertical.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/carbon/overflow-menu-vertical.svg')
 }
 
 .mm-icon-arrow-left {
-  $src: 'https://api.iconify.design/ic/baseline-arrow-back-ios-new.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ic/baseline-arrow-back-ios-new.svg')
 }
 
 .mm-icon-github {
-  $src: 'https://api.iconify.design/mdi/github.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/github.svg')
 }
 
 .mm-icon-instargram {
-  $src: 'https://api.iconify.design/ri/instagram-fill.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ri/instagram-fill.svg')
 }
 
 .mm-icon-avatar-secured {
-  $src: 'https://api.iconify.design/ooui/user-avatar.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ooui/user-avatar.svg')
 }
 
 .mm-icon-avatar-unsecured {
-  $src: 'https://api.iconify.design/ooui/user-avatar-outline.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ooui/user-avatar-outline.svg')
 }
 
 .mm-icon-lock {
-  $src: 'https://api.iconify.design/material-symbols/lock-outline.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/lock-outline.svg')
 }
 
 .mm-icon-search {
-  $src: 'https://api.iconify.design/material-symbols/search.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/search.svg')
 }
 
 .mm-icon-close {
-  $src: 'https://api.iconify.design/material-symbols/close.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/close.svg')
 }
 
 .mm-icon-mouse-scroll {
-  $src: 'https://api.iconify.design/iconoir/mouse-scroll-wheel.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/iconoir/mouse-scroll-wheel.svg')
 }
 
 .mm-icon-arrow-top {
-  $src: 'https://api.iconify.design/ic/baseline-keyboard-arrow-up.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ic/baseline-keyboard-arrow-up.svg')
 }
 
 .mm-icon-arrow-bottom {
-  $src: 'https://api.iconify.design/ic/baseline-keyboard-arrow-down.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ic/baseline-keyboard-arrow-down.svg')
 }
 
 
 .mm-icon-bars {
-  $src: 'https://api.iconify.design/heroicons/bars-3-20-solid.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/heroicons/bars-3-20-solid.svg')
 }
 
 
 .mm-icon-screen-xl {
-  $src: 'https://api.iconify.design/mdi/size-xl.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/size-xl.svg')
 }
 
 .mm-icon-screen-l {
-  $src: 'https://api.iconify.design/mdi/size-l.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/size-l.svg')
 }
 
 .mm-icon-screen-m {
-  $src: 'https://api.iconify.design/mdi/size-m.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/size-m.svg')
 }
 
 .mm-icon-screen-s {
-  $src: 'https://api.iconify.design/mdi/size-s.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/size-s.svg')
 }
 
 .mm-icon-screen-size {
-  $src: 'https://api.iconify.design/fluent/slide-size-20-regular.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/fluent/slide-size-20-regular.svg')
 }
 
 .mm-icon-page {
-  $src: 'https://api.iconify.design/iconoir/empty-page.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/iconoir/empty-page.svg')
 }
 
 .mm-icon-eye {
-  $src: 'https://api.iconify.design/ic/outline-remove-red-eye.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ic/outline-remove-red-eye.svg')
 }
 
 .mm-icon-spacing {
-  $src: 'https://api.iconify.design/mdi/format-paragraph-spacing.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/format-paragraph-spacing.svg')
 }
 
 .mm-icon-outline {
-  $src: 'https://api.iconify.design/mdi/border-none-variant.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/border-none-variant.svg')
 }
 
 .mm-icon-hidden {
-  $src: 'https://api.iconify.design/mdi/file-hidden.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/file-hidden.svg')
 }
 
 .mm-icon-marker {
-  $src: 'https://api.iconify.design/clarity/map-marker-line.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/clarity/map-marker-line.svg')
 }
 
 .mm-icon-padding-left {
-  $src: 'https://api.iconify.design/fluent-mdl2/padding-left.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/fluent-mdl2/padding-left.svg')
 }
 
 .mm-icon-padding-top {
-  $src: 'https://api.iconify.design/fluent-mdl2/padding-top.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/fluent-mdl2/padding-top.svg')
 }
 
 .mm-icon-padding-right {
-  $src: 'https://api.iconify.design/fluent-mdl2/padding-right.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/fluent-mdl2/padding-right.svg')
 }
 
 .mm-icon-padding-bottom {
-  $src: 'https://api.iconify.design/fluent-mdl2/padding-bottom.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/fluent-mdl2/padding-bottom.svg')
 }
 
 .mm-icon-download {
-  $src: 'https://api.iconify.design/ic/baseline-save-alt.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ic/baseline-save-alt.svg')
 }
 
 .mm-icon-html {
-  $src: 'https://api.iconify.design/material-symbols/html.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/html.svg')
 }
 
 .mm-icon-css {
-  $src: 'https://api.iconify.design/material-symbols/css.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/css.svg')
 }
 
 .mm-icon-json {
-  $src: 'https://api.iconify.design/carbon/json.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/carbon/json.svg')
 }
 
 .mm-icon-save {
-  $src: 'https://api.iconify.design/material-symbols/save-outline.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/file-save-outline.svg')
+}
+
+.mm-icon-upload {
+  @include generateIcon('https://api.iconify.design/material-symbols/file-open-outline.svg')
 }
 
 .mm-icon-child {
-  $src: 'https://api.iconify.design/clarity/child-arrow-line.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/clarity/child-arrow-line.svg')
 }
 
 .mm-icon-plus {
-  $src: 'https://api.iconify.design/mdi/plus.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/plus.svg')
 }
 
 .mm-icon-parent {
-  $src: 'https://api.iconify.design/bi/arrow-bar-up.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/bi/arrow-bar-up.svg')
 }
 
 .mm-icon-arrow-up {
-  $src: 'https://api.iconify.design/ph/arrow-up-light.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/ph/arrow-up-light.svg')
 }
 
 .mm-icon-select {
-  $src: 'https://api.iconify.design/material-symbols/gesture-select.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/gesture-select.svg')
 }
 
 .mm-icon-trash {
-  $src: 'https://api.iconify.design/mdi/trash-outline.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/trash-outline.svg')
 }
 
 .mm-icon-deselect {
-  $src: 'https://api.iconify.design/material-symbols/deselect.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/material-symbols/deselect.svg')
 }
 
 .mm-icon-add-widget {
-  $src: 'https://api.iconify.design/solar/widget-add-outline.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/solar/widget-add-outline.svg')
 }
 
 .mm-icon-widget {
-  $src: 'https://api.iconify.design/solar/widget-linear.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/solar/widget-linear.svg')
 }
 
 .mm-icon-line {
-  $src: 'https://api.iconify.design/uil/line-alt.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/uil/line-alt.svg')
 }
 
 .mm-icon-analyze {
-  $src: 'https://api.iconify.design/mdi/table-eye.svg';
-  -webkit-mask-image: url($src);
-  mask-image: url($src);
+  @include generateIcon('https://api.iconify.design/mdi/table-eye.svg')
 }

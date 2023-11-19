@@ -4,7 +4,7 @@ export const generateHtml = (nodes: NodeType[]): string => nodes
     .reduce((acc, current) => {
       const classes = generateNodeCss(current)
       
-      const html = current.nodes.length === 0
+      const html = current.nodes.length === 0 && !current.widget
       ? `<div class="node ${classes}"><div class="empty-node">space</div></div>`
       :current.widget?.html
       ? `<div class="node ${classes}">${current.widget.html.replace(/\r|\n|\t/, '')}</div>`
