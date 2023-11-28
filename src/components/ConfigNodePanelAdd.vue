@@ -164,7 +164,7 @@ import { usePagesStore } from '../store/page.store'
 import { computed } from 'vue'
 import { $vfm } from 'vue-final-modal'
 import ModalWidgets from './ModalWidgets.vue'
-import { Item } from '../model/Widget'
+import type { Item } from '../model/Widget'
 
 const pageStore = usePagesStore()
 
