@@ -160,20 +160,12 @@
 </template>
 
 <script setup lang="ts">
-import { usePagesStore } from '../store/page.store'
-import { computed } from 'vue'
 import { $vfm } from 'vue-final-modal'
-import ModalWidgets from './ModalWidgets.vue'
 import type { Item } from '../model/Widget'
+import { usePagesStore } from '../store/page.store'
+import ModalWidgets from './ModalWidgets.vue'
 
 const pageStore = usePagesStore()
-
-const isShowRemoveParent = computed(
-  () =>
-    pageStore.selectedNodeIds.length === 1 &&
-    (pageStore.findNode(pageStore.getSelectedNodeOne()?.parentId)?.nodes || [])
-      .length < 2
-)
 
 const showWidgetModal = () => {
   $vfm.show({

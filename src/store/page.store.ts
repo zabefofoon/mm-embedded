@@ -46,6 +46,7 @@ import { Page } from '../model/Page'
 import type { Item } from '../model/Widget'
 import { deepClone } from '../util/util'
 import { useWidgetStore } from './widget.store'
+import type { DownloadOptions } from '../model/DownloadOptions'
 
 export const usePagesStore = defineStore('pages', () => {
   const selectedNodeIds = ref<string[]>([])
@@ -280,10 +281,8 @@ export const usePagesStore = defineStore('pages', () => {
           (node) => node.id === selectedNodeIds.value[0]
         ) || 0
 
-        const index =
-        foundIndex + 1  > (parent?.nodes.length || 0) - 1 
-        ? 0 
-        : foundIndex + 1
+      const index =
+        foundIndex + 1 > (parent?.nodes.length || 0) - 1 ? 0 : foundIndex + 1
 
       selectNodeOne(parent?.nodes[index].id)
     }
@@ -351,6 +350,18 @@ export const usePagesStore = defineStore('pages', () => {
     actionManager.execute(DragNode.of(dragNode))
     updateCurrentPageKey()
   }
+
+  const downloadOptions = ref<DownloadOptions>({
+    includePreflight: true,
+    showBorder: true,
+    showEmptyArea: true,
+  })
+
+  const setDownloadOptions = (key: keyof DownloadOptions, value: boolean) =>
+    (downloadOptions.value[key] = value)
+
+  const toggleDownloadOptions = (key: keyof DownloadOptions) =>
+    (downloadOptions.value[key] = !downloadOptions.value[key])
 
   return {
     selectedNodeIds,
@@ -430,5 +441,9 @@ export const usePagesStore = defineStore('pages', () => {
     handleDragNode,
 
     updateCurrentPageKey,
+
+    downloadOptions,
+    setDownloadOptions,
+    toggleDownloadOptions,
   }
 })

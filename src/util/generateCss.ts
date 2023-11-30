@@ -1,5 +1,6 @@
 import type {Group} from "../model/Widget"
 import type {Direction, Node, ResponsiveMode} from "../model/Node"
+import { usePagesStore } from "../store/page.store"
 
 const getScreenSize = (responsiveMode: ResponsiveMode) => responsiveMode === 'small' ? '0px' : '768px'
 
@@ -15,6 +16,11 @@ export const generateCss = (nodes: Node[],
     + generateWidgetCss(groups)
 
 const generatePreflightCss = () => {
+  const pageStore = usePagesStore()
+
+  if (!pageStore.downloadOptions.includePreflight)
+    return ``
+
   return `
 *,
 ::before,
@@ -244,6 +250,9 @@ video {
 }
 
 const generateCoreCss = (isShowHidden: boolean) => {
+
+  const pageStore = usePagesStore()
+
   return `
 .icon {
   display: inline-block;
@@ -264,13 +273,20 @@ const generateCoreCss = (isShowHidden: boolean) => {
   flex-direction: column;
   justify-content: start;
   align-items: start;
+  ${pageStore.downloadOptions.showBorder ? 'outline: 1px dashed #ccc;' : ''}
+}
+${
+  pageStore.downloadOptions.showEmptyArea 
+  ? `
+  .empty-node {
+    border: 1px dashed #ccc;
+    text-align: center;
+    padding: 4px 0;
+  }
+  ` 
+  : ``
 }
 
-.empty-node {
-  border: 1px dashed #ccc;
-  text-align: center;
-  padding: 4px 0;
-}
 
 .node > * {
   width: 100%;

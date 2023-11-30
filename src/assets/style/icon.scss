@@ -231,3 +231,7 @@
 .mm-icon-analyze {
   @include generateIcon('https://api.iconify.design/mdi/table-eye.svg')
 }
+
+.mm-icon-check {
+  @include generateIcon('https://api.iconify.design/material-symbols/check.svg')
+}
