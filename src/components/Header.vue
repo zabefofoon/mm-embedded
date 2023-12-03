@@ -10,13 +10,9 @@
       icon="mm-icon-upload"
       title="File upload"
       @click="loadFile" />
-    <IconDivider />
     <HeaderScreenSize />
-    <IconDivider />
     <HeaderScreenView />
-    <IconDivider />
     <HeaderScreenDownload />
-    <IconDivider />
     <IconButton
       v-if="$route.query.hideAnalyzeWidget !== 'true'"
       icon="mm-icon-analyze"
