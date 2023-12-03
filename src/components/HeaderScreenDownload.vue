@@ -1,6 +1,9 @@
 <template>
   <div class="tw-flex tw-justify-center tw-gap-2">
-    <div class="tw-relative" v-click-away="closeOptions">
+    <div
+      v-if="!$route.query.hideDownloadHtml"
+      class="tw-relative"
+      v-click-away="closeOptions">
       <IconButton
         :class="{ 'tw-bg-slate-300': isShowOptions }"
         icon="mm-icon-html"
@@ -43,6 +46,7 @@
     </div>
 
     <IconButton
+      v-if="!$route.query.hideDownloadJson"
       icon="mm-icon-json"
       title="Download json"
       @click="downloadJson" />
