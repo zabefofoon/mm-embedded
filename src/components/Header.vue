@@ -1,12 +1,12 @@
 <template>
   <header class="tw-border-b | tw-flex items-center tw-gap-2 | tw-pl-4 tw-py-2">
     <IconButton
-      v-if="!$route.query.hideEdit"
+      v-if="$route.query.hideEdit !== 'true'"
       icon="mm-icon-save"
       title="Save project"
       @click="save" />
     <IconButton
-      v-if="!$route.query.hideLoad"
+      v-if="$route.query.hideLoad !== 'true'"
       icon="mm-icon-upload"
       title="File upload"
       @click="loadFile" />
@@ -18,7 +18,7 @@
     <HeaderScreenDownload />
     <IconDivider />
     <IconButton
-      v-if="!$route.query.hideAnalyzeWidget"
+      v-if="$route.query.hideAnalyzeWidget !== 'true'"
       icon="mm-icon-analyze"
       :active="screenStore.screenMode === 'analyzeWidget'"
       title="Toggle using widgets"

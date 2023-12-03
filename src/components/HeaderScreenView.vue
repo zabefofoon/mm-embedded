@@ -1,25 +1,25 @@
 <template>
   <div class="tw-flex tw-justify-center tw-gap-2">
     <IconButton
-      v-if="!$route.query.hideSpacing"
+      v-if="$route.query.hideSpacing !== 'true'"
       icon="mm-icon-spacing"
       :active="screenStore.isShowSpacing"
       title="Toggle spacing"
       @click="screenStore.toggleShowSpacing()" />
     <IconButton
-      v-if="!$route.query.hideOutline"
+      v-if="$route.query.hideOutline !== 'true'"
       icon="mm-icon-outline"
       :active="screenStore.isShowOutline"
       title="Toggle outline"
       @click="screenStore.toggleShowOutline()" />
     <IconButton
-      v-if="!$route.query.hideHidden"
+      v-if="$route.query.hideHidden !== 'true'"
       icon="mm-icon-hidden"
       :active="screenStore.isShowHidden"
       title="Toggle hidden elements"
       @click="screenStore.toggleShowHidden()" />
     <IconButton
-      v-if="!$route.query.hideMarker"
+      v-if="$route.query.hideMarker !== 'true'"
       icon="mm-icon-marker"
       :active="screenStore.isShowMarker"
       title="Toggle marker"
