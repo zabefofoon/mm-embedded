@@ -26,7 +26,7 @@ export const receiveFromProject = (event: MessageEvent): [ReceivedDataType, Part
     return ['loadData', data]
   if (event.data.type === 'connectedUser')
     return ['connectedUser', data]
-  if (event.data.type === 'importWidgetGroups')
+  if (event.data.type === 'importWidgets')
     return ['importWidgets', data]
 
   return ['undefinedMessage', data]
