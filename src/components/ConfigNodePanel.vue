@@ -8,7 +8,7 @@
     <div v-if="isShowAD" 
          class="tw-relative | tw-mt-auto tw-mx-auto tw-pb-3 | tw-flex tw-align-center tw-justify-center"
          style="width: 250px; aspect-ratio: 1;" >
-      <button class="tw-flex | tw-m-1 | tw-absolute tw-top-0 tw-left-0 tw-z-10 | tw-bg-white"       
+      <button class="tw-flex | tw-m-1 | tw-absolute tw-top-0 tw-left-0 tw-z-9 | tw-bg-white"       
               title="Close AD"
               @click="closeAD">
         <i class="mm-icon mm-icon-close"></i>
