@@ -1,6 +1,6 @@
 <template>
   <div v-if="pageStore.selectedNodeIds.length === 1"
-       class="tw-flex tw-flex-col">
+       class="tw-flex tw-flex-col | tw-mb-10">
     <h3 class="tw-bg-slate-400 tw-text-white | tw-px-3 tw-py-1 | tw-text-sm">layout</h3>
     <ResponsiveButton :model-value="pageStore.selectedNodes[0]?.selectedResponsiveMode"
                       @change="pageStore.selectResponsiveMode($event)"/>
