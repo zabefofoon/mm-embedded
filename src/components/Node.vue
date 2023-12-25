@@ -127,6 +127,9 @@ const layoutClass = computed(() => (<ResponsiveMode[]>Object.keys(props.node.lay
       if (props.node.layout[current].transparent)
         result = result + `${current}:transparent `
 
+      if (props.node.layout[current].zIndex)
+        result = result + `${current}:zIndex-${props.node.layout[current].zIndex} `
+
       return acc + result
     }, ''))
 

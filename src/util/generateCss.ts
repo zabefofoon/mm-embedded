@@ -552,6 +552,8 @@ const generateLayoutCss = (nodes: Node[]) => {
       + generateWidth(nodes, 'large')
       + generateHeight(nodes, 'small')
       + generateHeight(nodes, 'large')
+      + generateZIndex(nodes, 'small')
+      + generateZIndex(nodes, 'large')
       + generateMaxWidth(nodes, 'small')
       + generateMaxWidth(nodes, 'large')
       + generatePadding(nodes, 'small', 'left')
@@ -679,6 +681,32 @@ const generateHeight = (nodes: Node[],
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:height-${convertedCurrent} {
     height: ${current};
+  }
+}
+`
+  }, '')
+}
+
+const generateZIndex = (nodes: Node[],
+  responsiveMode: ResponsiveMode) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach((node) => {
+      const value = <string | undefined>node.layout[responsiveMode].zIndex
+      if (value && !result.includes(value))
+        result.push(value)
+      recursive(node.nodes)
+    })  
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    return acc + `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:zIndex-${current} {
+  z-index: ${current};
   }
 }
 `

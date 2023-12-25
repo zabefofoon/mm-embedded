@@ -100,6 +100,10 @@ export class Node {
     this.layout[this.selectedResponsiveMode].position = position
   }
 
+  setZIndex(zIndex: number) {
+    this.layout[this.selectedResponsiveMode].zIndex = zIndex
+  }
+
   setHidden(hidden: boolean) {
     this.layout[this.selectedResponsiveMode].hidden = hidden
   }
@@ -188,6 +192,7 @@ export type NodeLayout = {
   right?: string
   bottom?: string
   transparent?: boolean
+  zIndex?: number
 }
 
 export type Position = 'relative' | 'absolute' | 'sticky' | 'fixed'

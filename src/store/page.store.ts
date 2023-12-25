@@ -27,6 +27,7 @@ import {
   SetNodesLayoutStackDirection,
   SetNodesLayoutType,
   SetNodesLayoutWidth,
+  SetNodesLayoutZIndex,
   SetNodesTransparent,
   SetWidget,
 } from '../model/Action'
@@ -184,6 +185,10 @@ export const usePagesStore = defineStore('pages', () => {
 
   const setNodesLayoutPosition = (position: Position) =>
     actionManager.execute(SetNodesLayoutPosition.of(position))
+
+  const setNodesLayoutZIndex = (zIndex: number) =>
+    actionManager.execute(SetNodesLayoutZIndex.of(zIndex))
+
 
   const setNodesLayoutPadding = (direction: Direction, value: string) =>
     actionManager.execute(SetNodesLayoutPadding.of(direction, value))
@@ -414,6 +419,7 @@ export const usePagesStore = defineStore('pages', () => {
     setNodesLayoutInset,
     setNodesLayoutPosition,
     setNodesTransparent,
+    setNodesLayoutZIndex,
 
     setWidget,
     removeWidget,

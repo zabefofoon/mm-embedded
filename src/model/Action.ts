@@ -1055,6 +1055,47 @@ export class SetNodesLayoutPosition extends AbstractAction {
   }
 }
 
+export class SetNodesLayoutZIndex extends AbstractAction {
+  actionName = 'SetNodesLayoutZIndex'
+  selectedNodeId?: string
+  savedResponsiveMode?: ResponsiveMode
+  savedZIndex?: number
+
+  constructor(private zIndex: number) {
+    super()
+  }
+
+  do(isRedo?: boolean): void {
+    const node = isRedo
+      ? <Node>this.pageStore.findNode(this.selectedNodeId)
+      : <Node>this.pageStore.selectedNodes[0]
+
+    this.selectedNodeId = node.id
+    this.savedResponsiveMode = node.selectedResponsiveMode
+    this.savedZIndex = node.layout[node.selectedResponsiveMode].zIndex
+
+    node.setZIndex(this.zIndex)
+    console.log(this.zIndex)
+    this.pageStore.updateCurrentPageKey()
+  }
+
+  undo(): void {
+    const found = <Node>this.pageStore.findNode(this.selectedNodeId)
+    found.selectResponsiveMode(<ResponsiveMode>this.savedResponsiveMode)
+    found.setZIndex(<number>this.savedZIndex)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  redo(): void {
+    this.do(true)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
+  }
+
+  static of(zIndex: number): SetNodesLayoutZIndex {
+    return new SetNodesLayoutZIndex(zIndex)
+  }
+}
+
 export class SetNodesLayoutHidden extends AbstractAction {
   actionName = 'SetNodesLayoutHidden'
   selectedNodeId?: string

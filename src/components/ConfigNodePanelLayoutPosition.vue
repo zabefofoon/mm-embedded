@@ -66,6 +66,17 @@
       </div>
     </div>
   </li>
+  <li class="tw-flex tw-items-center tw-gap-2 | tw-px-3 tw-py-1">
+    <label for="zIndex" class="tw-w-20 | tw-text-xs">Z-Index</label>
+    <select
+      id="zIndex"
+      class="tw-w-full | tw-text-sm tw-border tw-border-white hover:tw-border-orange-500"
+      :value="zIndex"
+      @change="setNodesLayoutZIndex($event)">
+      <option :value="undefined" label="0">0</option>
+      <option v-for="index in 10" :key="index" :label="String(index)" :value="index"></option>
+    </select>
+  </li>
 </template>
 
 <script setup lang="ts">
@@ -107,6 +118,13 @@ const bottom = computed(
     ].bottom
 )
 
+const zIndex = computed(
+  () =>
+    pageStore.selectedNodes[0]?.layout[
+      pageStore.selectedNodes[0].selectedResponsiveMode
+    ].zIndex || 0
+)
+
 const setNodesLayoutPosition = (event: Event) => {
   const value = <Position>(<HTMLSelectElement>event.target).value
   pageStore.setNodesLayoutPosition(value)
@@ -115,6 +133,11 @@ const setNodesLayoutPosition = (event: Event) => {
 const setNodesLayoutInset = (direction: Direction, event: Event) => {
   const value = (<HTMLInputElement>event.target).value
   pageStore.setNodesLayoutInset(direction, prependUnit(value))
+}
+
+const setNodesLayoutZIndex = (event: Event) => {
+  const value = (<HTMLSelectElement>event.target).value
+  pageStore.setNodesLayoutZIndex(Number(value))
 }
 </script>
 
