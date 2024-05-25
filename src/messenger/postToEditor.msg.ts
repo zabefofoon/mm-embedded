@@ -7,7 +7,7 @@ export const postEditorDragNode = (dragAction: Partial<DragNode>) =>
   window.parent?.postMessage(
     {
       type: 'dragNode',
-      dragAction: deepClone(dragAction),
+      dragAction: deepClone(dragAction)
     },
     '*'
   )
@@ -16,7 +16,7 @@ export const postEditorCommand = (command: ReceivedDataFromCanvas['command']) =>
   window.parent?.postMessage(
     {
       type: 'command',
-      command,
+      command
     },
     '*'
   )
@@ -28,5 +28,12 @@ export const postEditorPageMutation = (
   window.parent?.postMessage({
     type: 'pageMutation',
     pageData: deepClone(pageData),
-    selectedNodeIds: deepClone(selectedNodeIds),
+    selectedNodeIds: deepClone(selectedNodeIds)
   })
+
+export const postEditorAddWidget = (nodeId: string) => {
+  window.parent?.postMessage({
+    type: 'addWidget',
+    nodeId
+  })
+}

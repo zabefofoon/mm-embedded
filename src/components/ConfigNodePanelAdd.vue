@@ -114,7 +114,7 @@
           class="config-button"
           title="Add widget"
           :disabled="pageStore.selectedNodeIds.length === 0"
-          @click="showWidgetModal">
+          @click="open">
           <i class="mm-icon mm-icon-add-widget"></i>
           <span class="tw-text-xs">Widget</span>
         </button>
@@ -160,24 +160,25 @@
 </template>
 
 <script setup lang="ts">
-import { $vfm } from 'vue-final-modal'
+import { useModal } from 'vue-final-modal'
 import type { Item } from '../model/Widget'
 import { usePagesStore } from '../store/page.store'
 import ModalWidgets from './ModalWidgets.vue'
 
 const pageStore = usePagesStore()
 
-const showWidgetModal = () => {
-  $vfm.show({
-    component: ModalWidgets,
-    on: {
-      select: (item: Item) => {
-        pageStore.setWidget(item)
-        $vfm.hideAll()
-      },
+const { open, close } = useModal({
+  component: ModalWidgets,
+  attrs: {
+    onClose() {
+      close()
     },
-  })
-}
+    onSelect(item: Item) {
+      pageStore.setWidget(item)
+      close()
+    }
+  }
+})
 </script>
 
 <style scoped lang="scss">

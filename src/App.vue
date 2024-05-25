@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterView } from 'vue-router'
+import 'vue-final-modal/style.css'
 
 const detectedAdBlocker = ref(false)
 const detectAdBlocker = (value: boolean) => (detectedAdBlocker.value = value)
@@ -18,7 +19,7 @@ setTimeout(function () {
   fetch('https://www3.doubleclick.net', {
     method: 'HEAD',
     mode: 'no-cors',
-    cache: 'no-store',
+    cache: 'no-store'
   }).catch(() => detectAdBlocker(true))
 }, 1000)
 </script>
