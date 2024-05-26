@@ -43,6 +43,7 @@ import ConfigNodePanel from '../components/ConfigNodePanel.vue'
 import ConfigWidgetLayer from '../components/ConfigWidgetLayer.vue'
 import Header from '../components/Header.vue'
 import ModalWidgets from '../components/ModalWidgets.vue'
+import ModalEditWidgetInstance from '../components/ModalEditWidgetInstance.vue'
 import PagesPanel from '../components/PagesPanel.vue'
 import UiStyle from '../components/atom/Style.vue'
 import {
@@ -59,29 +60,55 @@ import { usePeerStore } from '../store/peer.store'
 import { useScreenStore } from '../store/screen.store'
 import { useWidgetStore } from '../store/widget.store'
 import { generateCss } from '../util/generateCss'
+import essential from '../assets/json/essential_group.json'
 
 const screenStore = useScreenStore()
 const widgetStore = useWidgetStore()
 const peerStore = usePeerStore()
 const pageStore = usePagesStore()
 
-const { open, close } = useModal({
-  component: ModalWidgets,
+const { open: openSelectWidgetsModal, close: closeSelectWidgetsModal } =
+  useModal({
+    component: ModalWidgets,
+    attrs: {
+      onClose() {
+        closeSelectWidgetsModal()
+      },
+      onSelect(item: Item) {
+        pageStore.setWidget(item)
+        closeSelectWidgetsModal()
+      }
+    }
+  })
+
+const {
+  open: openEditWidgetInstance,
+  close: closeEditWidgetInstance,
+  patchOptions: setEditWidgetInstance
+} = useModal({
+  component: ModalEditWidgetInstance,
   attrs: {
     onClose() {
-      close()
+      closeEditWidgetInstance()
     },
     onSelect(item: Item) {
       pageStore.setWidget(item)
-      close()
+      closeEditWidgetInstance()
     }
   }
 })
 
 const canvas = ref<HTMLIFrameElement>()
 
-onBeforeMount(() => window.addEventListener('message', listenMessage))
+onBeforeMount(() => {
+  window.addEventListener('message', listenMessage)
+})
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
+
+onMounted(() => {
+  widgetStore.setWidgetGroups(essential)
+  setTimeout(widgetStore.postWidgetGroupsToEditor, 1000)
+})
 
 const listenCanvasMessage = ($event: MessageEvent) => {
   const [type, data] = receiveFromCanvas($event)
@@ -112,7 +139,15 @@ const listenCanvasMessage = ($event: MessageEvent) => {
     else if (data.command === 'selectChildNode') pageStore.selectChildNode()
   } else if (type === 'dragNode' && data.dragAction)
     pageStore.handleDragNode(data.dragAction)
-  else if (type === 'addWidget') open()
+  else if (type === 'addWidget') openSelectWidgetsModal()
+  else if (type === 'changeEditWidgetMode') {
+    setEditWidgetInstance({
+      attrs: {
+        nodeId: data.nodeId
+      }
+    })
+    openEditWidgetInstance()
+  }
 }
 
 const listenProjectMessage = ($event: MessageEvent) => {

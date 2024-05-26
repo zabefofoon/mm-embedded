@@ -8,7 +8,7 @@
         ? pageStore.selectNodeMany(node.id)
         : pageStore.selectNodeOne(node.id)
     "
-    @dblclick.stop="emit('addWidget', node.id)">
+    @dblclick.stop="emit('dbClick', node.id)">
     <div
       v-if="screenStore.isShowMarker && node.marker"
       class="marker | tw-absolute tw-top-0 tw-right-0 | tw-bg-orange-500"
@@ -25,7 +25,7 @@
     </div>
     <div
       v-if="node.widget"
-      v-html="node.widget.html"
+      v-html="node.widget.instance || node.widget.html"
       class="tw-w-full tw-h-full"
       :class="{
         analyze: widgetStore.selectedUsingWidgetId === node.widget?.id
@@ -44,7 +44,7 @@
           v-for="child in node.nodes"
           :key="child.id"
           :node="child"
-          @add-widget="emit('addWidget', $event)" />
+          @db-click="emit('dbClick', $event)" />
       </draggable>
     </template>
   </div>
@@ -67,7 +67,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-  (e: 'addWidget', nodeId: string): void
+  (e: 'dbClick', nodeId: string): void
 }>()
 
 const screenStore = useScreenStore()

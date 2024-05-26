@@ -37,3 +37,10 @@ export const postEditorAddWidget = (nodeId: string) => {
     nodeId
   })
 }
+
+export const postEditorChangeEditWidgetMode = (nodeId: string) => {
+  window.parent?.postMessage({
+    type: 'changeEditWidgetMode',
+    nodeId
+  })
+}

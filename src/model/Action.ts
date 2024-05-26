@@ -1564,3 +1564,33 @@ export class DragNode extends AbstractAction {
     return new DragNode(dragNodeRaw)
   }
 }
+
+export class SetWidgetInstance extends AbstractAction {
+  actionName = 'SetWidgetInstance'
+  previousInstance = ''
+  constructor(private selectedNodeId: string, private instance: string) {
+    super()
+  }
+
+  do(): void {
+    const found = <Node>this.pageStore.findNode(this.selectedNodeId)
+    if (found.widget) {
+      this.previousInstance = found.widget.instance
+      found.setWidgetInstance(this.instance)
+    }
+  }
+
+  undo(): void {
+    const found = <Node>this.pageStore.findNode(this.selectedNodeId)
+    found.setWidgetInstance(this.previousInstance)
+  }
+
+  redo(): void {
+    const found = <Node>this.pageStore.findNode(this.selectedNodeId)
+    found.setWidgetInstance(this.instance)
+  }
+
+  static of(nodeId: string, instance: string) {
+    return new SetWidgetInstance(nodeId, instance)
+  }
+}

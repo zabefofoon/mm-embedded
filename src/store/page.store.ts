@@ -30,6 +30,7 @@ import {
   SetNodesLayoutZIndex,
   SetNodesTransparent,
   SetWidget,
+  SetWidgetInstance
 } from '../model/Action'
 import { ActionManager } from '../model/ActionManager'
 import { CircuitBreaker } from '../model/CircuitBreaker'
@@ -40,7 +41,7 @@ import type {
   NodeDirection,
   NodeLayoutType,
   Position,
-  ResponsiveMode,
+  ResponsiveMode
 } from '../model/Node'
 import { Node } from '../model/Node'
 import { Page } from '../model/Page'
@@ -61,7 +62,7 @@ export const usePagesStore = defineStore('pages', () => {
   const currentPageId = ref<string | undefined>(initialPage.id)
 
   const currentPage = computed(
-    () => <Page>pages.value.find((page) => page.id === currentPageId.value)
+    () => <Page>pages.value.find(page => page.id === currentPageId.value)
   )
   const updateCurrentPageKey = () => currentPage.value.key++
 
@@ -75,22 +76,18 @@ export const usePagesStore = defineStore('pages', () => {
   const loadPages = (_pages: Page[]) => {
     pages.value = _pages
 
-    pages.value.forEach((page) => (page.nodes = Node.makeNodes(page.nodes)))
+    pages.value.forEach(page => (page.nodes = Node.makeNodes(page.nodes)))
   }
 
   const addPage = () => {
-    const index = pages.value.findIndex(
-      (page) => page.id === currentPageId.value
-    )
+    const index = pages.value.findIndex(page => page.id === currentPageId.value)
     const created = Page.of()
     pages.value.splice(index + 1, 0, created)
     selectPage(created.id)
   }
 
   const copyPage = () => {
-    const index = pages.value.findIndex(
-      (page) => page.id === currentPageId.value
-    )
+    const index = pages.value.findIndex(page => page.id === currentPageId.value)
     const created = Page.of()
     created.nodes = Node.makeNodes(deepClone(currentPage.value?.nodes || []))
     created.name = `[Copy]${currentPage.value?.name}`
@@ -99,36 +96,30 @@ export const usePagesStore = defineStore('pages', () => {
   }
 
   const removePage = () => {
-    const index = pages.value.findIndex(
-      (page) => page.id === currentPageId.value
-    )
+    const index = pages.value.findIndex(page => page.id === currentPageId.value)
     pages.value.splice(index, 1)
 
     selectPage(pages.value.at(index - 1)?.id)
   }
 
   const moveUpPage = () => {
-    const index = pages.value.findIndex(
-      (page) => page.id === currentPageId.value
-    )
+    const index = pages.value.findIndex(page => page.id === currentPageId.value)
     const page = pages.value.splice(index, 1)[0]
     pages.value.splice(index - 1, 0, page)
   }
 
   const moveDownPage = () => {
-    const index = pages.value.findIndex(
-      (page) => page.id === currentPageId.value
-    )
+    const index = pages.value.findIndex(page => page.id === currentPageId.value)
     const page = pages.value.splice(index, 1)[0]
     pages.value.splice(index + 1, 0, page)
   }
 
   const selectedNodes = computed(() =>
-    selectedNodeIds.value.map((id) => findNode(id))
+    selectedNodeIds.value.map(id => findNode(id))
   )
 
   const setPageData = (pageData: Page) => {
-    pages.value.forEach((page) => {
+    pages.value.forEach(page => {
       if (page.id === pageData.id) {
         page.key++
         page.key = pageData.key
@@ -189,7 +180,6 @@ export const usePagesStore = defineStore('pages', () => {
   const setNodesLayoutZIndex = (zIndex: number) =>
     actionManager.execute(SetNodesLayoutZIndex.of(zIndex))
 
-
   const setNodesLayoutPadding = (direction: Direction, value: string) =>
     actionManager.execute(SetNodesLayoutPadding.of(direction, value))
 
@@ -206,11 +196,11 @@ export const usePagesStore = defineStore('pages', () => {
 
   const updateNodesWidget = () => {
     const recursive = (nodes: Node[] = []) => {
-      nodes?.forEach((node) => {
-        if (node.widget)
+      nodes?.forEach(node => {
+        if (!node.widget?.instance)
           node.widget = widgetStore.widgetGroups
-            .flatMap((group) => group.items)
-            .find((item) => item.id === node.widget?.id)
+            .flatMap(group => group.items)
+            .find(item => item.id === node.widget?.id)
 
         recursive(node.nodes)
       })
@@ -261,9 +251,8 @@ export const usePagesStore = defineStore('pages', () => {
         : currentPage.value
 
       const foundIndex =
-        parent?.nodes.findIndex(
-          (node) => node.id === selectedNodeIds.value[0]
-        ) || 0
+        parent?.nodes.findIndex(node => node.id === selectedNodeIds.value[0]) ||
+        0
       const index =
         foundIndex - 1 < 0 ? (parent?.nodes.length || 0) - 1 : foundIndex - 1
 
@@ -282,9 +271,8 @@ export const usePagesStore = defineStore('pages', () => {
         : currentPage.value
 
       const foundIndex =
-        parent?.nodes.findIndex(
-          (node) => node.id === selectedNodeIds.value[0]
-        ) || 0
+        parent?.nodes.findIndex(node => node.id === selectedNodeIds.value[0]) ||
+        0
 
       const index =
         foundIndex + 1 > (parent?.nodes.length || 0) - 1 ? 0 : foundIndex + 1
@@ -315,7 +303,7 @@ export const usePagesStore = defineStore('pages', () => {
 
     const search = (nodes: Node[] = []) => {
       if (nodes.length > 0)
-        nodes?.forEach((node) => {
+        nodes?.forEach(node => {
           if (id === node.id) found = node
           else if (node.nodes.length > 0) search(node.nodes)
         })
@@ -326,13 +314,13 @@ export const usePagesStore = defineStore('pages', () => {
 
   const nodeForEach = (cb: (node: Node) => void) => {
     const recursive = (nodes: Node[]) => {
-      nodes.forEach((node) => {
+      nodes.forEach(node => {
         cb(node)
         recursive(node.nodes)
       })
     }
 
-    pages.value.map((page) => page.nodes).forEach((nodes) => recursive(nodes))
+    pages.value.map(page => page.nodes).forEach(nodes => recursive(nodes))
   }
 
   const circuitBreaker = new CircuitBreaker()
@@ -359,7 +347,7 @@ export const usePagesStore = defineStore('pages', () => {
   const downloadOptions = ref<DownloadOptions>({
     includePreflight: true,
     showBorder: true,
-    showEmptyArea: true,
+    showEmptyArea: true
   })
 
   const setDownloadOptions = (key: keyof DownloadOptions, value: boolean) =>
@@ -367,6 +355,10 @@ export const usePagesStore = defineStore('pages', () => {
 
   const toggleDownloadOptions = (key: keyof DownloadOptions) =>
     (downloadOptions.value[key] = !downloadOptions.value[key])
+
+  const setWidgetInstance = (nodeId: string, instance: string) => {
+    actionManager.execute(SetWidgetInstance.of(nodeId, instance))
+  }
 
   return {
     selectedNodeIds,
@@ -451,5 +443,7 @@ export const usePagesStore = defineStore('pages', () => {
     downloadOptions,
     setDownloadOptions,
     toggleDownloadOptions,
+
+    setWidgetInstance
   }
 })

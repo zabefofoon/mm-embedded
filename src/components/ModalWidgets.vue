@@ -5,7 +5,7 @@
     content-class="mm-modal-content | tw-w-4/5 tw-h-4/5"
     @opened="fit">
     <span class="mm-modal__title | tw-flex tw-items-center">
-      <span class="tw-text-slate-500">Widgets</span>
+      <span class="tw-text-slate-500">Select Widget</span>
       <button
         class="tw-flex tw-items-center | tw-ml-auto | tw-text-slate-500"
         @click="emit('close')">

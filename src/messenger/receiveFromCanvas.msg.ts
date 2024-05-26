@@ -18,6 +18,7 @@ export type ReceivedDataFromCanvas = {
     | 'selectPrevSiblingNode'
     | 'selectNextSiblingNode'
     | 'selectChildNode'
+  nodeId: string
 }
 export type ReceivedDataType =
   | 'dragNode'
@@ -25,6 +26,7 @@ export type ReceivedDataType =
   | 'pageMutation'
   | 'undefinedMessage'
   | 'addWidget'
+  | 'changeEditWidgetMode'
 
 export const receiveFromCanvas = (
   event: MessageEvent
@@ -34,6 +36,8 @@ export const receiveFromCanvas = (
   if (event.data.type === 'command') return ['command', data]
   if (event.data.type === 'pageMutation') return ['pageMutation', data]
   if (event.data.type === 'addWidget') return ['addWidget', data]
+  if (event.data.type === 'changeEditWidgetMode')
+    return ['changeEditWidgetMode', data]
 
   return ['undefinedMessage', data]
 }

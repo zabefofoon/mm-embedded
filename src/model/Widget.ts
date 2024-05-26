@@ -9,4 +9,5 @@ export type Item = {
   css: string
   name: string
   description: string
+  instance: string
 }

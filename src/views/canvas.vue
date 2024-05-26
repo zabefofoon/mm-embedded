@@ -8,11 +8,11 @@
       :list="pageStore.currentPage?.nodes"
       @start="startHandler"
       @end="endHandler">
-      <Node
+      <NodeEl
         v-for="node in pageStore.currentPage?.nodes"
         :key="node.id"
         :node="node"
-        @add-widget="postEditorAddWidget" />
+        @db-click="dbClickHandler" />
     </draggable>
   </div>
 </template>
@@ -20,12 +20,13 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
 import { VueDraggableNext as Draggable } from 'vue-draggable-next'
-import Node from '../components/Node.vue'
+import NodeEl from '../components/Node.vue'
 import UiStyle from '../components/atom/Style.vue'
 import {
   postEditorAddWidget,
   postEditorCommand,
-  postEditorPageMutation
+  postEditorPageMutation,
+  postEditorChangeEditWidgetMode
 } from '../messenger/postToEditor.msg'
 import { receiveFromEditor } from '../messenger/receiveFromEditor.msg'
 import type { Page } from '../model/Page'
@@ -124,6 +125,12 @@ const startHandler = ($event: any) =>
 
 const endHandler = ($event: any) =>
   pageStore.dragNode('end', $event.to.id, $event.newIndex)
+
+const dbClickHandler = (nodeId: string) => {
+  pageStore.findNode(nodeId)?.widget
+    ? postEditorChangeEditWidgetMode(nodeId)
+    : postEditorAddWidget(nodeId)
+}
 </script>
 
 <style scoped lang="scss"></style>

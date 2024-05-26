@@ -9,6 +9,7 @@ export type Marker = {
 export class Node {
   id = generateUniqueId()
   nodes: Node[] = []
+  editWidgetMode = false
 
   selectedResponsiveMode: ResponsiveMode = 'large'
 
@@ -16,13 +17,13 @@ export class Node {
     small: {
       type: 'stack',
       direction: 'vertical',
-      hidden: false,
+      hidden: false
     },
     large: {
       type: 'stack',
       direction: 'vertical',
-      hidden: false,
-    },
+      hidden: false
+    }
   }
 
   widget?: Item
@@ -30,8 +31,15 @@ export class Node {
 
   constructor(public parentId?: string) {}
 
+  changeEditWidgetMode(value: boolean) {
+    this.editWidgetMode = value
+    if (!this.widget?.instance) {
+      this.widget!.instance = this.widget!.html
+    }
+  }
+
   removeNode(nodeId?: string) {
-    this.nodes = this.nodes.filter((node) => node.id !== nodeId)
+    this.nodes = this.nodes.filter(node => node.id !== nodeId)
   }
 
   addMarker(marker?: Marker) {
@@ -43,7 +51,7 @@ export class Node {
   }
 
   setWidget(widget: Item) {
-    this.widget = widget
+    this.widget = { ...widget }
   }
 
   removeWidget() {
@@ -144,6 +152,10 @@ export class Node {
     return this
   }
 
+  setWidgetInstance(instance: string) {
+    if (this.widget) this.widget.instance = instance
+  }
+
   static of(parentId?: string) {
     return new Node(parentId)
   }
@@ -154,7 +166,7 @@ export class Node {
 
   static makeNodes(nodes: Node[]) {
     const recursive = (nodes: Node[]) => {
-      return nodes.map((node) => {
+      return nodes.map(node => {
         const created = Node.makeNode(node)
         created.nodes = recursive(node.nodes)
         return created

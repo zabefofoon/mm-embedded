@@ -1,11 +1,11 @@
-import {defineStore} from "pinia"
-import {computed, ref, watch} from "vue"
-import {usePagesStore} from "./page.store"
-import type {Group, Item} from "../model/Widget"
-import {useScreenStore} from "./screen.store"
-import {postCanvasWidgetGroupsMutation} from "../messenger/postToCanvas.msg"
-import {postInjectGroups as _postWidgetGroupsToEditor} from "../messenger/postToWidgetLayer.msg"
-import {generateUniqueId} from "../util/util"
+import { defineStore } from 'pinia'
+import { computed, ref, watch } from 'vue'
+import { usePagesStore } from './page.store'
+import type { Group, Item } from '../model/Widget'
+import { useScreenStore } from './screen.store'
+import { postCanvasWidgetGroupsMutation } from '../messenger/postToCanvas.msg'
+import { postInjectGroups as _postWidgetGroupsToEditor } from '../messenger/postToWidgetLayer.msg'
+import { generateUniqueId } from '../util/util'
 
 export const useWidgetStore = defineStore('widgets', () => {
   const screenStore = useScreenStore()
@@ -21,7 +21,8 @@ export const useWidgetStore = defineStore('widgets', () => {
     widgetEditor.value = iframe
   }
 
-  const postWidgetGroupsToEditor = () => _postWidgetGroupsToEditor(widgetEditor.value, widgetGroups.value)
+  const postWidgetGroupsToEditor = () =>
+    _postWidgetGroupsToEditor(widgetEditor.value, widgetGroups.value)
 
   const isLayerShow = ref(false)
   const toggleLayer = (value?: boolean) => {
@@ -37,38 +38,45 @@ export const useWidgetStore = defineStore('widgets', () => {
     pageStore.updateNodesWidget()
   }
 
-  const postWidgetStoreToCanvas = () => postCanvasWidgetGroupsMutation(canvas.value, widgetGroups.value)
+  const postWidgetStoreToCanvas = () =>
+    postCanvasWidgetGroupsMutation(canvas.value, widgetGroups.value)
 
-  const widgets = computed(() => widgetGroups.value.flatMap((group) => group.items))
+  const widgets = computed(() =>
+    widgetGroups.value.flatMap(group => group.items)
+  )
 
   const selectedUsingWidgetId = ref()
-  const selectUsingWidget = (widgetId?: string) => selectedUsingWidgetId.value = widgetId
+  const selectUsingWidget = (widgetId?: string) =>
+    (selectedUsingWidgetId.value = widgetId)
 
   const getUsingWidgetLength = (widgetId?: string) => {
     let length = 0
-    pageStore.nodeForEach((node) => {
+    pageStore.nodeForEach(node => {
       if (node.widget?.id === widgetId) length++
     })
     return length
   }
 
-  const getUsingWidget = (widgetId?: string) => widgets.value
-      .find((widget) => widget.id === widgetId)
+  const getUsingWidget = (widgetId?: string) =>
+    widgets.value.find(widget => widget.id === widgetId)
 
-  watch(() => screenStore.screenMode === 'analyzeWidget',
-      () => selectUsingWidget())
+  watch(
+    () => screenStore.screenMode === 'analyzeWidget',
+    () => selectUsingWidget()
+  )
 
   const importWidgets = (items: Item[]) => {
-
-    items.forEach((item) => {
+    items.forEach(item => {
       item.id = generateUniqueId()
     })
 
-    const foundImportedGroup = widgetGroups.value.find((group) => group.name === 'imported')
+    const foundImportedGroup = widgetGroups.value.find(
+      group => group.name === 'imported'
+    )
 
     foundImportedGroup
-        ? foundImportedGroup.items = [...foundImportedGroup.items, ...items]
-        : widgetGroups.value.push({name: 'imported', items})
+      ? (foundImportedGroup.items = [...foundImportedGroup.items, ...items])
+      : widgetGroups.value.push({ name: 'imported', items })
 
     postWidgetGroupsToEditor()
     postWidgetStoreToCanvas()
