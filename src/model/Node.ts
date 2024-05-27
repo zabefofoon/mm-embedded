@@ -9,7 +9,6 @@ export type Marker = {
 export class Node {
   id = generateUniqueId()
   nodes: Node[] = []
-  editWidgetMode = false
 
   selectedResponsiveMode: ResponsiveMode = 'large'
 
@@ -32,7 +31,6 @@ export class Node {
   constructor(public parentId?: string) {}
 
   changeEditWidgetMode(value: boolean) {
-    this.editWidgetMode = value
     if (!this.widget?.instance) {
       this.widget!.instance = this.widget!.html
     }

@@ -12,10 +12,9 @@ export const generateHtml = (nodes: NodeType[]): string =>
           ? `<div class="node ${classes}"><div class="empty-node">space</div></div>`
           : `<div class="node ${classes}"></div>`
         : current.widget?.html
-        ? `<div class="node ${classes}">${current.widget.html.replace(
-            /\r|\n|\t/,
-            ''
-          )}</div>`
+        ? `<div class="node ${classes}">${(
+            current.widget.instance || current.widget.html
+          ).replace(/\r|\n|\t/, '')}</div>`
         : `<div class="node ${classes}">${generateHtml(current.nodes)}</div>`
     return acc + html
   }, '')
@@ -24,6 +23,8 @@ const generateNodeCss = (node: NodeType) =>
   (<ResponsiveMode[]>Object.keys(node.layout)).reduce<string>(
     (acc, current) => {
       let result = ''
+      if (node.layout[current].transparent)
+        result = result + `${current}:transparent `
       if (node.layout[current].type === 'grid')
         result = result + `${current}:type-${node.layout[current].type} `
       if (node.layout[current].direction === 'horizontal')
@@ -52,6 +53,9 @@ const generateNodeCss = (node: NodeType) =>
       if (node.layout[current].position !== undefined)
         result =
           result + `${current}:position-${node.layout[current].position} `
+
+      if (node.layout[current].zIndex !== undefined)
+        result = result + `${current}:zIndex-${node.layout[current].zIndex} `
 
       if (node.layout[current].hidden)
         result = result + `${current}:hidden-${node.layout[current].hidden} `

@@ -1,34 +1,36 @@
-import type {Group} from "../model/Widget"
-import type {Direction, Node, ResponsiveMode} from "../model/Node"
-import { usePagesStore } from "../store/page.store"
+import type { Group } from '../model/Widget'
+import type { Direction, Node, ResponsiveMode } from '../model/Node'
+import { usePagesStore } from '../store/page.store'
 
-const getScreenSize = (responsiveMode: ResponsiveMode) => responsiveMode === 'small' ? '0px' : '768px'
+const getScreenSize = (responsiveMode: ResponsiveMode) =>
+  responsiveMode === 'small' ? '0px' : '768px'
 
-export const generateCss = (nodes: Node[],
-                            groups: Group[],
-                            isShowHidden = false): string =>
-    generatePreflightCss()
-    + `\n`
-    + generateCoreCss(isShowHidden)
-    + `\n`
-    + generateLayoutCss(nodes)
-    + `\n`
-    + generateWidgetCss(groups)
+export const generateCss = (
+  nodes: Node[],
+  groups: Group[],
+  isShowHidden = false
+): string =>
+  generatePreflightCss() +
+  `\n` +
+  generateCoreCss() +
+  `\n` +
+  generateLayoutCss(nodes, isShowHidden) +
+  `\n` +
+  generateWidgetCss(nodes, groups)
 
 const generatePreflightCss = () => {
   const pageStore = usePagesStore()
 
-  if (!pageStore.downloadOptions.includePreflight)
-    return ``
+  if (!pageStore.downloadOptions.includePreflight) return ``
 
   return `
 *,
 ::before,
 ::after {
-    box-sizing: border-box; /* 1 */
-    border-width: 0; /* 2 */
-    border-style: solid; /* 2 */
-    border-color: #e2e8f0; /* 2 */
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e2e8f0;
 }
 
 ::before,
@@ -37,21 +39,21 @@ const generatePreflightCss = () => {
 }
 
 html {
-    line-height: 1.5; /* 1 */
-    -webkit-text-size-adjust: 100%; /* 2 */
-    -moz-tab-size: 4; /* 3 */
-    tab-size: 4; /* 3 */
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
 }
 
 body {
-    margin: 0; /* 1 */
-    line-height: inherit; /* 2 */
+    margin: 0;
+    line-height: inherit;
 }
 
 hr {
-    height: 0; /* 1 */
-    color: inherit; /* 2 */
-    border-top-width: 1px; /* 3 */
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
 }
 
 abbr:where([title]) {
@@ -82,7 +84,7 @@ code,
 kbd,
 samp,
 pre {
-    font-size: 1em; /* 2 */
+    font-size: 1em;
 }
 
 small {
@@ -106,9 +108,9 @@ sup {
 }
 
 table {
-    text-indent: 0; /* 1 */
-    border-color: inherit; /* 2 */
-    border-collapse: collapse; /* 3 */
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
 }
 
 button,
@@ -116,13 +118,13 @@ input,
 optgroup,
 select,
 textarea {
-    font-family: inherit; /* 1 */
-    font-size: 100%; /* 1 */
-    font-weight: inherit; /* 1 */
-    line-height: inherit; /* 1 */
-    color: inherit; /* 1 */
-    margin: 0; /* 2 */
-    padding: 0; /* 3 */
+    font-family: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
 }
 
 button,
@@ -134,9 +136,9 @@ button,
 [type='button'],
 [type='reset'],
 [type='submit'] {
-    -webkit-appearance: button; /* 1 */
-    background-color: transparent; /* 2 */
-    background-image: none; /* 2 */
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
 }
 
 :-moz-focusring {
@@ -157,8 +159,8 @@ progress {
 }
 
 [type='search'] {
-    -webkit-appearance: textfield; /* 1 */
-    outline-offset: -2px; /* 2 */
+    -webkit-appearance: textfield;
+    outline-offset: -2px;
 }
 
 ::-webkit-search-decoration {
@@ -166,8 +168,8 @@ progress {
 }
 
 ::-webkit-file-upload-button {
-    -webkit-appearance: button; /* 1 */
-    font: inherit; /* 2 */
+    -webkit-appearance: button;
+    font: inherit;
 }
 
 summary {
@@ -213,7 +215,7 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-    opacity: 1; /* 1 */
+    opacity: 1;
 }
 
 button,
@@ -233,8 +235,8 @@ audio,
 iframe,
 embed,
 object {
-    display: block; /* 1 */
-    vertical-align: middle; /* 2 */
+    display: block;
+    vertical-align: middle;
 }
 
 img,
@@ -249,8 +251,7 @@ video {
   `
 }
 
-const generateCoreCss = (isShowHidden: boolean) => {
-
+const generateCoreCss = () => {
   const pageStore = usePagesStore()
 
   return `
@@ -276,163 +277,20 @@ const generateCoreCss = (isShowHidden: boolean) => {
   ${pageStore.downloadOptions.showBorder ? 'outline: 1px dashed #ccc;' : ''}
 }
 ${
-  pageStore.downloadOptions.showEmptyArea 
-  ? `
+  pageStore.downloadOptions.showEmptyArea
+    ? `
   .empty-node {
     border: 1px dashed #ccc;
     text-align: center;
     padding: 4px 0;
   }
-  ` 
-  : ``
+  `
+    : ``
 }
 
 
 .node > * {
   width: 100%;
-}
-
-@media (min-width: 0px) {
-  .small\\:type-stack {
-      display: flex;
-  }
-
-  .small\\:direction-horizontal {
-      flex-direction: row;
-  }
-
-  .small\\:direction-vertical {
-      flex-direction: column;
-  }
-
-  .small\\:type-grid {
-      display: grid;
-  }
-
-  .small\\:mainAxis-start {
-      justify-content: start;
-  }
-  
-  .small\\:mainAxis-center {
-      justify-content: center;
-  }
-  
-  .small\\:mainAxis-end {
-      justify-content: end;
-  }
-  
-  .small\\:mainAxis-between {
-      justify-content: space-between;
-  }
-  
-  .small\\:crossAxis-start {
-      align-items: start;
-  }
-  
-  .small\\:crossAxis-center {
-      align-items: center;
-  }
-  
-  .small\\:crossAxis-end {
-      align-items: end;
-  }
-  
-  .node.small\\:position-relative {
-      position: relative;
-  }
-  
-  .node.small\\:position-absolute {
-      position: absolute;
-  }
-  
-  .node.small\\:position-sticky {
-      position: sticky;
-  }
-  
-  .node.small\\:position-fixed {
-      position: fixed;
-  }
-  
-  .node.small\\:transparent {
-      background: #ffffff;
-  }
-}
-
-@media (min-width:0) and (max-width:767px) {
-  .small\\:hidden-true {
-      ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
-  }
-}
-
-
-@media (min-width: 768px) {
-  .large\\:type-stack {
-      display: flex
-  }
-
-  .large\\:direction-horizontal {
-      flex-direction: row;
-  }
-
-  .large\\:direction-vertical {
-      flex-direction: column;
-  }
-
-  .large\\:type-grid {
-      display: grid;
-  }
-  
-  .large\\:mainAxis-start {
-      justify-content: start;
-  }
-  
-  .large\\:mainAxis-center {
-      justify-content: center;
-  }
-  
-  .large\\:mainAxis-end {
-      justify-content: end;
-  }
-  
-  .large\\:mainAxis-between {
-      justify-content: space-between;
-  }
-  
-  .large\\:crossAxis-start {
-      align-items: start;
-  }
-  
-  .large\\:crossAxis-center {
-      align-items: center;
-  }
-  
-  .large\\:crossAxis-end {
-      align-items: end;
-  }
-  
-  .large\\:hidden-true {
-      ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
-  }
-  
-  .node.large\\:position-relative {
-      position: relative;
-  }
-  
-  .node.large\\:position-absolute {
-      position: absolute;
-  }
-  
-  .node.large\\:position-sticky {
-      position: sticky;
-  }
-  
-  .node.large\\:position-fixed {
-      position: fixed;
-  }
-  
-  .large\\:transparent {
-      background: #ffffff;
-  }
 }
 `
 }
@@ -448,199 +306,318 @@ export const generateDragAreaCss = () => {
   justify-content: start;
   align-items: start;
 }
-
-@media (min-width: 0px) {
-  .drag-area.small\\:type-stack {
-      display: flex;
-  }
-
-  .drag-area.small\\:direction-horizontal {
-      flex-direction: row;
-  }
-
-  .drag-area.small\\:direction-vertical {
-      flex-direction: column;
-  }
-
-  .drag-area.small\\:type-grid {
-      display: grid;
-  }
-
-  .drag-area.small\\:mainAxis-start {
-      justify-content: start;
-  }
-  
-  .drag-area.small\\:mainAxis-center {
-      justify-content: center;
-  }
-  
-  .drag-area.small\\:mainAxis-end {
-      justify-content: end;
-  }
-  
-  .drag-area.small\\:mainAxis-between {
-      justify-content: space-between;
-  }
-  
-  .drag-area.small\\:crossAxis-start {
-      align-items: start;
-  }
-  
-  .drag-area.small\\:crossAxis-center {
-      align-items: center;
-  }
-  
-  .drag-area.small\\:crossAxis-end {
-      align-items: end;
-  }
-}
-
-@media (min-width: 768px) {
-  .drag-area.large\\:type-stack {
-      display: flex
-  }
-
-  .drag-area.large\\:direction-horizontal {
-      flex-direction: row;
-  }
-
-  .drag-area.large\\:direction-vertical {
-      flex-direction: column;
-  }
-
-  .drag-area.large\\:type-grid {
-      display: grid;
-  }
-  
-  .drag-area.large\\:mainAxis-start {
-      justify-content: start;
-  }
-  
-  .drag-area.large\\:mainAxis-center {
-      justify-content: center;
-  }
-  
-  .drag-area.large\\:mainAxis-end {
-      justify-content: end;
-  }
-  
-  .drag-area.large\\:mainAxis-between {
-      justify-content: space-between;
-  }
-  
-  .drag-area.large\\:crossAxis-start {
-      align-items: start;
-  }
-  
-  .drag-area.large\\:crossAxis-center {
-      align-items: center;
-  }
-  
-  .drag-area.large\\:crossAxis-end {
-      align-items: end;
-  }
-}
 `
 }
 
-const generateLayoutCss = (nodes: Node[]) => {
-  return generateGap(nodes, 'small')
-      + generateGap(nodes, 'large')
-      + generateColumns(nodes, 'small')
-      + generateColumns(nodes, 'large')
-      + generateWidth(nodes, 'small')
-      + generateWidth(nodes, 'large')
-      + generateHeight(nodes, 'small')
-      + generateHeight(nodes, 'large')
-      + generateZIndex(nodes, 'small')
-      + generateZIndex(nodes, 'large')
-      + generateMaxWidth(nodes, 'small')
-      + generateMaxWidth(nodes, 'large')
-      + generatePadding(nodes, 'small', 'left')
-      + generatePadding(nodes, 'small', 'top')
-      + generatePadding(nodes, 'small', 'right')
-      + generatePadding(nodes, 'small', 'bottom')
-      + generatePadding(nodes, 'large', 'left')
-      + generatePadding(nodes, 'large', 'top')
-      + generatePadding(nodes, 'large', 'right')
-      + generatePadding(nodes, 'large', 'bottom')
-      + generateInset(nodes, 'small', 'left')
-      + generateInset(nodes, 'small', 'top')
-      + generateInset(nodes, 'small', 'right')
-      + generateInset(nodes, 'small', 'bottom')
-      + generateInset(nodes, 'large', 'left')
-      + generateInset(nodes, 'large', 'top')
-      + generateInset(nodes, 'large', 'right')
-      + generateInset(nodes, 'large', 'bottom')
+const generateLayoutCss = (nodes: Node[], isShowHidden: boolean) => {
+  return (
+    generatePosition(nodes, 'small') +
+    generatePosition(nodes, 'large') +
+    generateCrossAxis(nodes, 'small') +
+    generateCrossAxis(nodes, 'large') +
+    generateMainAxis(nodes, 'small') +
+    generateMainAxis(nodes, 'large') +
+    generateTransparent(nodes, 'small') +
+    generateTransparent(nodes, 'large') +
+    generateHidden(nodes, 'small', isShowHidden) +
+    generateHidden(nodes, 'large', isShowHidden) +
+    generateFlexDirection(nodes, 'small') +
+    generateFlexDirection(nodes, 'large') +
+    generateDisplayType(nodes, 'small') +
+    generateDisplayType(nodes, 'large') +
+    generateGap(nodes, 'small') +
+    generateGap(nodes, 'large') +
+    generateColumns(nodes, 'small') +
+    generateColumns(nodes, 'large') +
+    generateWidth(nodes, 'small') +
+    generateWidth(nodes, 'large') +
+    generateHeight(nodes, 'small') +
+    generateHeight(nodes, 'large') +
+    generateZIndex(nodes, 'small') +
+    generateZIndex(nodes, 'large') +
+    generateMaxWidth(nodes, 'small') +
+    generateMaxWidth(nodes, 'large') +
+    generatePadding(nodes, 'small', 'left') +
+    generatePadding(nodes, 'small', 'top') +
+    generatePadding(nodes, 'small', 'right') +
+    generatePadding(nodes, 'small', 'bottom') +
+    generatePadding(nodes, 'large', 'left') +
+    generatePadding(nodes, 'large', 'top') +
+    generatePadding(nodes, 'large', 'right') +
+    generatePadding(nodes, 'large', 'bottom') +
+    generateInset(nodes, 'small', 'left') +
+    generateInset(nodes, 'small', 'top') +
+    generateInset(nodes, 'small', 'right') +
+    generateInset(nodes, 'small', 'bottom') +
+    generateInset(nodes, 'large', 'left') +
+    generateInset(nodes, 'large', 'top') +
+    generateInset(nodes, 'large', 'right') +
+    generateInset(nodes, 'large', 'bottom')
+  )
 }
 
-const generateWidgetCss = (groups: Group[]) => {
-  return groups
-      .map((group) => group.items)
-      .flat()
-      .reduce((acc, current) => {
-        const newline = acc ? '\n\n' : ''
-        return acc + newline + current.css
-      }, '')
-}
-
-const generateGap = (nodes: Node[],
-                     responsiveMode: ResponsiveMode) => {
+const generatePosition = (nodes: Node[], responsiveMode: ResponsiveMode) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
-      const value = <string | undefined>node.layout[responsiveMode].gap
-      if (value && !result.includes(value))
-        result.push(value)
+    nodes?.forEach(node => {
+      const value = <string | undefined>node.layout[responsiveMode].position
+
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
     })
   }
 
   recursive(nodes)
 
-  return result.reduce((acc, current) => acc + `
+  return result.reduce((acc, current) => {
+    return current
+      ? acc +
+          `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:position-${current} {
+    position: ${current};
+  }
+}
+`
+      : ''
+  }, '')
+}
+
+const generateCrossAxis = (nodes: Node[], responsiveMode: ResponsiveMode) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <string | undefined>node.layout[responsiveMode].crossAxis
+
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    return current
+      ? acc +
+          `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:crossAxis-${current} {
+    align-items: ${current};
+  }
+}
+`
+      : ''
+  }, '')
+}
+
+const generateMainAxis = (nodes: Node[], responsiveMode: ResponsiveMode) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <string | undefined>node.layout[responsiveMode].mainAxis
+
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    return current
+      ? acc +
+          `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:mainAxis-${current} {
+    justify-content: ${current === 'between' ? 'space-between' : current};
+  }
+}
+`
+      : ''
+  }, '')
+}
+
+const generateTransparent = (nodes: Node[], responsiveMode: ResponsiveMode) => {
+  const result: boolean[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <boolean | undefined>node.layout[responsiveMode].transparent
+
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    return current
+      ? acc +
+          `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:transparent {
+    background: #ffffff;
+  }
+}
+`
+      : ''
+  }, '')
+}
+
+const generateHidden = (
+  nodes: Node[],
+  responsiveMode: ResponsiveMode,
+  isShowHidden: boolean
+) => {
+  const result: boolean[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <boolean | undefined>node.layout[responsiveMode].hidden
+
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce((acc, current) => {
+    return current
+      ? acc +
+          `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:hidden-${current} {
+    ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
+  }
+}
+`
+      : ''
+  }, '')
+}
+
+const generateFlexDirection = (
+  nodes: Node[],
+  responsiveMode: ResponsiveMode
+) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <string | undefined>node.layout[responsiveMode].direction
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce(
+    (acc, current) =>
+      acc +
+      `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:direction-${current} {
+    flex-direction: ${current === 'horizontal' ? 'row' : 'column'};
+  }
+}
+`,
+    ''
+  )
+}
+
+const generateDisplayType = (nodes: Node[], responsiveMode: ResponsiveMode) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <string | undefined>node.layout[responsiveMode].type
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce(
+    (acc, current) =>
+      acc +
+      `
+@media(min-width: ${getScreenSize(responsiveMode)}) {
+  .${responsiveMode}\\:type-${current} {
+    display: ${current === 'stack' ? 'flex' : 'grid'};
+  }
+}
+`,
+    ''
+  )
+}
+
+const generateGap = (nodes: Node[], responsiveMode: ResponsiveMode) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <string | undefined>node.layout[responsiveMode].gap
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return result.reduce(
+    (acc, current) =>
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:gap-${current} {
     gap: ${current};
   }
 }
-`, '')
+`,
+    ''
+  )
 }
 
-const generateColumns = (nodes: Node[],
-                         responsiveMode: ResponsiveMode) => {
+const generateColumns = (nodes: Node[], responsiveMode: ResponsiveMode) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
+    nodes?.forEach(node => {
       const value = <string | undefined>node.layout[responsiveMode].columns
-      if (value && !result.includes(value))
-        result.push(value)
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
     })
   }
 
   recursive(nodes)
 
-  return result.reduce((acc, current) => acc + `
+  return result.reduce(
+    (acc, current) =>
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:columns-${current} {
     grid-template-columns: repeat(${current}, 1fr);
   }
 }
-`, '')
+`,
+    ''
+  )
 }
 
-const generateWidth = (nodes: Node[],
-                       responsiveMode: ResponsiveMode) => {
+const generateWidth = (nodes: Node[], responsiveMode: ResponsiveMode) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
+    nodes?.forEach(node => {
       const value = <string | undefined>node.layout[responsiveMode].width
-      if (value && !result.includes(value))
-        result.push(value)
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
     })
   }
@@ -649,25 +626,26 @@ const generateWidth = (nodes: Node[],
 
   return result.reduce((acc, current) => {
     const convertedCurrent = current.replace('%', '\\%')
-    return acc + `
+    return (
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:width-${convertedCurrent} {
     width: ${current};
   }
 }
 `
+    )
   }, '')
 }
 
-const generateHeight = (nodes: Node[],
-                        responsiveMode: ResponsiveMode) => {
+const generateHeight = (nodes: Node[], responsiveMode: ResponsiveMode) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
+    nodes?.forEach(node => {
       const value = <string | undefined>node.layout[responsiveMode].height
-      if (value && !result.includes(value))
-        result.push(value)
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
     })
   }
@@ -677,51 +655,53 @@ const generateHeight = (nodes: Node[],
   return result.reduce((acc, current) => {
     const convertedCurrent = current.replace('%', '\\%')
 
-    return acc + `
+    return (
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:height-${convertedCurrent} {
     height: ${current};
   }
 }
 `
+    )
   }, '')
 }
 
-const generateZIndex = (nodes: Node[],
-  responsiveMode: ResponsiveMode) => {
+const generateZIndex = (nodes: Node[], responsiveMode: ResponsiveMode) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
+    nodes?.forEach(node => {
       const value = <string | undefined>node.layout[responsiveMode].zIndex
-      if (value && !result.includes(value))
-        result.push(value)
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
-    })  
+    })
   }
 
   recursive(nodes)
 
   return result.reduce((acc, current) => {
-    return acc + `
+    return (
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:zIndex-${current} {
   z-index: ${current};
   }
 }
 `
+    )
   }, '')
 }
 
-const generateMaxWidth = (nodes: Node[],
-                          responsiveMode: ResponsiveMode) => {
+const generateMaxWidth = (nodes: Node[], responsiveMode: ResponsiveMode) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
+    nodes?.forEach(node => {
       const value = <string | undefined>node.layout[responsiveMode].maxWidth
-      if (value && !result.includes(value))
-        result.push(value)
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
     })
   }
@@ -731,26 +711,32 @@ const generateMaxWidth = (nodes: Node[],
   return result.reduce((acc, current) => {
     const convertedCurrent = current.replace('%', '\\%')
 
-    return acc + `
+    return (
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:maxWidth-${convertedCurrent} {
     max-width: ${current};
   }
 }
 `
+    )
   }, '')
 }
 
-const generatePadding = (nodes: Node[],
-                         responsiveMode: ResponsiveMode,
-                         direction: Direction) => {
+const generatePadding = (
+  nodes: Node[],
+  responsiveMode: ResponsiveMode,
+  direction: Direction
+) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
-      const value = <string | undefined>node.layout[responsiveMode][directionToPaddingField(direction)]
-      if (value && !result.includes(value))
-        result.push(value)
+    nodes?.forEach(node => {
+      const value = <string | undefined>(
+        node.layout[responsiveMode][directionToPaddingField(direction)]
+      )
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
     })
   }
@@ -760,26 +746,32 @@ const generatePadding = (nodes: Node[],
   return result.reduce((acc, current) => {
     const convertedCurrent = current.replace('%', '\\%')
 
-    return acc + `
+    return (
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
-  .${responsiveMode}\\:${flatCapital(directionToPaddingField(direction))}-${convertedCurrent} {
+  .${responsiveMode}\\:${flatCapital(
+        directionToPaddingField(direction)
+      )}-${convertedCurrent} {
     ${flatCapital(directionToPaddingField(direction))}: ${current};
   }
 }
 `
+    )
   }, '')
 }
 
-const generateInset = (nodes: Node[],
-                       responsiveMode: ResponsiveMode,
-                       direction: Direction) => {
+const generateInset = (
+  nodes: Node[],
+  responsiveMode: ResponsiveMode,
+  direction: Direction
+) => {
   const result: string[] = []
 
   const recursive = (nodes: Node[]) => {
-    nodes?.forEach((node) => {
+    nodes?.forEach(node => {
       const value = <string | undefined>node.layout[responsiveMode][direction]
-      if (value && !result.includes(value))
-        result.push(value)
+      if (value && !result.includes(value)) result.push(value)
       recursive(node.nodes)
     })
   }
@@ -789,23 +781,49 @@ const generateInset = (nodes: Node[],
   return result.reduce((acc, current) => {
     const convertedCurrent = current.replace('%', '\\%')
 
-    return acc + `
+    return (
+      acc +
+      `
 @media(min-width: ${getScreenSize(responsiveMode)}) {
   .${responsiveMode}\\:${direction}-${convertedCurrent} {
     ${direction}: ${current};
   }
 }
 `
+    )
   }, '')
 }
 
-
-const directionToPaddingField = (direction: Direction) => direction === 'left'
+const directionToPaddingField = (direction: Direction) =>
+  direction === 'left'
     ? 'paddingLeft'
     : direction === 'right'
-        ? 'paddingRight'
-        : direction === 'top'
-            ? 'paddingTop'
-            : 'paddingBottom'
+    ? 'paddingRight'
+    : direction === 'top'
+    ? 'paddingTop'
+    : 'paddingBottom'
 
-const flatCapital = (str: string) => str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+const flatCapital = (str: string) =>
+  str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+
+const generateWidgetCss = (nodes: Node[], groups: Group[]) => {
+  const result: string[] = []
+
+  const recursive = (nodes: Node[]) => {
+    nodes?.forEach(node => {
+      const value = <string | undefined>node.widget?.id
+      if (value && !result.includes(value)) result.push(value)
+      recursive(node.nodes)
+    })
+  }
+
+  recursive(nodes)
+
+  return groups
+    .flatMap(group => group.items)
+    .filter(item => item.id && result.includes(item.id))
+    .reduce((acc, current) => {
+      const newline = acc ? '\n\n' : ''
+      return acc + newline + current.css
+    }, '')
+}
