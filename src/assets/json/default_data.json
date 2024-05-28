@@ -302,6 +302,13 @@
           "css": ".essential-youtube {\n    aspect-ratio: 16/9;\n    width: 100%;\n}",
           "name": "Youtube",
           "description": ""
+        },
+        {
+          "id": "eYDEzCoMQa",
+          "html": "<div class=\"essential-input\">\n  <input type=\"text\"/> \n  <label>Label</label>   \n</div>\n",
+          "css": ".essential-input {\n    position: relative;\n}\n\n.essential-input:has(:focus) label {\n    translate: 0 -100%;\n    font-size: 10px;\n    top: 0;\n    left: 0;\n}\n\n.essential-input label {\n    position: absolute;\n    top: 4px;\n    left:4px;\n    transition: all 300ms ease;\n}\n\n.essential-input input {\n    border: 1px solid #ccc;\n    position: relative;\n    padding: 4px;\n    width: 100%;\n}",
+          "name": "Input",
+          "description": ""
         }
       ]
     }
