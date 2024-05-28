@@ -103,7 +103,7 @@ watch(
 
 const generatedCss = computed(
   () =>
-    generateDragAreaCss() +
+    generateDragAreaCss(widgetStore.widgetGroups) +
     '\n' +
     generateCss(
       pageStore.currentPage?.nodes,

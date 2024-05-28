@@ -295,7 +295,7 @@ ${
 `
 }
 
-export const generateDragAreaCss = () => {
+export const generateDragAreaCss = (groups: Group[]) => {
   return `
 .drag-area {
   width: 100%;
@@ -306,6 +306,13 @@ export const generateDragAreaCss = () => {
   justify-content: start;
   align-items: start;
 }
+
+${groups
+  .flatMap(group => group.items)
+  .reduce((acc, current) => {
+    const newline = acc ? '\n\n' : ''
+    return acc + newline + current.css
+  }, '')}
 `
 }
 

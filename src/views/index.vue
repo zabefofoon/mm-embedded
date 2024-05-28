@@ -59,7 +59,7 @@ import { usePagesStore } from '../store/page.store'
 import { usePeerStore } from '../store/peer.store'
 import { useScreenStore } from '../store/screen.store'
 import { useWidgetStore } from '../store/widget.store'
-import { generateCss } from '../util/generateCss'
+import { generateCss, generateDragAreaCss } from '../util/generateCss'
 import essential from '../assets/json/essential_group.json'
 
 const screenStore = useScreenStore()
@@ -143,7 +143,7 @@ const listenCanvasMessage = ($event: MessageEvent) => {
   else if (type === 'changeEditWidgetMode') {
     setEditWidgetInstance({
       attrs: {
-        nodeId: data.nodeId
+        nodeId: data.nodeId!
       }
     })
     openEditWidgetInstance()
@@ -229,8 +229,15 @@ const listenKeydown = ($event: KeyboardEvent) => {
   }
 }
 
-const generatedCss = computed(() =>
-  generateCss(pageStore.currentPage?.nodes || [], widgetStore.widgetGroups)
+const generatedCss = computed(
+  () =>
+    generateDragAreaCss(widgetStore.widgetGroups) +
+    '\n' +
+    generateCss(
+      pageStore.currentPage?.nodes,
+      widgetStore.widgetGroups,
+      screenStore.isShowHidden
+    )
 )
 
 onMounted(() => window.addEventListener('keydown', listenKeydown))
