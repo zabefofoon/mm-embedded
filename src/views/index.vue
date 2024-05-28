@@ -54,13 +54,13 @@ import {
 import { receiveFromCanvas } from '../messenger/receiveFromCanvas.msg'
 import { receiveFromProject } from '../messenger/receiveFromProject.msg'
 import { Page } from '../model/Page'
-import type { Item } from '../model/Widget'
+import type { Group, Item } from '../model/Widget'
 import { usePagesStore } from '../store/page.store'
 import { usePeerStore } from '../store/peer.store'
 import { useScreenStore } from '../store/screen.store'
 import { useWidgetStore } from '../store/widget.store'
 import { generateCss, generateDragAreaCss } from '../util/generateCss'
-import essential from '../assets/json/essential_group.json'
+import defaultData from '../assets/json/default_data.json'
 
 const screenStore = useScreenStore()
 const widgetStore = useWidgetStore()
@@ -104,11 +104,6 @@ onBeforeMount(() => {
   window.addEventListener('message', listenMessage)
 })
 onBeforeUnmount(() => window.removeEventListener('message', listenMessage))
-
-onMounted(() => {
-  widgetStore.setWidgetGroups(essential)
-  setTimeout(widgetStore.postWidgetGroupsToEditor, 1000)
-})
 
 const listenCanvasMessage = ($event: MessageEvent) => {
   const [type, data] = receiveFromCanvas($event)
@@ -240,7 +235,17 @@ const generatedCss = computed(
     )
 )
 
-onMounted(() => window.addEventListener('keydown', listenKeydown))
+const initDefaultData = () => {
+  pageStore.loadPages(defaultData.pages.map(Page.of))
+  widgetStore.setWidgetGroups(<Group[]>defaultData.widgetGroups)
+  setTimeout(widgetStore.postWidgetGroupsToEditor, 1000)
+  pageStore.selectPage(defaultData.pages[0].id)
+}
+
+onMounted(() => {
+  initDefaultData()
+  window.addEventListener('keydown', listenKeydown)
+})
 onBeforeUnmount(() => window.removeEventListener('keydown', listenKeydown))
 </script>
 

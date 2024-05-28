@@ -1,0 +1,309 @@
+{
+  "pages": [
+    {
+      "id": "NbrwtGDaXX",
+      "name": "Welcome to MM!",
+      "key": 319,
+      "nodes": [
+        {
+          "id": "LTQeCMTSfQ",
+          "nodes": [
+            {
+              "id": "nSWtoRiXyN",
+              "nodes": [
+                {
+                  "id": "gWYGMeMERq",
+                  "nodes": [
+                    {
+                      "id": "gANzITfdZe",
+                      "nodes": [],
+                      "selectedResponsiveMode": "large",
+                      "layout": {
+                        "small": {
+                          "type": "stack",
+                          "direction": "vertical",
+                          "hidden": false
+                        },
+                        "large": {
+                          "type": "stack",
+                          "direction": "vertical",
+                          "hidden": false
+                        }
+                      },
+                      "widget": {
+                        "id": "ymTSEUzSzy",
+                        "html": "<img class=\"essential-image\" src=\"https://dummyimage.com/500x500/999999/fff\" \n alt=\"card image\"/>",
+                        "css": ".essential-image {\n    max-width: 100%;\n}",
+                        "name": "Image",
+                        "description": "",
+                        "instance": "<img class=\"essential-image\" src=\"https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbrNEX7%2FbtsHtKOS6LR%2F488FQb9pI7MmpQywRIxYw0%2Fimg.png\" alt=\"card image\" />"
+                      },
+                      "parentId": "gWYGMeMERq"
+                    },
+                    {
+                      "id": "VcnDmSYAQs",
+                      "nodes": [
+                        {
+                          "id": "RYVSUWQBwe",
+                          "nodes": [],
+                          "selectedResponsiveMode": "large",
+                          "layout": {
+                            "small": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            },
+                            "large": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            }
+                          },
+                          "widget": {
+                            "id": "vWSZUlEYXt",
+                            "html": "<h3 class=\"essential-h3\">Heading-3</h3>",
+                            "css": ".essential-h3 {\n    font-size: 28px;\n    font-weight: bold;\n}",
+                            "name": "Heading-3",
+                            "description": "",
+                            "instance": "<h3 class=\"essential-h3\">\n  Hello, Markup Manager!\n</h3>"
+                          },
+                          "parentId": "VcnDmSYAQs"
+                        },
+                        {
+                          "id": "HhnmFodmAr",
+                          "nodes": [],
+                          "selectedResponsiveMode": "large",
+                          "layout": {
+                            "small": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            },
+                            "large": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            }
+                          },
+                          "widget": {
+                            "id": "VqafZCpjjr",
+                            "html": "<p class=\"essential-paragraph\">\n    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n</p>",
+                            "css": ".essential-paragraph {\n    font-size: 16px;\n}",
+                            "name": "Paragraph",
+                            "description": "",
+                            "instance": "<p class=\"essential-paragraph\">\n  This amazing Markup Manager (MM) will revolutionize your web development. With simple GUI operations, you can easily create HTML and CSS. Experience the magic!\n</p>"
+                          },
+                          "parentId": "VcnDmSYAQs"
+                        },
+                        {
+                          "id": "LGtasVlxcZ",
+                          "nodes": [],
+                          "selectedResponsiveMode": "large",
+                          "layout": {
+                            "small": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            },
+                            "large": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            }
+                          },
+                          "widget": {
+                            "id": "BXjLInZLHx",
+                            "html": "<button class=\"essential-button-active\">Button</button>",
+                            "css": ".essential-button-active {\n    border: 1px solid #1B98E0;\n    padding: 4px 20px;\n    border-radius: 9999px;\n    background: #1B98E0;\n    color: white;\n}",
+                            "name": "Active Button",
+                            "description": "",
+                            "instance": "<a href=\"https://zabefofoon.github.io/mm-guide/\" target=\"_blank\">\n  <button class=\"essential-button-active\">\n    Show Guide\n  </button>\n</a>"
+                          },
+                          "parentId": "VcnDmSYAQs"
+                        }
+                      ],
+                      "selectedResponsiveMode": "large",
+                      "layout": {
+                        "small": {
+                          "type": "stack",
+                          "direction": "vertical",
+                          "hidden": false
+                        },
+                        "large": {
+                          "type": "stack",
+                          "direction": "vertical",
+                          "hidden": false,
+                          "paddingLeft": "20px",
+                          "paddingRight": "20px",
+                          "gap": "12px"
+                        }
+                      },
+                      "parentId": "gWYGMeMERq"
+                    }
+                  ],
+                  "selectedResponsiveMode": "large",
+                  "layout": {
+                    "small": {
+                      "type": "stack",
+                      "direction": "vertical",
+                      "hidden": false
+                    },
+                    "large": {
+                      "type": "stack",
+                      "direction": "horizontal",
+                      "hidden": false,
+                      "mainAxis": "center",
+                      "crossAxis": "center"
+                    }
+                  },
+                  "parentId": "nSWtoRiXyN"
+                }
+              ],
+              "selectedResponsiveMode": "large",
+              "layout": {
+                "small": {
+                  "type": "stack",
+                  "direction": "vertical",
+                  "hidden": false
+                },
+                "large": {
+                  "type": "stack",
+                  "direction": "vertical",
+                  "hidden": false,
+                  "maxWidth": "1200px"
+                }
+              },
+              "parentId": "LTQeCMTSfQ"
+            }
+          ],
+          "selectedResponsiveMode": "large",
+          "layout": {
+            "small": {
+              "type": "stack",
+              "direction": "vertical",
+              "hidden": false
+            },
+            "large": {
+              "type": "stack",
+              "direction": "vertical",
+              "hidden": false,
+              "crossAxis": "center",
+              "paddingTop": "40px",
+              "paddingBottom": "40px",
+              "height": "100vh",
+              "mainAxis": "center"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bkvIgZnHio",
+      "name": "New Page",
+      "key": 1,
+      "nodes": [
+        {
+          "id": "pnZqoUdFkK",
+          "nodes": [],
+          "selectedResponsiveMode": "large",
+          "layout": {
+            "small": {
+              "type": "stack",
+              "direction": "vertical",
+              "hidden": false
+            },
+            "large": {
+              "type": "stack",
+              "direction": "vertical",
+              "hidden": false
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "widgetGroups": [
+    {
+      "name": "Essentials",
+      "items": [
+        {
+          "id": "BXjLInZLHx",
+          "html": "<button class=\"essential-button-active\">Button</button>",
+          "css": ".essential-button-active {\n    border: 1px solid #1B98E0;\n    padding: 4px 20px;\n    border-radius: 9999px;\n    background: #1B98E0;\n    color: white;\n    width: 100%;\n}",
+          "name": "Active Button",
+          "description": ""
+        },
+        {
+          "id": "svFZdNfNQJ",
+          "html": "<button class=\"essential-button\">Button</button>",
+          "css": ".essential-button {\n    border: 1px solid #ccc;\n    padding: 4px 20px;\n    border-radius: 9999px;\n    width: 100%;\n}",
+          "name": "Button",
+          "description": ""
+        },
+        {
+          "id": "ehrftLJCEx",
+          "html": "<h1 class=\"essential-h1\">Heading-1</h1>",
+          "css": ".essential-h1 {\n    font-size: 48px;\n    font-weight: bold;\n}",
+          "name": "Heading-1",
+          "description": ""
+        },
+        {
+          "id": "FLUptJmmuP",
+          "html": "<h2 class=\"essential-h2\">Heading-2</h2>",
+          "css": ".essential-h2 {\n    font-size: 36px;\n    font-weight: bold;\n}",
+          "name": "Heading-2",
+          "description": ""
+        },
+        {
+          "id": "vWSZUlEYXt",
+          "html": "<h3 class=\"essential-h3\">Heading-3</h3>",
+          "css": ".essential-h3 {\n    font-size: 28px;\n    font-weight: bold;\n}",
+          "name": "Heading-3",
+          "description": ""
+        },
+        {
+          "id": "JoBWYFtUZg",
+          "html": "<h4 class=\"essential-h4\">Heading-4</h4>",
+          "css": ".essential-h4 {\n    font-size: 24px;\n    font-weight: bold;\n}",
+          "name": "Heading-4",
+          "description": ""
+        },
+        {
+          "id": "VqafZCpjjr",
+          "html": "<p class=\"essential-paragraph\">\n    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\n</p>",
+          "css": ".essential-paragraph {\n    font-size: 16px;\n}",
+          "name": "Paragraph",
+          "description": ""
+        },
+        {
+          "id": "gPqSIcVqVf",
+          "html": "<figure class=\"essential-card\">\n <img src=\"https://dummyimage.com/500x500/999999/fff\" \n alt=\"card image\"/>\n <div class=\"text-wrap\">\n <h4>title</h4>\n <p>description</p>\n </div>\n</figure>",
+          "css": ".essential-card {\n min-width: 150px;\n box-shadow: 0 2px 5px rgba(0, 0, 0, .2);\n margin: 0;\n}\n\n.essential-card img {\n width: 100%;\n}\n\n.essential-card .text-wrap {\n display: flex;\n flex-direction: column;\n gap: 8px;\n padding: 8px 8px 12px 8px;\n}\n\n.essential-card .text-wrap h4 {\n font-size: 16px;\n margin: 0;\n}\n\n.essential-card .text-wrap p {\n font-size: 16px;\n margin: 0;\n}",
+          "name": "Card Vertical",
+          "description": ""
+        },
+        {
+          "id": "uzqdbdSuWI",
+          "html": "<figure class=\"card-horizontal\">\n    <img class=\"main-image\" src=\"https://dummyimage.com/500x500/999999/fff\" \n alt=\"card image\"/>\n    <div class=\"text-wrap\">\n       <h4 class=\"essential-h4\">title</h4>\n       <p>description</p>\n    </div>\n</figure>",
+          "css": ".card-horizontal {\n    display: flex;\n    align-items: center;\n    gap: 20px;\n    border: 1px solid #ccc;\n    border-radius: 12px;\n    overflow: hidden;\n}\n\n.card-horizontal .main-image {\n    width: 150px;\n}\n\n",
+          "name": "Card Horizontal",
+          "description": ""
+        },
+        {
+          "id": "ymTSEUzSzy",
+          "html": "<img class=\"essential-image\" src=\"https://dummyimage.com/500x500/999999/fff\" \n alt=\"card image\"/>",
+          "css": ".essential-image {\n    max-width: 100%;\n}",
+          "name": "Image",
+          "description": ""
+        },
+        {
+          "id": "ccceDxaIgL",
+          "html": "<iframe class=\"essential-youtube\" src=\"https://www.youtube.com/embed/QuHRsYAZ8a8?si=-0s4NmeeJMtZ5UmP\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+          "css": ".essential-youtube {\n    aspect-ratio: 16/9;\n    width: 100%;\n}",
+          "name": "Youtube",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

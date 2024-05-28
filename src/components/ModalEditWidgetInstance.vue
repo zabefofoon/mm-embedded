@@ -15,7 +15,7 @@
       <div class="tw-flex tw-flex-col tw-gap-16 | tw-h-full">
         <textarea
           v-if="node?.widget"
-          class="tw-h-full | tw-border"
+          class="tw-p-2 | tw-h-full | tw-border"
           v-model="html"
           @keydown.stop></textarea>
       </div>
