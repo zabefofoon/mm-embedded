@@ -3,13 +3,14 @@
     <div
       v-if="$route.query.hideDownloadHtml !== 'true'"
       class="tw-relative"
-      v-click-away="closeOptions">
+      v-click-away="() => closeOptions()">
       <IconButton
         :class="{ 'tw-bg-slate-300': isShowOptions }"
         icon="mm-icon-html"
         title="Download html"
-        v-long-press:300="openOptions"
-        @click="downloadHtml" />
+        v-long-press:300="
+          (longPressed: boolean) => (longPressed ? openOptions() : downloadHtml())
+        " />
       <div
         class="tw-w-1 tw-h-1 tw-bg-slate-500 | tw-absolute tw-right-0 tw-bottom-0"></div>
       <ul
@@ -18,7 +19,7 @@
         <li
           class="tw-flex tw-gap-1 tw-items-center | tw-px-2 tw-py-1 | tw-text-xs tw-whitespace-nowrap tw-cursor-pointer | tw-border-b | hover:tw-bg-slate-200"
           :class="{
-            'tw-text-slate-300': !pageStore.downloadOptions.includePreflight,
+            'tw-text-slate-300': !pageStore.downloadOptions.includePreflight
           }"
           @click="pageStore.toggleDownloadOptions('includePreflight')">
           <i class="mm-icon mm-icon-check"></i>
@@ -27,7 +28,7 @@
         <li
           class="tw-flex tw-gap-1 tw-items-center | tw-px-2 tw-py-1 | tw-text-xs tw-whitespace-nowrap tw-cursor-pointer | tw-border-b | hover:tw-bg-slate-200"
           :class="{
-            'tw-text-slate-300': !pageStore.downloadOptions.showBorder,
+            'tw-text-slate-300': !pageStore.downloadOptions.showBorder
           }"
           @click="pageStore.toggleDownloadOptions('showBorder')">
           <i class="mm-icon mm-icon-check"></i>
@@ -36,7 +37,7 @@
         <li
           class="tw-flex tw-gap-1 tw-items-center | tw-px-2 tw-py-1 | tw-text-xs tw-whitespace-nowrap tw-cursor-pointer | tw-border-b | hover:tw-bg-slate-200"
           :class="{
-            'tw-text-slate-300': !pageStore.downloadOptions.showEmptyArea,
+            'tw-text-slate-300': !pageStore.downloadOptions.showEmptyArea
           }"
           @click="pageStore.toggleDownloadOptions('showEmptyArea')">
           <i class="mm-icon mm-icon-check"></i>
@@ -106,7 +107,7 @@ const downloadHtml = () => {
 const downloadJson = () => {
   const json = {
     pages: deepClone(pageStore.pages),
-    widgetGroups: deepClone(widgetStore.widgetGroups),
+    widgetGroups: deepClone(widgetStore.widgetGroups)
   }
 
   const element = document.createElement('a')

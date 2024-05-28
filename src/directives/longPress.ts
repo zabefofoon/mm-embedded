@@ -1,6 +1,8 @@
 import type { Directive, ObjectDirective } from 'vue'
 import { onUnmounted } from 'vue'
 
+let longPressed = false
+
 const longPressDirective: ObjectDirective = {
   mounted(el, binding) {
     let pressTimer: NodeJS.Timeout | undefined
@@ -9,10 +11,11 @@ const longPressDirective: ObjectDirective = {
       if (event.type === 'click' && event.button !== 0) {
         return
       }
-
+      longPressed = false
       if (pressTimer === undefined) {
         pressTimer = setTimeout(() => {
           binding.value(event)
+          longPressed = true
         }, Number(binding.arg) || 1000)
       }
     }
@@ -27,9 +30,14 @@ const longPressDirective: ObjectDirective = {
     el.addEventListener('mousedown', start)
     el.addEventListener('touchstart', start)
 
-    el.addEventListener('mouseup', cancel)
-    el.addEventListener('touchend', cancel)
-    el.addEventListener('click', cancel)
+    el.addEventListener('mouseup', (event: MouseEvent) => {
+      cancel()
+      binding.value(longPressed, event)
+    })
+    el.addEventListener('touchend', (event: MouseEvent) => {
+      cancel()
+      binding.value(longPressed, event)
+    })
     el.addEventListener('mouseleave', cancel)
 
     onUnmounted(() => {
@@ -40,9 +48,9 @@ const longPressDirective: ObjectDirective = {
       el.removeEventListener('click', cancel)
       el.removeEventListener('mouseleave', cancel)
     })
-  },
+  }
 }
 
 export const LongPressDirective: Directive = {
-  mounted: longPressDirective.mounted,
+  mounted: longPressDirective.mounted
 }
