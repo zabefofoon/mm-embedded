@@ -236,14 +236,13 @@ const generatedCss = computed(
 )
 
 const initDefaultData = () => {
-  pageStore.loadPages(defaultData.pages.map(Page.of))
+  pageStore.loadPages(<Page[]>(<unknown>defaultData.pages))
   widgetStore.setWidgetGroups(<Group[]>defaultData.widgetGroups)
   setTimeout(widgetStore.postWidgetGroupsToEditor, 1000)
   pageStore.selectPage(defaultData.pages[0].id)
 }
-
+initDefaultData()
 onMounted(() => {
-  initDefaultData()
   window.addEventListener('keydown', listenKeydown)
 })
 onBeforeUnmount(() => window.removeEventListener('keydown', listenKeydown))
