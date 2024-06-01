@@ -7,11 +7,15 @@ export class Page {
   key = 0
   nodes = [Node.of()]
 
-  removeNode(nodeId?: string) {
-    this.nodes = this.nodes.filter((node) => node.id !== nodeId)
+  constructor(page?: Page) {
+    if (page) Object.assign(this, page)
   }
 
-  static of() {
-    return new Page()
+  removeNode(nodeId?: string) {
+    this.nodes = this.nodes.filter(node => node.id !== nodeId)
+  }
+
+  static of(page?: Page) {
+    return new Page(page)
   }
 }
