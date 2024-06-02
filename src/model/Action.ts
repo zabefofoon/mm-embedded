@@ -1323,15 +1323,17 @@ export class SetWidget extends AbstractAction {
     this.savedWidgets?.forEach(data => {
       const found = <Node>this.pageStore.findNode(data.nodeId)
       data.widget ? found.setWidget(data.widget) : found.removeWidget()
+      this.pageStore.selectNodeOne()
       this.pageStore.selectNodeMany(data.nodeId || '')
     })
   }
 
   redo(): void {
     this.do(true)
-    this.savedWidgets?.forEach(data =>
+    this.savedWidgets?.forEach(data => {
+      this.pageStore.selectNodeOne()
       this.pageStore.selectNodeMany(data.nodeId || '')
-    )
+    })
   }
 
   static of(widget: Item): SetWidget {
@@ -1583,11 +1585,13 @@ export class SetWidgetInstance extends AbstractAction {
   undo(): void {
     const found = <Node>this.pageStore.findNode(this.selectedNodeId)
     found.setWidgetInstance(this.previousInstance)
+    this.pageStore.selectNodeOne()
   }
 
   redo(): void {
     const found = <Node>this.pageStore.findNode(this.selectedNodeId)
     found.setWidgetInstance(this.instance)
+    this.pageStore.selectNodeOne(this.selectedNodeId)
   }
 
   static of(nodeId: string, instance: string) {
