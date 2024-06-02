@@ -291,7 +291,7 @@
         },
         {
           "id": "ymTSEUzSzy",
-          "html": "<img class=\"essential-image\" src=\"https://dummyimage.com/500x500/999999/fff\" \n alt=\"card image\"/>",
+          "html": "<img class=\"essential-image\" src=\"https://dummyimage.com/1000x1000/999999/fff\" \n alt=\"card image\"/>",
           "css": ".essential-image {\n    max-width: 100%;\n}",
           "name": "Image",
           "description": ""
