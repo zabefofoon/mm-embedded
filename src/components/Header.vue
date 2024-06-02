@@ -8,7 +8,7 @@
     <IconButton
       v-if="$route.query.hideLoad !== 'true'"
       icon="mm-icon-upload"
-      title="File upload"
+      title="Load data"
       @click="loadFile" />
     <HeaderScreenSize />
     <HeaderScreenView />
