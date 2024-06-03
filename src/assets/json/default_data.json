@@ -15,32 +15,6 @@
                   "id": "gWYGMeMERq",
                   "nodes": [
                     {
-                      "id": "gANzITfdZe",
-                      "nodes": [],
-                      "selectedResponsiveMode": "large",
-                      "layout": {
-                        "small": {
-                          "type": "stack",
-                          "direction": "vertical",
-                          "hidden": false
-                        },
-                        "large": {
-                          "type": "stack",
-                          "direction": "vertical",
-                          "hidden": false
-                        }
-                      },
-                      "widget": {
-                        "id": "ymTSEUzSzy",
-                        "html": "<img class=\"essential-image\" src=\"https://dummyimage.com/500x500/999999/fff\" \n alt=\"card image\"/>",
-                        "css": ".essential-image {\n    max-width: 100%;\n}",
-                        "name": "Image",
-                        "description": "",
-                        "instance": "<img class=\"essential-image\" src=\"https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbrNEX7%2FbtsHtKOS6LR%2F488FQb9pI7MmpQywRIxYw0%2Fimg.png\" alt=\"card image\" />"
-                      },
-                      "parentId": "gWYGMeMERq"
-                    },
-                    {
                       "id": "VcnDmSYAQs",
                       "nodes": [
                         {
@@ -66,6 +40,51 @@
                             "name": "Heading-3",
                             "description": "",
                             "instance": "<h3 class=\"essential-h3\">\n  Hello, Markup Manager!\n</h3>"
+                          },
+                          "parentId": "VcnDmSYAQs"
+                        },
+                        {
+                          "id": "kYLWHUZDOo",
+                          "nodes": [
+                            {
+                              "id": "RlWCUjZIAH",
+                              "nodes": [],
+                              "selectedResponsiveMode": "large",
+                              "layout": {
+                                "small": {
+                                  "type": "stack",
+                                  "direction": "vertical",
+                                  "hidden": false
+                                },
+                                "large": {
+                                  "type": "stack",
+                                  "direction": "vertical",
+                                  "hidden": false
+                                }
+                              },
+                              "widget": {
+                                "id": "ccceDxaIgL",
+                                "html": "<iframe class=\"essential-youtube\" src=\"https://www.youtube.com/embed/QuHRsYAZ8a8?si=-0s4NmeeJMtZ5UmP\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+                                "css": ".essential-youtube {\n    aspect-ratio: 16/9;\n    width: 100%;\n}",
+                                "name": "Youtube",
+                                "description": "",
+                                "instance": "<iframe width=\"100%\" height=\"400px\" src=\"https://www.youtube.com/embed/tbR1realYeo?si=y-_vYx1bRvGbRxrm\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>"
+                              },
+                              "parentId": "kYLWHUZDOo"
+                            }
+                          ],
+                          "selectedResponsiveMode": "large",
+                          "layout": {
+                            "small": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            },
+                            "large": {
+                              "type": "stack",
+                              "direction": "vertical",
+                              "hidden": false
+                            }
                           },
                           "parentId": "VcnDmSYAQs"
                         },
@@ -108,7 +127,8 @@
                             "large": {
                               "type": "stack",
                               "direction": "vertical",
-                              "hidden": false
+                              "hidden": false,
+                              "width": "300px"
                             }
                           },
                           "widget": {
@@ -135,7 +155,8 @@
                           "hidden": false,
                           "paddingLeft": "20px",
                           "paddingRight": "20px",
-                          "gap": "12px"
+                          "gap": "12px",
+                          "crossAxis": "center"
                         }
                       },
                       "parentId": "gWYGMeMERq"
@@ -150,7 +171,7 @@
                     },
                     "large": {
                       "type": "stack",
-                      "direction": "horizontal",
+                      "direction": "vertical",
                       "hidden": false,
                       "mainAxis": "center",
                       "crossAxis": "center"
@@ -170,7 +191,8 @@
                   "type": "stack",
                   "direction": "vertical",
                   "hidden": false,
-                  "maxWidth": "1200px"
+                  "maxWidth": "1200px",
+                  "gap": "20px"
                 }
               },
               "parentId": "LTQeCMTSfQ"
