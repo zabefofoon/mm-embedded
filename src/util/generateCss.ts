@@ -492,12 +492,17 @@ const generateHidden = (
   }
 
   recursive(nodes)
-
+  const query =
+    responsiveMode === 'small'
+      ? `(min-width:${getScreenSize('small')}) and (max-width:${getScreenSize(
+          'large'
+        )})`
+      : `min-width: ${getScreenSize(responsiveMode)}`
   return result.reduce((acc, current) => {
     return current
       ? acc +
           `
-@media(min-width: ${getScreenSize(responsiveMode)}) {
+@media(${query}) {
   .${responsiveMode}\\:hidden-${current} {
     ${isShowHidden ? 'opacity: .3;' : 'display: none;'}
   }
