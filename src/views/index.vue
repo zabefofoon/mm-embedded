@@ -238,7 +238,6 @@ const generatedCss = computed(
 const initDefaultData = () => {
   pageStore.loadPages((<Page[]>(<unknown>defaultData.pages)).map(Page.of))
   widgetStore.setWidgetGroups(<Group[]>defaultData.widgetGroups)
-  setTimeout(widgetStore.postWidgetGroupsToEditor, 1000)
   pageStore.selectPage(defaultData.pages[0].id)
 }
 initDefaultData()
