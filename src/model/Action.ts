@@ -543,6 +543,7 @@ export class PasteNode extends AbstractAction {
       node.id = generateUniqueId()
       node.nodes.forEach(child => {
         child.id = generateUniqueId()
+        child.parentId = node.id
         recursive(child)
       })
     }
@@ -1073,7 +1074,6 @@ export class SetNodesLayoutZIndex extends AbstractAction {
     this.savedZIndex = node.layout[node.selectedResponsiveMode].zIndex
 
     node.setZIndex(this.zIndex)
-    console.log(this.zIndex)
     this.pageStore.updateCurrentPageKey()
   }
 
