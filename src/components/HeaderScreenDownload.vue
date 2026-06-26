@@ -43,6 +43,15 @@
           <i class="mm-icon mm-icon-check"></i>
           <span>Show Empty Area</span>
         </li>
+        <li
+          class="tw-flex tw-gap-1 tw-items-center | tw-px-2 tw-py-1 | tw-text-xs tw-whitespace-nowrap tw-cursor-pointer | tw-border-b | hover:tw-bg-slate-200"
+          :class="{
+            'tw-text-slate-300': !pageStore.downloadOptions.structuredHtml
+          }"
+          @click="pageStore.toggleDownloadOptions('structuredHtml')">
+          <i class="mm-icon mm-icon-check"></i>
+          <span>Structured Html</span>
+        </li>
       </ul>
     </div>
 
@@ -78,7 +87,7 @@ const downloadHtml = () => {
     widgetStore.widgetGroups
   )
   const html = prettyHtml(
-    `
+    pageStore.downloadOptions.structuredHtml ? `
 <html>
   <head>
     <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -88,6 +97,11 @@ const downloadHtml = () => {
     ${contents}
   </body>
 </html>
+` : `
+<style>
+${css}
+</style>
+${contents}
 `,
     { ocd: true }
   )

@@ -347,7 +347,8 @@ export const usePagesStore = defineStore('pages', () => {
   const downloadOptions = ref<DownloadOptions>({
     includePreflight: true,
     showBorder: false,
-    showEmptyArea: true
+    showEmptyArea: true,
+    structuredHtml: false
   })
 
   const setDownloadOptions = (key: keyof DownloadOptions, value: boolean) =>
